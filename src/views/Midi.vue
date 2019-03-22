@@ -48,7 +48,7 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
-import '../../public/js/heartbeat.js' // import heartbeat library
+import renderSequencer from '../sequencer.js'
 
 export default {
   name: 'home',
@@ -57,7 +57,7 @@ export default {
   },
   mounted () {
     // import '../../public/js/main.js'
-    require('../../public/js/main.js') // import needs to be at top level, so using require
+    renderSequencer('../static/minute_waltz.mid')
   }
 }
 </script>
