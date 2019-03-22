@@ -44,12 +44,12 @@ https://github.com/nusofthq/Recordmp3js
 
 /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
 
-var saveAs = saveAs ||
-  // IE 10+ (native saveAs)
-  (typeof navigator !== 'undefined' &&
-      navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob.bind(navigator)) ||
+// var saveAs = saveAs ||
+//   // IE 10+ (native saveAs)
+//   (typeof navigator !== 'undefined' &&
+//       navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob.bind(navigator)) ||
   // Everyone else
-  (function (view) {
+var saveAs =  (function (view) {
     'use strict'
     // IE <10 is explicitly unsupported
     if (typeof navigator !== 'undefined' &&
@@ -276,13 +276,14 @@ var saveAs = saveAs ||
 // while `this` is nsIContentFrameMessageManager
 // with an attribute `content` that corresponds to the window
 
-if (typeof module !== 'undefined' && module !== null) {
-  module.exports = saveAs
-} else if ((typeof define !== 'undefined' && define !== null) && (define.amd != null)) {
-  define([], function () {
-    return saveAs
-  })
-}
+export { saveAs }
+// if (typeof module !== 'undefined' && module !== null) {
+//   module.exports = saveAs
+// } else if ((typeof define !== 'undefined' && define !== null) && (define.amd != null)) {
+//   define([], function () {
+//     return saveAs
+//   })
+// }
 (function () {
   'use strict'
 
