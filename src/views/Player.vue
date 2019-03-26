@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="player">
     <div id='editor'>
       <div id='score'>
         <div id='pitch-lines'></div>
@@ -52,12 +52,22 @@
 import renderSequencer from '../sequencer.js'
 
 export default {
-  name: 'midi',
+  name: 'player',
   components: {
+  },
+  methods: {
+    // Searching
+    loadMidi () {
+      renderSequencer('../static/minute_waltz.mid')
+    },
+
+    getMidi () {
+      // renderSequencer('../static/minute_waltz.mid')
+    }
   },
   mounted () {
     // import '../../public/js/main.js'
-    renderSequencer('../static/minute_waltz.mid')
+    // renderSequencer('../static/minute_waltz.mid')
   }
 }
 </script>

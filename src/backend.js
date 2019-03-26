@@ -2,7 +2,8 @@ import axios from 'axios'
 
 let $axios = axios.create({
   baseURL: '/api/',
-  timeout: 5000,
+  timeout: 50000,
+  // timeout: 5000,
   headers: { 'Content-Type': 'application/json' }
 })
 
@@ -31,11 +32,6 @@ export default {
 
   fetchSecureResource () {
     return $axios.get(`secure-resource/zzz`)
-      .then(response => response.data)
-  },
-
-  fetchSongs () {
-    return $axios.get(`songs/search`)
       .then(response => response.data)
   }
 }
