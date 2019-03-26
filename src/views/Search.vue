@@ -1,5 +1,5 @@
 <template>
-  <div class="predict">
+  <div class="search">
     <model-list-select :list="songs"
                     v-model="songItem"
                     option-value="midi"
@@ -22,7 +22,7 @@ import $backend from '../backend'
 import { ModelListSelect } from 'vue-search-select'
 
 export default {
-  name: 'predict',
+  name: 'search',
   data () {
     return {
       songs: [],

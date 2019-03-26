@@ -22,6 +22,7 @@ $axios.interceptors.response.use(function (response) {
 })
 
 export default {
+  axios: $axios,
 
   fetchResource () {
     return $axios.get(`resource/xxx`)
