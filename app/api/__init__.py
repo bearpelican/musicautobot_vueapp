@@ -15,3 +15,6 @@ def add_header(response):
 
 # Import resources to ensure view is registered
 from .resources import * # NOQA
+
+# Import prediction api
+from .predict import *

@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/api">API Sample</router-link> |
+      <!-- <router-link to="/api">API Sample</router-link> | -->
+      <router-link to="/predict">Predict</router-link> |
       <router-link to="/midi">Midi</router-link>
     </div>
     <!-- <div id="logos">

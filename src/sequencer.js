@@ -362,8 +362,8 @@ function renderSequencer (midiFile) {
 
   enableGUI(false)
   // sequencer.addMidiFile({url: '../static/minute_waltz.mid'})
-  sequencer.addMidiFile({url: midiFile})
-  sequencer.addAssetPack({url: '../static/asset_pack_basic.json'}, init)
+  sequencer.addMidiFile({ url: midiFile })
+  sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, init)
 }
 
 export default renderSequencer
