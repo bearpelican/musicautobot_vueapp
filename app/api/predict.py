@@ -25,15 +25,25 @@ htlist = get_htlist(config)
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/songs/list')
+
+@app.route('/songs/all', methods=['GET', 'POST'])
 def song_list():
     # get song name and artist from csv
-    limit = int(request.values.get('limit', 10))
-    res = htlist[:10] # stringify paths. need to figure out a better response
     result = {
-        'result': res
+        'result': list(htlist.values())[:100]
     }
     return jsonify(result)
+
+# originally for backend searching
+# @app.route('/songs/list')
+# def song_list():
+#     # get song name and artist from csv
+#     limit = int(request.values.get('limit', 10))
+#     res = list(htlist.values())[:10] # stringify paths. need to figure out a better response
+#     result = {
+#         'result': res
+#     }
+#     return jsonify(result)
 
 @app.route('/songs/search', methods=['GET', 'POST'])
 def song_search():
