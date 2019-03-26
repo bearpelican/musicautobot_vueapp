@@ -117,7 +117,8 @@ function renderSequencer (midiFile) {
   function resize () {
     var c = divControls.getBoundingClientRect().height
     var w = window.innerWidth
-    var h = window.innerHeight - c
+    // var h = window.innerHeight - c
+    var h = window.innerHeight - c - 200
 
     // tell the key editor that the viewport has canged, necessary for auto scroll during playback
     keyEditor.setViewport(w, h)
@@ -234,7 +235,8 @@ function renderSequencer (midiFile) {
   function init () {
     var c = divControls.getBoundingClientRect().height
     var w = window.innerWidth
-    var h = window.innerHeight - c
+    // var h = window.innerHeight - c
+    var h = window.innerHeight - c - 200
 
     divEditor.style.width = w + 'px'
     divEditor.style.height = h + 'px'

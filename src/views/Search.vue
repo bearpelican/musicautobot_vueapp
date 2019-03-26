@@ -25,8 +25,8 @@ export default {
   name: 'search',
   data () {
     return {
-      songs: [],
-      songItem: {},
+      list: [],
+      item: {},
       error: ''
     }
   },
@@ -46,6 +46,9 @@ export default {
     selectFromParentComponent1 () {
       // select option from parent component
       this.songItem = this.options[0]
+    },
+    didSelectItem (item) {
+
     }
   },
   mounted () {
