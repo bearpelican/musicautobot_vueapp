@@ -2,13 +2,10 @@ import getFrequency from '@/lib/frequency'
 import { timingToSeconds } from '@/lib/timing'
 
 export class SynthPlugin {
-  constructor () {
-    this.store = null
+  constructor (store) {
+    this.store = store
     this.notes = []
     this.timeoutIds = []
-  }
-  plugin (store) {
-    this.store = store
     store.subscribe((mutation, state) => {
       switch (mutation.type) {
         case 'startPreview': {
@@ -82,6 +79,7 @@ export class SynthPlugin {
   };
 }
 
-export default function createSynthPlugin () {
-  return new SynthPlugin().plugin
+// export default class SynthPlugin
+export default function createSynthPlugin (store) {
+  return new SynthPlugin(store)
 }

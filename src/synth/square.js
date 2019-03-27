@@ -19,6 +19,7 @@ export default class SquareSynth extends SynthBase {
   constructor () {
     super()
     this.audioCtx = new AudioContext()
+    // this.audioCtx = window.AudioContext
     this.gainNode = this.audioCtx.createGain()
     this.notes = []
     this.gainNode.gain.value = 0.1

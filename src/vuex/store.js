@@ -101,5 +101,5 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
-  plugins: [createSynthPlugin()]
+  plugins: [createSynthPlugin]
 })
