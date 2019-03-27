@@ -13,11 +13,11 @@ file_path = Path(__file__).parent
 path = file_path/data_dir/source_dir
 out_path = file_path/'data/generated/'
 
-config = get_config(path, cache='tmp/hook')
+config = get_config(vocab_path=path/'tmp/all')
 saved_models = get_files(path/'models/hook', recurse=True)
 load_path = saved_models[0]
 
-data = load_data(**config)
+data = load_data(path=path, cache_name='tmp/hook', **config)
 learn = load_learner(data, config, load_path)
 htlist = get_htlist(path, source_dir)
 

@@ -1,4 +1,3 @@
-import '../public/js/heartbeat'
 // function renderSequencer (midiFile) {
 
 function enableGUI (flag) {
@@ -373,19 +372,35 @@ function renderSequencerGUI (sequencer, song) {
   return init
 }
 
-function loadMidiFile (midiFile, name) {
+// Load sequencer and asset pack only once. Otherwise there will be midi playback distortion
+function loadSequencer (init) {
   var sequencer = window.sequencer
-  enableGUI(false)
-  sequencer.addMidiFile({ url: midiFile, name: name }, () => {
-    var song = sequencer.createSong(sequencer.getMidiFile(name))
-    var it = renderSequencerGUI(sequencer, song)
-    sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
+  if (sequencer == null) {
+    require('../public/js/heartbeat')
+    window.sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, init)
+  } else {
+    init()
+  }
+}
+
+function loadMidiFile (midiFile, name) {
+  loadSequencer(() => {
+    var sequencer = window.sequencer
+    enableGUI(false)
+    // sequencer.removeAssetPack('../static/asset_pack_piano_predict.json')
+    sequencer.addMidiFile({ url: midiFile, name: name }, () => {
+      var song = sequencer.createSong(sequencer.getMidiFile(name))
+      var it = renderSequencerGUI(sequencer, song)
+      it()
+      // sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
+    })
   })
 }
 
 function loadArrayBuffer (arraybuffer) {
   var sequencer = window.sequencer
   enableGUI(false)
+  // sequencer.removeAssetPack('../static/asset_pack_piano_predict.json')
   sequencer.createMidiFile({ arraybuffer: arraybuffer }).then(
     function onFulfilled (midifile) {
       var song = sequencer.createSong(midifile, 'arraybuffer')
@@ -394,8 +409,7 @@ function loadArrayBuffer (arraybuffer) {
     },
     function onRejected (e) {
       console.log('Failed to create midi file', e)
-    }
-  )
+    })
 }
 
 export { loadMidiFile, loadArrayBuffer, renderSequencerGUI }
