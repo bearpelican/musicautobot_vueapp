@@ -266,7 +266,7 @@ function renderSequencerGUI (sequencer, song) {
       viewportHeight: h,
       viewportWidth: w,
       lowestNote: 36,
-      highestNote: 88,
+      highestNote: 102,
       // lowestNote: 21,
       // highestNote: 108,
       barsPerPage: 16
@@ -369,7 +369,7 @@ function renderSequencerGUI (sequencer, song) {
   }
   // sequencer.addMidiFile({url: '../static/minute_waltz.mid'})
   // sequencer.addMidiFile({ url: midiFile })
-  return init
+  init()
 }
 
 // Load sequencer and asset pack only once. Otherwise there will be midi playback distortion
@@ -390,26 +390,26 @@ function loadMidiFile (midiFile, name) {
     // sequencer.removeAssetPack('../static/asset_pack_piano_predict.json')
     sequencer.addMidiFile({ url: midiFile, name: name }, () => {
       var song = sequencer.createSong(sequencer.getMidiFile(name))
-      var it = renderSequencerGUI(sequencer, song)
-      it()
+      renderSequencerGUI(sequencer, song)
       // sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
     })
   })
 }
 
 function loadArrayBuffer (arraybuffer) {
-  var sequencer = window.sequencer
-  enableGUI(false)
-  // sequencer.removeAssetPack('../static/asset_pack_piano_predict.json')
-  sequencer.createMidiFile({ arraybuffer: arraybuffer }).then(
-    function onFulfilled (midifile) {
-      var song = sequencer.createSong(midifile, 'arraybuffer')
-      var it = renderSequencerGUI(sequencer, song)
-      sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
-    },
-    function onRejected (e) {
-      console.log('Failed to create midi file', e)
-    })
+  loadSequencer(() => {
+    var sequencer = window.sequencer
+    enableGUI(false)
+    // sequencer.removeAssetPack('../static/asset_pack_piano_predict.json')
+    sequencer.createMidiFile({ arraybuffer: arraybuffer }).then(
+      function onFulfilled (midifile) {
+        var song = sequencer.createSong(midifile, 'arraybuffer')
+        renderSequencerGUI(sequencer, song)
+      },
+      function onRejected (e) {
+        console.log('Failed to create midi file', e)
+      })
+  })
 }
 
 export { loadMidiFile, loadArrayBuffer, renderSequencerGUI }
