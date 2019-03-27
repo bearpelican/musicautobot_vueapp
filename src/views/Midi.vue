@@ -1,68 +1,47 @@
-<template>
-  <div class="home">
-    <div id='editor'>
-      <div id='score'>
-        <div id='pitch-lines'></div>
-        <div id='bar-lines'></div>
-        <div id='beat-lines'></div>
-        <div id='sixteenth-lines'></div>
-        <div id='notes'></div>
-        <div id='parts'></div>
-        <div id='playhead'>
-            <div id='playhead-line'></div>
-        </div>
-      </div>
-    </div>
-    <div id='controls'>
-      <input type='button' id='play' value='play' />
-      <input type='button' id='stop' value='stop' />
-
-      <div id='time-bars-beats'></div>
-
-      <div class='pipe'>|</div>
-      <div id='time-seconds'></div>
-
-      <div class='pipe'>|</div>
-      <div id='mouse-x'>0</div>
-
-      <div class='pipe'>|</div>
-      <div id='mouse-y'>0</div>
-
-      <div class='pipe'>|</div>
-      <input type='button' id='first' value='<<' />
-      <input type='button' id='prev' value='<' />
-      <div id='page-numbers'>page 0 of 0</div>
-      <input type='button' id='next' value='>' />
-      <input type='button' id='last' value='>>' />
-
-      <div class='pipe'>|</div>
-      <div>
-        <input type='range' id='scale-slider'/>
-        <label for='scale-slider' id='scale-label'>#bars 16</label>
-      </div>
-    </div>
-
-  </div>
+<template lang="pug">
+  #app
+    section
+      keyboard
+      score
+    button-container
 </template>
 
 <script>
-
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-import { loadMidiFile } from '../sequencer.js'
+import Keyboard from '@/components/vueseq/Keyboard'
+import Score from '@/components/vueseq/Score'
+import ButtonContainer from '@/components/vueseq/ButtonContainer'
+import store from '@/vuex/store'
+// import "./style.css";
 
 export default {
-  name: 'midi',
+  name: 'app',
   components: {
+    Keyboard,
+    Score,
+    ButtonContainer
   },
-  mounted () {
-    // import '../../public/js/main.js'
-    loadMidiFile('../static/minute_waltz.mid', 'minute_waltz')
-  }
+  store
 }
 </script>
 
-<style lang="scss">
-@import '../../public/static/main.css';
-@import '../../public/static/reset.css';
+<style scoped>
+
+@font-face {
+  font-family: "notes";
+  /* src: url("../assets/notes.woff") */
+  src: "@/assets/notes.woff";
+}
+
+#app * {
+  user-select: none;
+}
+
+#app {
+  overflow: hidden;
+  position: relative;
+}
+section {
+  width: 100%;
+  height: 100%;
+}
 </style>
