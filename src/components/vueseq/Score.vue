@@ -3,13 +3,13 @@
     .inner(:style="{ width }")
       score-row(
         v-for="(key, index) in keys",
-        :key="index",
+        :key="index + '-key'",
         :keyNumber="key.number",
         :keyType="key.type"
       )
       note(
         v-for="(note, index) in notes",
-        :key="index",
+        :key="index + '-note'",
         :index="index",
         :storeKeyNumber="note.key",
         :storeTiming="note.timing",
@@ -17,7 +17,7 @@
       )
       score-line(
         v-for="(beat, index) in beats",
-        :key="index",
+        :key="index + '-beat'",
         :index="index"
       )
 </template>
