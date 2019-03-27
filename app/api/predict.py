@@ -57,16 +57,11 @@ def song_search():
 @app.route('/predict', methods=['POST'])
 def predict():
     args = request.json
-    # print(request)
-    # print(request.form)
-    # print(request.files)
-    # print(request.data)
-    # print(request.json)
-    # print('sldfjdsklfjdskl')
-    args['np_file'] = file_path/data_dir/args['np_file']
+    np_file = args['np_file']
+    args['np_file'] = file_path/data_dir/np_file
     pred, seed, full = generate_predictions(learn, n_words=10, **args)
     pid = save_preds(pred, seed, full, out_path)
-    bpm = htlist[args['np_file']]['ht_bpm']
+    bpm = htlist[np_file]['ht_bpm']
     midi, score = save_comps(out_path, pid, bpm=bpm)
     
     res = {
@@ -79,12 +74,7 @@ def predict():
 
 @app.route("/predict/<path:pid>/score/")
 def pred_score(pid):
-#     path = out_path/pid/'pred-1.png'
-#     return send_file(path, mimetype='image/png')
-
-    response = send_from_directory(out_path, f'{pid}/pred-1.png', mimetype='image/png')
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    return send_from_directory(out_path, f'{pid}/pred-1.png', mimetype='image/png')
 
 @app.route("/predict/<path:pid>/midi/")
 def pred_midi(pid):

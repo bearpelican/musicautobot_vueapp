@@ -1,6 +1,18 @@
 import '../public/js/heartbeat'
-function renderSequencer (midiFile) {
-  var sequencer = window.sequencer
+// function renderSequencer (midiFile) {
+
+function enableGUI (flag) {
+  var elements = document.querySelectorAll('input, select')
+  var maxi = elements.length
+
+  for (var i = 0; i < maxi; i++) {
+    var element = elements[i]
+    element.disabled = !flag
+  }
+}
+
+function renderSequencerGUI (sequencer, song) {
+  // var sequencer = window.sequencer
   // var console = window.console
   // var alert = window.alert
   var requestAnimationFrame = window.requestAnimationFrame
@@ -35,17 +47,7 @@ function renderSequencer (midiFile) {
   var allNoteDivs // stores references to all divs that represent a midi note
 
   var keyEditor
-  var song
-
-  function enableGUI (flag) {
-    var elements = document.querySelectorAll('input, select')
-    var maxi = elements.length
-
-    for (var i = 0; i < maxi; i++) {
-      var element = elements[i]
-      element.disabled = !flag
-    }
-  }
+  // var song
 
   function render () {
     var snapshot = keyEditor.getSnapshot('key-editor')
@@ -114,17 +116,16 @@ function renderSequencer (midiFile) {
     requestAnimationFrame(render)
   }
 
-  function resize () {
-    var c = divControls.getBoundingClientRect().height
-    var w = window.innerWidth
-    // var h = window.innerHeight - c
-    var h = window.innerHeight - c - 200
+  // function resize () {
+  //   var c = divControls.getBoundingClientRect().height
+  //   var w = window.innerWidth
+  //   var h = window.innerHeight - c
 
-    // tell the key editor that the viewport has canged, necessary for auto scroll during playback
-    keyEditor.setViewport(w, h)
-    divEditor.style.width = w + 'px'
-    divEditor.style.height = h + 'px'
-  }
+  //   // tell the key editor that the viewport has canged, necessary for auto scroll during playback
+  //   keyEditor.setViewport(w, h)
+  //   divEditor.style.width = w + 'px'
+  //   divEditor.style.height = h + 'px'
+  // }
 
   function draw () {
     allNotes = {}
@@ -241,7 +242,7 @@ function renderSequencer (midiFile) {
     divEditor.style.width = w + 'px'
     divEditor.style.height = h + 'px'
 
-    song = sequencer.createSong(sequencer.getMidiFile('minute_waltz'))
+    // song = sequencer.createSong(sequencer.getMidiFile('minute_waltz'))
 
     song.tracks.forEach(function (track) {
       track.setInstrument('piano')
@@ -355,17 +356,41 @@ function renderSequencer (midiFile) {
       keyEditor.setBarsPerPage(bpp)
     }, false)
 
-    window.addEventListener('resize', resize, false)
+    // window.addEventListener('resize', resize, false) // disabling resize for now since we have a bunch of components
     enableGUI(true)
 
     draw()
     render()
   }
-
-  enableGUI(false)
   // sequencer.addMidiFile({url: '../static/minute_waltz.mid'})
-  sequencer.addMidiFile({ url: midiFile })
-  sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, init)
+  // sequencer.addMidiFile({ url: midiFile })
+  return init
 }
 
-export default renderSequencer
+function loadMidiFile (midiFile, name) {
+  var sequencer = window.sequencer
+  enableGUI(false)
+  sequencer.addMidiFile({ url: midiFile, name: name }, () => {
+    var song = sequencer.createSong(sequencer.getMidiFile(name))
+    var it = renderSequencerGUI(sequencer, song)
+    sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, it)
+  })
+}
+
+function loadArrayBuffer (arraybuffer) {
+  var sequencer = window.sequencer
+  enableGUI(false)
+  sequencer.createMidiFile({ arraybuffer: arraybuffer }).then(
+    function onFulfilled (midifile) {
+      var song = sequencer.createSong(midifile, 'arraybuffer')
+      var it = renderSequencerGUI(sequencer, song)
+      sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, it)
+    },
+    function onRejected (e) {
+      console.log('Failed to create midi file', e)
+    }
+  )
+}
+
+export { loadMidiFile, loadArrayBuffer, renderSequencerGUI }
+// export default renderSequencer
