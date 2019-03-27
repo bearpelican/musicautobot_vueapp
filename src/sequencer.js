@@ -235,7 +235,7 @@ function renderSequencerGUI (sequencer, song) {
 
   function init () {
     // var c = divControls.getBoundingClientRect().height
-    var w = window.innerWidth
+    var w = window.innerWidth - 200
     // var h = window.innerHeight - c
     var h = window.innerHeight - 200
 
@@ -266,10 +266,16 @@ function renderSequencerGUI (sequencer, song) {
       keyListener: true,
       viewportHeight: h,
       viewportWidth: w,
-      lowestNote: 21,
-      highestNote: 108,
+      lowestNote: 36,
+      highestNote: 88,
+      // lowestNote: 21,
+      // highestNote: 108,
       barsPerPage: 16
     })
+
+    // (AS) reset divEditor width to fit keyEditor
+    divEditor.style.width = keyEditor.width + 'px'
+    divEditor.style.height = h + 'px'
 
     sliderScale.min = 1// minimal 1 bar per page
     sliderScale.max = 64// maximal 64 bars per page
@@ -373,7 +379,7 @@ function loadMidiFile (midiFile, name) {
   sequencer.addMidiFile({ url: midiFile, name: name }, () => {
     var song = sequencer.createSong(sequencer.getMidiFile(name))
     var it = renderSequencerGUI(sequencer, song)
-    sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, it)
+    sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
   })
 }
 
@@ -384,7 +390,7 @@ function loadArrayBuffer (arraybuffer) {
     function onFulfilled (midifile) {
       var song = sequencer.createSong(midifile, 'arraybuffer')
       var it = renderSequencerGUI(sequencer, song)
-      sequencer.addAssetPack({ url: '../static/asset_pack_basic.json' }, it)
+      sequencer.addAssetPack({ url: '../static/asset_pack_piano_predict.json' }, it)
     },
     function onRejected (e) {
       console.log('Failed to create midi file', e)

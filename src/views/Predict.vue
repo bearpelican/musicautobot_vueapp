@@ -30,7 +30,9 @@
         </tr>
         </tbody>
       </table>
-      <button v-on:click="predict">Predict</button>
+      Number steps:<input v-model.number='nWords' type='number'>
+      Seed Length:<input v-model.number='seedLen' type='number'>
+      <button v-on:click='predict' :disabled='predictDisabled'>Predict</button>
     </div>
     <img class='score' :src="scoreImageSrc" alt="">
 
@@ -94,6 +96,7 @@
 import $backend from '../backend'
 import { ModelListSelect } from 'vue-search-select'
 import { loadArrayBuffer } from '../sequencer.js'
+import _ from 'lodash'
 
 export default {
   name: 'predict',
@@ -102,7 +105,9 @@ export default {
       songs: [],
       predictItem: {},
       songItem: {},
-      scoreImageSrc: require('@/assets/flask-logo.png'),
+      nWords: 240,
+      seedLen: 60,
+      scoreImageSrc: null,
       error: '',
       midiSong: null
     }
@@ -113,6 +118,11 @@ export default {
   //     // this.fetchMidi(val.pid)
   //   }
   // },
+  computed: {
+    predictDisabled () {
+      return _.isEmpty(this.songItem)
+    }
+  },
   methods: {
     // Searching
     fetchSongs () {
@@ -132,10 +142,11 @@ export default {
 
     // Predict
     predict () {
-      $backend.axios.post('predict', { np_file: this.songItem.numpy })
+      $backend.axios.post('predict', { np_file: this.songItem.numpy, n_words: this.nWords, seed_len: this.seedLen })
         .then(response => {
           this.predictItem = response.data.result
           this.fetchScore(this.predictItem.pid)
+          this.fetchMidi(this.predictItem.pid)
         })
     },
     fetchScore (pid) {
@@ -156,12 +167,19 @@ export default {
           // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
           loadArrayBuffer(response.data)
         })
+    },
+    fetchMidi (pid) {
+      $backend.axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
+        .then(response => {
+          // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+          loadArrayBuffer(response.data)
+        })
     }
   },
   mounted () {
     this.fetchSongs()
-    this.testScore()
-    this.testMidi()
+    // this.testScore()
+    // this.testMidi()
     // this.scoreImageSrc = require("@/assets/vue-logo.png")
   },
   components: {
@@ -180,6 +198,7 @@ export default {
 
 .score {
   width: 50%;
+  background-color: white;
 }
 
 </style>

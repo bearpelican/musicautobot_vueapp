@@ -1,10 +1,11 @@
 #controls{
-	float: left;
+	/* float: left; */
 	background-color: #fff;
 	width: 100%;
 	min-height: 30px;
 	border-top: 1px solid #333;
 	/*overflow: auto;*/
+	
 }
 #controls div{
 	font-size: 15px;
@@ -86,7 +87,8 @@
 	/*background-color: #ffc;*/
 	/*background-color: #211E1E;*/
 	background-color: #fff;
-	float: left;
+	/* float: left; */
+	display: inline-block;
 	overflow: auto;
 	overflow: hidden;
 }
