@@ -27,7 +27,7 @@ function renderSequencerGUI (sequencer, song) {
   var sliderScale = document.getElementById('scale-slider')
   var labelSliderScale = document.getElementById('scale-label')
 
-  var divControls = document.getElementById('controls')
+  // var divControls = document.getElementById('controls')
   var divBarsBeats = document.getElementById('time-bars-beats')
   var divSeconds = document.getElementById('time-seconds')
   var divMouseX = document.getElementById('mouse-x')
@@ -234,10 +234,10 @@ function renderSequencerGUI (sequencer, song) {
   }
 
   function init () {
-    var c = divControls.getBoundingClientRect().height
+    // var c = divControls.getBoundingClientRect().height
     var w = window.innerWidth
     // var h = window.innerHeight - c
-    var h = window.innerHeight - c - 200
+    var h = window.innerHeight - 200
 
     divEditor.style.width = w + 'px'
     divEditor.style.height = h + 'px'
@@ -307,8 +307,8 @@ function renderSequencerGUI (sequencer, song) {
 
     divScore.addEventListener('mousemove', function (e) {
       e.preventDefault()
-      var x = e.pageX
-      var y = e.pageY
+      var x = e.pageX - divEditor.offsetLeft
+      var y = e.pageY - divEditor.offsetTop
       var pos = keyEditor.getPositionAt(x)
       var part = keyEditor.selectedPart
       var note = keyEditor.selectedNote
