@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
 import createSynthPlugin from '@/vuex/plugins/synthPlugin'
-import SquareSynth from '@/synth/square'
 
 Vue.use(Vuex)
 
@@ -12,7 +11,6 @@ export const state = {
   isEditingScore: false,
   scrollPosition: 0,
   previewingKeyNumber: null,
-  currentSynth: new SquareSynth(),
   appState: 'editing',
   bpm: 120
 }

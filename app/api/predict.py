@@ -48,7 +48,7 @@ def song_list():
 @app.route('/songs/search', methods=['GET', 'POST'])
 def song_search():
     keywords = request.values.get('keywords', '')
-    res = search_htlist(files, config, keywords)
+    res = search_htlist(htlist, config, keywords)
     result = {
         'result': res
     }
