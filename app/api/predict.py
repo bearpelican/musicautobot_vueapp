@@ -59,7 +59,7 @@ def predict():
     args = request.json
     np_file = args['np_file']
     args['np_file'] = file_path/data_dir/np_file
-    pred, seed, full = generate_predictions(learn, n_words=10, **args)
+    pred, seed, full = generate_predictions(learn, **args)
     pid = save_preds(pred, seed, full, out_path)
     bpm = htlist[np_file]['ht_bpm']
     midi, score = save_comps(out_path, pid, bpm=bpm)
