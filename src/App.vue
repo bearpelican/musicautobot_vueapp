@@ -2,17 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <!-- <router-link to="/api">API Sample</router-link> | -->
       <router-link to="/predict">Predict</router-link> |
       <router-link to="/midi">Midi</router-link>
     </div>
-    <!-- <div id="logos">
-      <p>
-        <img src="@/assets/vue-logo.png">
-        <span id="plus">+</span>
-        <img src="@/assets/flask-logo.png">
-      </p>
-    </div> -->
     <router-view/>
   </div>
 </template>
@@ -34,13 +26,6 @@
       color: #42b983;
     }
   }
-}
-#plus {
-  padding: 0 20px 0 20px;
-  display: inline-block;
-  font-size: 50px;
-  vertical-align: top;
-  line-height: 100px;
 }
 
 </style>
