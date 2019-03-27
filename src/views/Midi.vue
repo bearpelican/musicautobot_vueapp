@@ -49,7 +49,7 @@
 
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import renderSequencer from '../sequencer.js'
+import { loadMidiFile } from '../sequencer.js'
 
 export default {
   name: 'midi',
@@ -57,7 +57,7 @@ export default {
   },
   mounted () {
     // import '../../public/js/main.js'
-    renderSequencer('../static/minute_waltz.mid')
+    loadMidiFile('../static/minute_waltz.mid', 'minute_waltz')
   }
 }
 </script>

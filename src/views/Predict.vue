@@ -34,11 +34,57 @@
     </div>
     <img class='score' :src="scoreImageSrc" alt="">
 
-<!--
-    <form class="form-inline md-form form-sm active-purple-2 mt-2">
-        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search" aria-label="Search">
-        <i class="fas fa-search" aria-hidden="true"></i>
-    </form> -->
+    <!-- <div id='controls'>
+      <input type='button' id='play' value='play' />
+      <input type='button' id='stop' value='stop' />
+
+      <div id='time-bars-beats'></div>
+
+      <div class='pipe'>|</div>
+      <div id='time-seconds'></div>
+    </div> -->
+
+    <div id='editor'>
+      <div id='score'>
+        <div id='pitch-lines'></div>
+        <div id='bar-lines'></div>
+        <div id='beat-lines'></div>
+        <div id='sixteenth-lines'></div>
+        <div id='notes'></div>
+        <div id='parts'></div>
+        <div id='playhead'>
+            <div id='playhead-line'></div>
+        </div>
+      </div>
+    </div>
+    <div id='controls'>
+      <input type='button' id='play' value='play' />
+      <input type='button' id='stop' value='stop' />
+
+      <div id='time-bars-beats'></div>
+
+      <div class='pipe'>|</div>
+      <div id='time-seconds'></div>
+
+      <div class='pipe'>|</div>
+      <div id='mouse-x'>0</div>
+
+      <div class='pipe'>|</div>
+      <div id='mouse-y'>0</div>
+
+      <div class='pipe'>|</div>
+      <input type='button' id='first' value='<<' />
+      <input type='button' id='prev' value='<' />
+      <div id='page-numbers'>page 0 of 0</div>
+      <input type='button' id='next' value='>' />
+      <input type='button' id='last' value='>>' />
+
+      <div class='pipe'>|</div>
+      <div>
+        <input type='range' id='scale-slider'/>
+        <label for='scale-slider' id='scale-label'>#bars 16</label>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -47,6 +93,7 @@
 
 import $backend from '../backend'
 import { ModelListSelect } from 'vue-search-select'
+import { loadArrayBuffer } from '../sequencer.js'
 
 export default {
   name: 'predict',
@@ -56,7 +103,8 @@ export default {
       predictItem: {},
       songItem: {},
       scoreImageSrc: require('@/assets/flask-logo.png'),
-      error: ''
+      error: '',
+      midiSong: null
     }
   },
   // watch: {
@@ -101,11 +149,19 @@ export default {
         .then(response => {
           this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
         })
+    },
+    testMidi () {
+      $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/midi`, { responseType: 'arraybuffer' })
+        .then(response => {
+          // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+          loadArrayBuffer(response.data)
+        })
     }
   },
   mounted () {
     this.fetchSongs()
     this.testScore()
+    this.testMidi()
     // this.scoreImageSrc = require("@/assets/vue-logo.png")
   },
   components: {
@@ -123,7 +179,7 @@ export default {
 // }
 
 .score {
-  margin: 10px 100px;
+  width: 50%;
 }
 
 </style>
