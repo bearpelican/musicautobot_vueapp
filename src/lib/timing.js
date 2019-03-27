@@ -16,5 +16,8 @@ export function timingToPosition (timing) {
 }
 
 export function timingToSeconds (timing, bpm) {
+  return timing * 60 / bpm
+}
+export function timingToMS (timing, bpm) {
   return timing * 60 / bpm * 1000
 }
