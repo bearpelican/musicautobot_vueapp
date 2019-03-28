@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vue from 'vue'
+// import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
-import createSynthPlugin from '@/vuex/plugins/synthPlugin'
-import midiToNotes from '@/vuex/convert'
+import createSynthPlugin from '@/store/plugins/synthPlugin'
+import { midiToNotes } from '@/lib/convert'
 
-Vue.use(Vuex)
+// Vue.use(Vuex)
 
 export const state = {
   currentNote: defaultNote,
@@ -62,9 +62,7 @@ export const mutations = {
     state.appState = 'editing'
   },
   async loadMidi (state) {
-    let { notes, bpm } = await midiToNotes()
-    console.log('loaded midi notes')
-    console.log(notes)
+    let { notes, bpm } = await midiToNotes(null)
     state.notes = notes
     state.bpm = bpm
   }
@@ -104,9 +102,17 @@ export const actions = {
   ])
 }
 
-export default new Vuex.Store({
+// export default new Vuex.Store({
+//   state,
+//   mutations,
+//   actions,
+//   plugins: [createSynthPlugin]
+// })
+
+export default {
+  // namespaced: true,
   state,
   mutations,
   actions,
   plugins: [createSynthPlugin]
-})
+}

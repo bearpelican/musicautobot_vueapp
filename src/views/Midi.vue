@@ -10,11 +10,11 @@
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/vueseq/ButtonContainer'
-import store from '@/vuex/store'
+import store from '@/store'
 // import "./style.css";
 
 export default {
-  name: 'app',
+  name: 'midi',
   components: {
     Keyboard,
     Score,

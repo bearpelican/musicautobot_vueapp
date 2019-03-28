@@ -25,6 +25,32 @@ $axios.interceptors.response.use(function (response) {
 export default {
   axios: $axios,
 
+  fetchSongs () {
+    return $axios.get('songs/all')
+      .then(response => response.data.result)
+  },
+
+  fetchScore (pid) {
+    return $axios.get(`predict/${pid}/score`, { responseType: 'arraybuffer' })
+      .then(response => 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64'))
+  },
+
+  // Predict
+  predict () {
+    $axios.post('predict', { np_file: this.songItem.numpy, n_words: this.nWords, seed_len: this.seedLen })
+      .then(response => response.data.result)
+  },
+  testScore () {
+    return this.fetchScore('1de8021e-941b-4047-a881-223103266eba')
+  },
+  testMidi () {
+    return this.fetchMidi('1de8021e-941b-4047-a881-223103266eba')
+  },
+  fetchMidi (pid) {
+    $axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
+      .then(response => response.data)
+  },
+
   fetchResource () {
     return $axios.get(`resource/xxx`)
       .then(response => response.data)

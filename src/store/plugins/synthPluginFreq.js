@@ -1,5 +1,5 @@
 import getFrequency from '@/lib/frequency'
-import { timingToSeconds } from '@/lib/timing'
+import { timingToSeconds } from '@/lib/positioning'
 
 export class SynthPlugin {
   constructor (store) {
