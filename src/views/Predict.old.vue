@@ -93,7 +93,7 @@
 
 <script>
 
-import $backend from '../backend'
+import $backend from '@/backend'
 import { ModelListSelect } from 'vue-search-select'
 import { loadArrayBuffer } from '../sequencer.js'
 import _ from 'lodash'
@@ -180,7 +180,7 @@ export default {
     this.fetchSongs()
     // this.testScore()
     // this.testMidi()
-    // this.scoreImageSrc = require("@/assets/vue-logo.png")
+    // this.scoreImageSrc = require("@/assets/jtech-logo.png")
   },
   components: {
     ModelListSelect

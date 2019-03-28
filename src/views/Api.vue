@@ -14,7 +14,7 @@
 
 <script>
 
-import $backend from '../backend'
+import $backend from '@/backend'
 
 export default {
   name: 'about',

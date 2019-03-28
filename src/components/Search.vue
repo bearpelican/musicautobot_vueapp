@@ -18,7 +18,7 @@
 
 <script>
 
-import $backend from '../backend'
+import $backend from '@/backend'
 import { ModelListSelect } from 'vue-search-select'
 
 export default {
