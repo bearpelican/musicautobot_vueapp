@@ -1,5 +1,4 @@
-import getFrequency from '@/lib/frequency'
-import { timingToSeconds } from '@/lib/positioning'
+import { notesToToneNotes } from '@/lib/convert'
 import Tone from 'tone'
 
 export class SynthPlugin {
@@ -45,57 +44,10 @@ export class SynthPlugin {
     this.synth.stop()
   }
   play (notes, bpm) {
-    // let synth = this.synth
-    // synth.triggerAttackRelease('C4', '4n', '8n')
-    // synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
-    // synth.triggerAttackRelease('G4', '16n', '2n')
-    // synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
-    // synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
-    // synth.triggerAttackRelease('E4', '2n', '0:3')
-
-    this.notes = notes.sort((a, b) => {
-      return a.timing - b.timing
-    })
-      .filter(note => {
-        return note.timing > 0
-      })
-      .map(note => {
-        return {
-          frequency: getFrequency(note.key),
-          midi: note.key,
-          time: timingToSeconds(note.timing, bpm),
-          duration: timingToSeconds(note.length, bpm),
-          velocity: 0.8
-        }
-      })
-
+    this.notes = notesToToneNotes(notes, bpm)
     this.notes.forEach(note => {
       this.synth.triggerAttackRelease(note.frequency, note.duration, note.time)
     })
-    // let triggerSynth(note)
-    // Tone.Transport.schedule()
-
-    // console.log('Playing...')
-    // console.log(this.notes)
-
-    // // this.part = new Tone.Part((time, value) => {
-    // //   // the value is an object which contains both the note and the velocity
-    // //   this.synth.triggerAttackRelease(value.midi, value.duration, time, value.velocity)
-    // // }, this.notes)
-
-    // // console.log(this.part)
-
-    // // this.part.start(0)
-
-    // //use an array of objects as long as the object has a "time" attribute
-    // var part = new Tone.Part(function(time, note){
-    //   //the notes given as the second element in the array
-    //   //will be passed in as the second argument
-    //   synth.triggerAttackRelease(note, "8n", time);
-    // }, [[0, "C2"], ["0:2", "C3"], ["0:3:2", "G2"]]);
-    // part.start()
-
-    // Tone.Transport.start(); //the transport must be started
   }
   next (currentSynth, index = 0) {
     if (index < this.notes.length) {
