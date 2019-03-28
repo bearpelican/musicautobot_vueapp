@@ -15,7 +15,7 @@ export const octave = {
 
 export function generateOctaves () {
   const octaves = []
-  for (let i = 1; i < 8; i++) {
+  for (let i = 3; i < 8; i++) {
     octaves.push(...Object.keys(octave).map(pitch => {
       return pitch + i
     }))
@@ -24,13 +24,14 @@ export function generateOctaves () {
 }
 
 export const allKeys = [
-  'A0', 'A#0', 'B0',
+  // 'A0', 'A#0', 'B0',
   ...generateOctaves()//,
 //  "C8"
 ]
 
 export function getKeyNumber (key) {
   const index = allKeys.indexOf(key)
+  console.log('Getting keynymber', key, index)
   if (index === -1) {
     throw new Error(`The key (${key}) was not included.`)
   }
@@ -38,6 +39,7 @@ export function getKeyNumber (key) {
 }
 
 export function getTypeOfKey (key) {
+  console.log('Getting key type', key, octave[key.substring(0, key.length - 1)])
   return octave[key.substring(0, key.length - 1)]
 }
 

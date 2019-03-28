@@ -4,72 +4,33 @@ import Tone from 'tone'
 
 export class SynthPlugin {
   constructor (store) {
-    this.synth = null
-
-    let audioContext = new AudioContext()
-    Tone.setContext(audioContext)
-
-    // this.synth = new Tone.Synth().toMaster()
-
-    this.synth = new Tone.Sampler({
-      'A0': 'A0.[mp3|ogg]',
-      'C1': 'C1.[mp3|ogg]',
-      'D#1': 'Ds1.[mp3|ogg]',
-      'F#1': 'Fs1.[mp3|ogg]',
-      'A1': 'A1.[mp3|ogg]',
-      'C2': 'C2.[mp3|ogg]',
-      'D#2': 'Ds2.[mp3|ogg]',
-      'F#2': 'Fs2.[mp3|ogg]',
-      'A2': 'A2.[mp3|ogg]',
-      'C3': 'C3.[mp3|ogg]',
-      'D#3': 'Ds3.[mp3|ogg]',
-      'F#3': 'Fs3.[mp3|ogg]',
-      'A3': 'A3.[mp3|ogg]',
-      'C4': 'C4.[mp3|ogg]',
-      'D#4': 'Ds4.[mp3|ogg]',
-      'F#4': 'Fs4.[mp3|ogg]',
-      'A4': 'A4.[mp3|ogg]',
-      'C5': 'C5.[mp3|ogg]',
-      'D#5': 'Ds5.[mp3|ogg]',
-      'F#5': 'Fs5.[mp3|ogg]',
-      'A5': 'A5.[mp3|ogg]',
-      'C6': 'C6.[mp3|ogg]',
-      'D#6': 'Ds6.[mp3|ogg]',
-      'F#6': 'Fs6.[mp3|ogg]',
-      'A6': 'A6.[mp3|ogg]',
-      'C7': 'C7.[mp3|ogg]',
-      'D#7': 'Ds7.[mp3|ogg]',
-      'F#7': 'Fs7.[mp3|ogg]',
-      'A7': 'A7.[mp3|ogg]',
-      'C8': 'C8.[mp3|ogg]'
-    }, () => { }, './audio/salamander/').toMaster()
-
     this.store = store
     this.notes = []
     this.timeoutIds = []
     this.part = null
+    this.synth = createPianoSynth()
     store.subscribe((mutation, state) => {
       switch (mutation.type) {
         case 'startPreview': {
-          this.startPreview(this.synth, mutation.payload)
+          this.startPreview(mutation.payload)
           break
         }
         case 'finishPreview': {
-          this.finishPreview(this.synth)
+          this.finishPreview()
           break
         }
         case 'play': {
-          this.play(this.synth, state.notes, state.bpm)
+          this.play(state.notes, state.bpm)
           break
         }
         case 'stop': {
-          this.stop(this.synth)
+          this.stop()
         }
       }
     })
-  };
-  stop (currentSynth) {
-    currentSynth.stop()
+  }
+  stop () {
+    this.synth.stop()
     this.notes = []
     for (let timeoutId of this.timeoutIds) {
       clearTimeout(timeoutId)
@@ -77,62 +38,20 @@ export class SynthPlugin {
     this.timeoutIds = []
     this.store.commit('finishMusic')
   }
-  startPreview (currentSynth, keyNumber) {
-    currentSynth.play(getFrequency(keyNumber))
+  startPreview (keyNumber) {
+    this.synth.triggerAttackRelease(keyNumber, '4n', 0)
   }
-  finishPreview (currentSynth) {
-    currentSynth.stop()
+  finishPreview () {
+    this.synth.stop()
   }
-  play (currentSynth, notes, bpm) {
-    // let audioContext = new AudioContext()
-    // Tone.setContext(audioContext)
-
-    // this.synth = new Tone.Synth().toMaster()
-
-    // this.synth = new Tone.Sampler({
-    //   'A0': 'A0.[mp3|ogg]',
-    //   'C1': 'C1.[mp3|ogg]',
-    //   'D#1': 'Ds1.[mp3|ogg]',
-    //   'F#1': 'Fs1.[mp3|ogg]',
-    //   'A1': 'A1.[mp3|ogg]',
-    //   'C2': 'C2.[mp3|ogg]',
-    //   'D#2': 'Ds2.[mp3|ogg]',
-    //   'F#2': 'Fs2.[mp3|ogg]',
-    //   'A2': 'A2.[mp3|ogg]',
-    //   'C3': 'C3.[mp3|ogg]',
-    //   'D#3': 'Ds3.[mp3|ogg]',
-    //   'F#3': 'Fs3.[mp3|ogg]',
-    //   'A3': 'A3.[mp3|ogg]',
-    //   'C4': 'C4.[mp3|ogg]',
-    //   'D#4': 'Ds4.[mp3|ogg]',
-    //   'F#4': 'Fs4.[mp3|ogg]',
-    //   'A4': 'A4.[mp3|ogg]',
-    //   'C5': 'C5.[mp3|ogg]',
-    //   'D#5': 'Ds5.[mp3|ogg]',
-    //   'F#5': 'Fs5.[mp3|ogg]',
-    //   'A5': 'A5.[mp3|ogg]',
-    //   'C6': 'C6.[mp3|ogg]',
-    //   'D#6': 'Ds6.[mp3|ogg]',
-    //   'F#6': 'Fs6.[mp3|ogg]',
-    //   'A6': 'A6.[mp3|ogg]',
-    //   'C7': 'C7.[mp3|ogg]',
-    //   'D#7': 'Ds7.[mp3|ogg]',
-    //   'F#7': 'Fs7.[mp3|ogg]',
-    //   'A7': 'A7.[mp3|ogg]',
-    //   'C8': 'C8.[mp3|ogg]'
-    // }, {
-    //   'release': 1,
-    //   'baseUrl': '@/assets/audio/salamander/'
-    // }).toMaster()
-
+  play (notes, bpm) {
     let synth = this.synth
-
-    // synth.triggerAttackRelease('C4', '4n', '8n')
-    // synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
-    // synth.triggerAttackRelease('G4', '16n', '2n')
-    // synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
-    // synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
-    // synth.triggerAttackRelease('E4', '2n', '0:3')
+    synth.triggerAttackRelease('C4', '4n', '8n')
+    synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
+    synth.triggerAttackRelease('G4', '16n', '2n')
+    synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
+    synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
+    synth.triggerAttackRelease('E4', '2n', '0:3')
 
     this.notes = notes.sort((a, b) => {
       return a.timing - b.timing
@@ -151,7 +70,7 @@ export class SynthPlugin {
       })
 
     this.notes.forEach(note => {
-      synth.triggerAttackRelease(note.frequency, note.duration, note.time)
+      this.synth.triggerAttackRelease(note.frequency, note.duration, note.time)
     })
     // let triggerSynth(note)
     // Tone.Transport.schedule()
@@ -198,6 +117,44 @@ export class SynthPlugin {
       }
     }
   };
+}
+
+function createPianoSynth () {
+  let audioContext = new AudioContext()
+  Tone.setContext(audioContext)
+
+  return new Tone.Sampler({
+    'A0': 'A0.[mp3|ogg]',
+    'C1': 'C1.[mp3|ogg]',
+    'D#1': 'Ds1.[mp3|ogg]',
+    'F#1': 'Fs1.[mp3|ogg]',
+    'A1': 'A1.[mp3|ogg]',
+    'C2': 'C2.[mp3|ogg]',
+    'D#2': 'Ds2.[mp3|ogg]',
+    'F#2': 'Fs2.[mp3|ogg]',
+    'A2': 'A2.[mp3|ogg]',
+    'C3': 'C3.[mp3|ogg]',
+    'D#3': 'Ds3.[mp3|ogg]',
+    'F#3': 'Fs3.[mp3|ogg]',
+    'A3': 'A3.[mp3|ogg]',
+    'C4': 'C4.[mp3|ogg]',
+    'D#4': 'Ds4.[mp3|ogg]',
+    'F#4': 'Fs4.[mp3|ogg]',
+    'A4': 'A4.[mp3|ogg]',
+    'C5': 'C5.[mp3|ogg]',
+    'D#5': 'Ds5.[mp3|ogg]',
+    'F#5': 'Fs5.[mp3|ogg]',
+    'A5': 'A5.[mp3|ogg]',
+    'C6': 'C6.[mp3|ogg]',
+    'D#6': 'Ds6.[mp3|ogg]',
+    'F#6': 'Fs6.[mp3|ogg]',
+    'A6': 'A6.[mp3|ogg]',
+    'C7': 'C7.[mp3|ogg]',
+    'D#7': 'Ds7.[mp3|ogg]',
+    'F#7': 'Fs7.[mp3|ogg]',
+    'A7': 'A7.[mp3|ogg]',
+    'C8': 'C8.[mp3|ogg]'
+  }, () => { }, './audio/salamander/').toMaster()
 }
 
 // export default class SynthPlugin
