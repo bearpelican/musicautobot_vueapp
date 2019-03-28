@@ -1,7 +1,7 @@
 <template>
   <div class="predict">
     <model-list-select :list="songs"
-                    v-model="songItem"
+                    v-model="selectedSong"
                     option-value="midi"
                     :custom-text="songDisplayName"
                     placeholder="select song">
@@ -36,58 +36,6 @@
     </div>
     <img class='score' :src="scoreImageSrc" alt="">
 
-    <!-- <div id='controls'>
-      <input type='button' id='play' value='play' />
-      <input type='button' id='stop' value='stop' />
-
-      <div id='time-bars-beats'></div>
-
-      <div class='pipe'>|</div>
-      <div id='time-seconds'></div>
-    </div> -->
-
-    <div id='editor'>
-      <div id='score'>
-        <div id='pitch-lines'></div>
-        <div id='bar-lines'></div>
-        <div id='beat-lines'></div>
-        <div id='sixteenth-lines'></div>
-        <div id='notes'></div>
-        <div id='parts'></div>
-        <div id='playhead'>
-            <div id='playhead-line'></div>
-        </div>
-      </div>
-    </div>
-    <div id='controls'>
-      <input type='button' id='play' value='play' />
-      <input type='button' id='stop' value='stop' />
-
-      <div id='time-bars-beats'></div>
-
-      <div class='pipe'>|</div>
-      <div id='time-seconds'></div>
-
-      <div class='pipe'>|</div>
-      <div id='mouse-x'>0</div>
-
-      <div class='pipe'>|</div>
-      <div id='mouse-y'>0</div>
-
-      <div class='pipe'>|</div>
-      <input type='button' id='first' value='<<' />
-      <input type='button' id='prev' value='<' />
-      <div id='page-numbers'>page 0 of 0</div>
-      <input type='button' id='next' value='>' />
-      <input type='button' id='last' value='>>' />
-
-      <div class='pipe'>|</div>
-      <div>
-        <input type='range' id='scale-slider'/>
-        <label for='scale-slider' id='scale-label'>#bars 16</label>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -95,16 +43,16 @@
 
 import $backend from '../backend'
 import { ModelListSelect } from 'vue-search-select'
-import { loadArrayBuffer } from '../sequencer.js'
 import _ from 'lodash'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 
 export default {
   name: 'predict',
   data () {
     return {
-      songs: [],
-      predictItem: {},
-      songItem: {},
+      // predictItem: {},
+      // songItem: {},
       nWords: 240,
       seedLen: 60,
       scoreImageSrc: null,
@@ -119,24 +67,31 @@ export default {
   //   }
   // },
   computed: {
+    ...mapState(['songs', 'predictItem', 'songItem']),
     predictDisabled () {
       return _.isEmpty(this.songItem)
+    },
+    selectedSong: {
+      set (songItem) {
+        console.log(songItem)
+        // this.$store.commit('updateSongItem', songItem)
+        this.updateSongItem(songItem)
+      },
+      get () {
+        return this.songItem
+      }
     }
   },
   methods: {
+    ...mapActions(['fetchSongs']),
+    ...mapMutations(['updateSongItem']),
     // Searching
-    fetchSongs () {
-      $backend.axios.get('songs/all')
-        .then(response => {
-          this.songs = response.data.result
-        })
-    },
     songDisplayName (item) {
       return `${item.artist} - ${item.title} - ${item.section}`
     },
-    resetSearch () {
-      this.songItem = {}
-    },
+    // resetSearch () {
+    //   this.songItem = {}
+    // },
 
     // Display
 
@@ -148,33 +103,33 @@ export default {
           this.fetchScore(this.predictItem.pid)
           this.fetchMidi(this.predictItem.pid)
         })
-    },
-    fetchScore (pid) {
-      $backend.axios.get(`predict/${pid}/score`, { responseType: 'arraybuffer' })
-        .then(response => {
-          this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-        })
-    },
-    testScore () {
-      $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/score`, { responseType: 'arraybuffer' })
-        .then(response => {
-          this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-        })
-    },
-    testMidi () {
-      $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/midi`, { responseType: 'arraybuffer' })
-        .then(response => {
-          // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-          loadArrayBuffer(response.data)
-        })
-    },
-    fetchMidi (pid) {
-      $backend.axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
-        .then(response => {
-          // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-          loadArrayBuffer(response.data)
-        })
     }
+    // fetchScore (pid) {
+    //   $backend.axios.get(`predict/${pid}/score`, { responseType: 'arraybuffer' })
+    //     .then(response => {
+    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+    //     })
+    // },
+    // testScore () {
+    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/score`, { responseType: 'arraybuffer' })
+    //     .then(response => {
+    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+    //     })
+    // },
+    // testMidi () {
+    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/midi`, { responseType: 'arraybuffer' })
+    //     .then(response => {
+    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+    //       loadArrayBuffer(response.data)
+    //     })
+    // },
+    // fetchMidi (pid) {
+    //   $backend.axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
+    //     .then(response => {
+    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
+    //       loadArrayBuffer(response.data)
+    //     })
+    // }
   },
   mounted () {
     this.fetchSongs()

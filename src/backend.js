@@ -25,6 +25,16 @@ $axios.interceptors.response.use(function (response) {
 export default {
   axios: $axios,
 
+  // fetchResource () {
+  //   return $axios.get(`resource/xxx`)
+  //     .then(response => response.data)
+  // },
+
+  // fetchSecureResource () {
+  //   return $axios.get(`secure-resource/zzz`)
+  //     .then(response => response.data)
+  // },
+
   fetchSongs () {
     return $axios.get('songs/all')
       .then(response => response.data.result)
@@ -36,8 +46,8 @@ export default {
   },
 
   // Predict
-  predict () {
-    $axios.post('predict', { np_file: this.songItem.numpy, n_words: this.nWords, seed_len: this.seedLen })
+  predict (file, nWords, seedLen) {
+    $axios.post('predict', { np_file: file, n_words: nWords, seed_len: seedLen })
       .then(response => response.data.result)
   },
   testScore () {
@@ -48,16 +58,6 @@ export default {
   },
   fetchMidi (pid) {
     $axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
-      .then(response => response.data)
-  },
-
-  fetchResource () {
-    return $axios.get(`resource/xxx`)
-      .then(response => response.data)
-  },
-
-  fetchSecureResource () {
-    return $axios.get(`secure-resource/zzz`)
       .then(response => response.data)
   }
 }
