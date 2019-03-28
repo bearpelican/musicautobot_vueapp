@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import VueLodash from 'vue-lodash'
 
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -19,8 +20,8 @@ import 'vue-material/dist/vue-material.css'
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
-
 Vue.use(VueMaterial)
+Vue.use(VueLodash, {})
 
 new Vue({
   router,
