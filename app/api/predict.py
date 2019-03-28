@@ -7,7 +7,7 @@ from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
 data_dir = 'data/midi/v9/'
-source_dir = 'midi_encode/np/shortdur/'
+source_dir = 'midi_encode/np/shortdur'
 
 file_path = Path(__file__).parent
 path = file_path/data_dir/source_dir
@@ -54,31 +54,54 @@ def song_search():
     }
     return jsonify(result)
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict/file', methods=['POST'])
+def predict_file():
     args = request.json
     np_file = args['np_file']
     args['np_file'] = file_path/data_dir/np_file
-    pred, seed, full = generate_predictions(learn, **args)
+    pred, seed, full = predict_from_file(learn, **args)
     pid = save_preds(pred, seed, full, out_path)
     bpm = htlist[np_file]['ht_bpm']
-    midi, score = save_comps(out_path, pid, bpm=bpm)
-    
-    res = {
-        'midi': midi.name,
-        'score': score.name,
-        'pid': pid
-    }
-    result = { 'result': res }
+    midi, score = save_comps(out_path, pid, nptype='full', bpm=bpm)
+
+    result = { 'result': pid }
     return jsonify(result)
 
-@app.route("/predict/<path:pid>/score/")
-def pred_score(pid):
-    return send_from_directory(out_path, f'{pid}/pred-1.png', mimetype='image/png')
+@app.route('/predict/midi', methods=['POST'])
+def predict_midi():
+    args = request.form.to_dict()
+    print(args)
+    pred, seed, full = predict_from_midi(learn, **args)
+    pid = save_preds(pred, seed, full, out_path)
+    bpm = htlist[np_file]['ht_bpm']
+    midi, score = save_comps(out_path, pid, nptype='full', bpm=bpm)
+    
+    result = { 'result': pid }
+    return jsonify(result)
 
-@app.route("/predict/<path:pid>/midi/")
-def pred_midi(pid):
-#     path = out_path/pid/'pred.mid'
-#     return send_file(path, mimetype='audio/midi')
+@app.route('/midi/song/<path:sid>')
+def get_song_midi(sid):
+    return send_from_directory(file_path/data_dir, htlist[sid]['midi'], mimetype='audio/midi')
+
+@app.route('/midi/pred/<path:pid>')
+def get_pred_midi(pid):
     return send_from_directory(out_path, f'{pid}/pred.mid', mimetype='audio/midi')
 
+@app.route('/score/pred/<path:pid>/')
+def get_pred_score(pid):
+    return send_from_directory(out_path, f'{pid}/pred-1.png', mimetype='image/png')
+
+@app.route('/score/song/<path:sid>/')
+def get_song_score(sid):
+    score_path = out_path/'song/scores'
+    out_file = (score_path/sid).with_suffix('.xml')
+    out_file.mkdir(parents=True, exist_ok=True)
+    if not out_file.exists():
+        midi_file = file_path/data_dir/htlist[sid]['midi']
+        stream = file2stream(midi_file) # 1.
+        stream.write('musicxml.png', out_file)
+    return send_from_directory(out_file.parent, out_file.name, mimetype='image/png')
+
+@app.route('/score/midi/')
+def get_midi_score(midi):
+    pass
