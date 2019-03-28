@@ -6,9 +6,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { timingToPosition, positionToTiming } from '@/lib/timing'
+import { timingToPosition, positionToTiming, keyNumberToOffset } from '@/lib/positioning'
 import { keyWidth } from '@/lib/config'
 import validateNoteDetails from '@/lib/validateNoteDetails'
+// import { emptyStatement } from 'babel-types'
 
 export default {
   props: {
@@ -39,7 +40,7 @@ export default {
     }),
     ...mapState(['isEditingScore']),
     bottom () {
-      return `${(this.keyNumber - 1) * keyWidth}px`
+      return `${keyNumberToOffset(this.keyNumber)}px`
     },
     left () {
       return `${timingToPosition(this.timing)}px`
@@ -81,6 +82,7 @@ export default {
       let nextTiming = this.timing
       let nextLength = this.length
       let nextKeyNumber = this.keyNumber
+      // console.log('Event:', event)
       switch (this.state) {
         case 'editing-end-time': {
           nextLength = positionToTiming(
@@ -94,8 +96,11 @@ export default {
             event.clientX - 100 - this.movingOffsetX + this.getScrollLeft(),
             this.minimumUnit
           )
+          const offset = Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
+          console.log('Moving:', offset)
           nextKeyNumber = this.storeKeyNumber +
             Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
+          console.log('Next key number:', nextKeyNumber)
           break
         }
         case 'editing-start-time': {

@@ -1,5 +1,5 @@
 import Midi from '@tonejs/midi'
-import { secondsToTiming } from '@/lib/timing'
+import { secondsToTiming } from '@/lib/positioning'
 import _ from 'lodash'
 
 export default async function midiToNotes (midiFile) {

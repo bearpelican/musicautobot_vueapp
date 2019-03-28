@@ -3,7 +3,7 @@
     .inner(:style="{ width }")
       score-row(
         v-for="(key, index) in keys",
-        :key="key.number + '-key'",
+        :key="index + '-key'",
         :keyNumber="key.number",
         :keyType="key.type"
       )
