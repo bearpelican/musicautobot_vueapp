@@ -46,8 +46,21 @@ export default {
   },
 
   // Predict
-  predict (file, nWords, seedLen) {
+  predictFile (file, nWords, seedLen) {
     $axios.post('predict', { np_file: file, n_words: nWords, seed_len: seedLen })
+      .then(response => response.data.result)
+  },
+  predictMidi (midi, nWords, seedLen) {
+    const formData = new FormData()
+    formData.append('midi', midi)
+    formData.append('n_words', nWords)
+    formData.append('seed_len', seedLen)
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    $axios.post('predict', formData, config)
       .then(response => response.data.result)
   },
   testScore () {
@@ -58,6 +71,14 @@ export default {
   },
   fetchMidi (pid) {
     $axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
+      .then(response => response.data)
+  },
+  fetchPredMidi (pid) {
+    $axios.get(`midi/pred/${pid}`, { responseType: 'arraybuffer' })
+      .then(response => response.data)
+  },
+  fetchSongMidi (sid) {
+    $axios.get(`midi/song/${sid}`, { responseType: 'arraybuffer' })
       .then(response => response.data)
   }
 }
