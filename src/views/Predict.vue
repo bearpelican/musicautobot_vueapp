@@ -6,18 +6,27 @@
                     :custom-text="songDisplayName"
                     placeholder="select song">
     </model-list-select>
-    <song-meta></song-meta>
+    <div v-if="!this._.isEmpty(this.songItem) || this.debug">
+      <song-meta></song-meta>
+      <predict-controls></predict-controls>
+    </div>
 
-    <img class='score' :src="scoreImageSrc" alt="">
+    <div v-if="!this._.isEmpty(this.midiSeq) || this.debug">
+      <hr />
+      <sequencer></sequencer>
+    </div>
+
+    <!-- <img class='score' :src="scoreImageSrc" alt=""> -->
 
   </div>
 </template>
 
 <script>
 
-import $backend from '@/backend'
 import { ModelListSelect } from 'vue-search-select'
 import SongMeta from '@/components/vuepred/SongMeta'
+import PredictControls from '@/components/vuepred/PredictControls'
+import Sequencer from '@/components/Sequencer'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 
@@ -25,13 +34,10 @@ export default {
   name: 'predict',
   data () {
     return {
-      // predictItem: {},
-      // songItem: {},
-      nWords: 240,
-      seedLen: 60,
       scoreImageSrc: null,
       error: '',
-      midiSong: null
+      midiSong: null,
+      debug: true
     }
   },
   // watch: {
@@ -41,7 +47,7 @@ export default {
   //   }
   // },
   computed: {
-    ...mapState(['songs', 'predictItem', 'songItem']),
+    ...mapState(['songs', 'pID', 'songItem', 'midiSeq']),
     predictDisabled () {
       return this._.isEmpty(this.songItem)
     },
@@ -65,45 +71,7 @@ export default {
     },
     resetSearch () {
       this.selectedSong = {}
-    },
-
-    // Display
-
-    // Predict
-    predict () {
-      $backend.axios.post('predict', { np_file: this.songItem.numpy, n_words: this.nWords, seed_len: this.seedLen })
-        .then(response => {
-          this.predictItem = response.data.result
-          this.fetchScore(this.predictItem.pid)
-          this.fetchMidi(this.predictItem.pid)
-        })
     }
-    // fetchScore (pid) {
-    //   $backend.axios.get(`predict/${pid}/score`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //     })
-    // },
-    // testScore () {
-    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/score`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //     })
-    // },
-    // testMidi () {
-    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/midi`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //       loadArrayBuffer(response.data)
-    //     })
-    // },
-    // fetchMidi (pid) {
-    //   $backend.axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //       loadArrayBuffer(response.data)
-    //     })
-    // }
   },
   mounted () {
     this.fetchSongs()
@@ -113,18 +81,15 @@ export default {
   },
   components: {
     ModelListSelect,
-    SongMeta
+    SongMeta,
+    PredictControls,
+    Sequencer
   }
 }
 
 </script>
 
 <style lang="scss">
-
-// .active-purple-2 input[type=text]:focus:not([readonly]) {
-//     border-bottom: 1px solid #ce93d8;
-//     box-shadow: 0 1px 0 0 #ce93d8;
-// }
 
 .score {
   width: 50%;
