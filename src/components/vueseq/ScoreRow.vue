@@ -5,7 +5,7 @@
 <script>
 import { positionToTiming } from '@/lib/positioning'
 import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapActions } = createNamespacedHelpers('sequence')
+const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
   props: {

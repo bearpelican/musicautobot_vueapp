@@ -10,7 +10,7 @@ import { keyWidth } from '@/lib/config'
 import validateNoteDetails from '@/lib/validateNoteDetails'
 // import { emptyStatement } from 'babel-types'
 import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapActions } = createNamespacedHelpers('sequence')
+const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
   props: {
