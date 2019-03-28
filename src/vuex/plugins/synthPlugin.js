@@ -1,5 +1,5 @@
 import getFrequency from '@/lib/frequency'
-import { timingToSeconds } from '@/lib/timing'
+import { timingToSeconds } from '@/lib/positioning'
 import Tone from 'tone'
 
 export class SynthPlugin {
@@ -45,13 +45,13 @@ export class SynthPlugin {
     this.synth.stop()
   }
   play (notes, bpm) {
-    let synth = this.synth
-    synth.triggerAttackRelease('C4', '4n', '8n')
-    synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
-    synth.triggerAttackRelease('G4', '16n', '2n')
-    synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
-    synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
-    synth.triggerAttackRelease('E4', '2n', '0:3')
+    // let synth = this.synth
+    // synth.triggerAttackRelease('C4', '4n', '8n')
+    // synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
+    // synth.triggerAttackRelease('G4', '16n', '2n')
+    // synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
+    // synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
+    // synth.triggerAttackRelease('E4', '2n', '0:3')
 
     this.notes = notes.sort((a, b) => {
       return a.timing - b.timing

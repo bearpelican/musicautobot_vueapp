@@ -1,3 +1,5 @@
+import { startOctave, endOctave } from '@/lib/config'
+
 export const octave = {
   C: 'white',
   'C#': 'black',
@@ -15,7 +17,7 @@ export const octave = {
 
 export function generateOctaves () {
   const octaves = []
-  for (let i = 3; i < 8; i++) {
+  for (let i = startOctave; i < endOctave; i++) {
     octaves.push(...Object.keys(octave).map(pitch => {
       return pitch + i
     }))
@@ -25,17 +27,21 @@ export function generateOctaves () {
 
 export const allKeys = [
   // 'A0', 'A#0', 'B0',
-  ...generateOctaves()//,
-//  "C8"
+  ...generateOctaves()
 ]
 
 export function getKeyNumber (key) {
-  const index = allKeys.indexOf(key)
-  console.log('Getting keynymber', key, index)
-  if (index === -1) {
-    throw new Error(`The key (${key}) was not included.`)
-  }
-  return index + 1
+  const keyOctave = parseInt(key.charAt(key.length - 1))
+  const classidx = Object.keys(octave).indexOf(key.substring(0, key.length - 1))
+  const midiNumber = (keyOctave + 1) * 12 + classidx
+  // console.log('Key number:', key, midiNumber, classidx, keyOctave)
+  return midiNumber
+  // const index = allKeys.indexOf(key)
+  // console.log('Getting keynymber', key, index)
+  // if (index === -1) {
+  //   throw new Error(`The key (${key}) was not included.`)
+  // }
+  // return index + 1
 }
 
 export function getTypeOfKey (key) {
@@ -44,6 +50,7 @@ export function getTypeOfKey (key) {
 }
 
 export function getKey (keyNumber) {
+  console.log('Trying to get key:', keyNumber)
   const key = allKeys[keyNumber - 1]
   if (!key) {
     throw new Error(`The key of (${keyNumber}) was not found.`)

@@ -4,7 +4,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import { positionToTiming } from '@/lib/timing'
+import { positionToTiming } from '@/lib/positioning'
 
 export default {
   props: {
