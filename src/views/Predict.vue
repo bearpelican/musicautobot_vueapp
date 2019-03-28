@@ -6,6 +6,7 @@
                     :custom-text="songDisplayName"
                     placeholder="select song">
     </model-list-select>
+    <song-meta></song-meta>
 
     <img class='score' :src="scoreImageSrc" alt="">
 
@@ -14,8 +15,9 @@
 
 <script>
 
-import $backend from '../backend'
+import $backend from '@/backend'
 import { ModelListSelect } from 'vue-search-select'
+import SongMeta from '@/components/vuepred/SongMeta'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 
@@ -110,7 +112,8 @@ export default {
     // this.scoreImageSrc = require("@/assets/jtech-logo.png")
   },
   components: {
-    ModelListSelect
+    ModelListSelect,
+    SongMeta
   }
 }
 

@@ -62,7 +62,7 @@ export const mutations = {
     state.appState = 'editing'
   },
   async loadMidi (state) {
-    let { notes, bpm } = await midiToNotes(null)
+    let { notes, bpm } = await midiToNotes('./audio/sample/chorus_key_cmajor.mid')
     state.notes = notes
     state.bpm = bpm
   }

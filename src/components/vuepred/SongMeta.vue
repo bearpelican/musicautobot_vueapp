@@ -22,101 +22,29 @@
         </tr>
         </tbody>
       </table>
-      Number steps:<input v-model.number='nWords' type='number'>
-      Seed Length:<input v-model.number='seedLen' type='number'>
-      <button v-on:click='predict' :disabled='predictDisabled'>Predict</button>
     </div>
 </template>
 
 <script>
 
-import $backend from '../backend'
-import { ModelListSelect } from 'vue-search-select'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
+const { mapState } = createNamespacedHelpers('predict')
 
 export default {
-  name: 'predict',
+  name: 'song-meta',
   data () {
     return {
-      nWords: 240,
-      seedLen: 60,
       error: ''
     }
   },
   computed: {
-    ...mapState(['songItem']),
-    predictDisabled () {
-      return this._.isEmpty(this.songItem)
-    },
-    selectedSong: {
-      set (songItem) {
-        console.log(songItem)
-        // this.$store.commit('updateSongItem', songItem)
-        this.updateSongItem(songItem)
-      },
-      get () {
-        return this.songItem
-      }
-    }
+    ...mapState(['songItem'])
   },
   methods: {
-    ...mapActions(['fetchSongs']),
-    ...mapMutations(['updateSongItem']),
-    // Searching
-    songDisplayName (item) {
-      return `${item.artist} - ${item.title} - ${item.section}`
-    },
-    resetSearch () {
-      this.selectedSong = {}
-    },
-
-    // Display
-
-    // Predict
-    predict () {
-      $backend.axios.post('predict', { np_file: this.songItem.numpy, n_words: this.nWords, seed_len: this.seedLen })
-        .then(response => {
-          this.predictItem = response.data.result
-          this.fetchScore(this.predictItem.pid)
-          this.fetchMidi(this.predictItem.pid)
-        })
-    }
-    // fetchScore (pid) {
-    //   $backend.axios.get(`predict/${pid}/score`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //     })
-    // },
-    // testScore () {
-    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/score`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //     })
-    // },
-    // testMidi () {
-    //   $backend.axios.get(`predict/1de8021e-941b-4047-a881-223103266eba/midi`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //       loadArrayBuffer(response.data)
-    //     })
-    // },
-    // fetchMidi (pid) {
-    //   $backend.axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
-    //     .then(response => {
-    //       // this.scoreImageSrc = 'data:image/png;base64,' + Buffer.from(response.data, 'binary').toString('base64')
-    //       loadArrayBuffer(response.data)
-    //     })
-    // }
   },
   mounted () {
-    this.fetchSongs()
-    // this.testScore()
-    // this.testMidi()
-    // this.scoreImageSrc = require("@/assets/jtech-logo.png")
   },
   components: {
-    ModelListSelect
   }
 }
 
