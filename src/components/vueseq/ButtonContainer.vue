@@ -4,16 +4,19 @@
       md-icon list
     note-list
     play-button
+    load-button
 </template>
 
 <script>
 import NoteList from '@/components/vueseq/NoteList'
 import PlayButton from '@/components/vueseq/PlayButton'
+import LoadButton from '@/components/vueseq/LoadButton'
 
 export default {
   components: {
     NoteList,
-    PlayButton
+    PlayButton,
+    LoadButton
   }
 }
 </script>

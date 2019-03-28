@@ -28,7 +28,8 @@ export default {
       window.addEventListener('mouseup', this.end)
       this.addNote({
         key: this.keyNumber,
-        timing: positionToTiming(event.offsetX, this.currentNote.length)
+        timing: positionToTiming(event.offsetX, this.currentNote.length),
+        length: this.currentNote.length
       })
     },
     end () {

@@ -1,9 +1,9 @@
 
 {
-  "name": "Flask VueJs Template",
+  "name": "Midi Generator",
   "description": "",
-  "repository": "https://github.com/gtalarico/flask-vuejs-template",
-  "logo": "https://github.com/gtalarico/flask-vuejs-template/raw/master/docs/project-logo.png",
+  "repository": "https://github.com/bearpelican/vue_midi_generator",
+  "logo": "https://static1.squarespace.com/static/5b7ec8e536099bcb6fd1b54f/t/5b989a2bc2241bdafc1f5a39/1536806734803/?format=50w",
   "keywords": ["flask", "vue"],
   "env": {
     "FLASK_ENV": {
