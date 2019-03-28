@@ -1,42 +1,9 @@
-# Flask-VueJs-Template 🌶️✌
+# Web app for midi-generator 🌶️✌
 
-[![Build Status](https://travis-ci.org/gtalarico/flask-vuejs-template.svg?branch=master)](https://travis-ci.org/gtalarico/flask-vuejs-template)
-[![codecov](https://codecov.io/gh/gtalarico/flask-vuejs-template/branch/master/graph/badge.svg)](https://codecov.io/gh/gtalarico/flask-vuejs-template)
+Python training code here: https://github.com/bearpelican/midi_generator
 
-_Flask + Vue.js Web Application Template_
-
-![Vue Logo](/docs/vue-logo.png "Vue Logo") ![Flask Logo](/docs/flask-logo.png "Flask Logo")
-
-## Features
-* Minimal Flask 1.0 App
-* [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
-* Starter [PyTest](http://pytest.org) test suite
-* [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md) + yarn
-* [Vuex](https://vuex.vuejs.org/)
-* [Vue Router](https://router.vuejs.org/)
-* [Axios](https://vuex.vuejs.org/) for backend communication
-* Sample Vue [Filters](https://vuejs.org/v2/guide/filters.html)
-* Heroku Configuration with one-click deployment + Gunicorn
-
-## Demo
+## Original Template
 [Live Demo](https://flask-vuejs-template.herokuapp.com/#/api)
-
-## Alternatives
-
-If this setup is not what you are looking for, here are some similar projects:
-
-* [oleg-agapov/flask-vue-spa](https://github.com/oleg-agapov/flask-vue-spa)
-* [testdrivenio/flask-vue-crud](https://github.com/testdrivenio/flask-vue-crud)
-
-#### Old Template
-
-This template was updated to use a flatter folder structure and use yarn instead of npm.
-You can now run `yarn serve` as well as other yarn commands from the template root directory.
-The old template will be kept in the [npm-template branch](https://github.com/gtalarico/flask-vuejs-template/tree/npm-template) but will not be maintained. 
-
-#### Django
-
-Prefer Django? Checkout the [gtalarico/django-vue-template](https://github.com/gtalarico/django-vue-template)
 
 ## Template Structure
 

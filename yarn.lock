@@ -8615,6 +8615,13 @@ vue-loader@^15.6.4:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-lodash@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-lodash/-/vue-lodash-2.0.2.tgz#08019cc1969ecdf3346017865f86cf4dade0618c"
+  integrity sha512-qC0A6mkF5yUt9Wy2zMa8qGpt+/JTjtlJ+ch1UKfr3eWscTrlK0FlD5GhfPaU/21ZOlZcRXsFriqf/ddchYA6CQ==
+  dependencies:
+    lodash "^4.17.11"
+
 vue-material@^1.0.0-beta-10.2:
   version "1.0.0-beta-10.2"
   resolved "https://registry.yarnpkg.com/vue-material/-/vue-material-1.0.0-beta-10.2.tgz#c3effea97e0c5a0c696b0051d5ef9c6e6cf2a5ed"

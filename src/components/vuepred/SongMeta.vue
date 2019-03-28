@@ -1,15 +1,31 @@
 <template>
-  <div class="predict">
-    <model-list-select :list="songs"
-                    v-model="selectedSong"
-                    option-value="midi"
-                    :custom-text="songDisplayName"
-                    placeholder="select song">
-    </model-list-select>
-
-    <img class='score' :src="scoreImageSrc" alt="">
-
-  </div>
+    <div class="flex-result">
+      <table class="ui celled table">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Section</th>
+          <th>BPM</th>
+          <th>Genre</th>
+          <th>Seconds</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{songItem.title}}</td>
+          <td>{{songItem.artist}}</td>
+          <td>{{songItem.section}}</td>
+          <td>{{songItem.ht_bpm}}</td>
+          <td>{{songItem.genres}}</td>
+          <td>{{songItem.seconds}}</td>
+        </tr>
+        </tbody>
+      </table>
+      Number steps:<input v-model.number='nWords' type='number'>
+      Seed Length:<input v-model.number='seedLen' type='number'>
+      <button v-on:click='predict' :disabled='predictDisabled'>Predict</button>
+    </div>
 </template>
 
 <script>
@@ -23,23 +39,13 @@ export default {
   name: 'predict',
   data () {
     return {
-      // predictItem: {},
-      // songItem: {},
       nWords: 240,
       seedLen: 60,
-      scoreImageSrc: null,
-      error: '',
-      midiSong: null
+      error: ''
     }
   },
-  // watch: {
-  //   predictItem: (val) => {
-  //     this.fetchScore(val.pid)
-  //     // this.fetchMidi(val.pid)
-  //   }
-  // },
   computed: {
-    ...mapState(['songs', 'predictItem', 'songItem']),
+    ...mapState(['songItem']),
     predictDisabled () {
       return this._.isEmpty(this.songItem)
     },
@@ -115,17 +121,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-
-// .active-purple-2 input[type=text]:focus:not([readonly]) {
-//     border-bottom: 1px solid #ce93d8;
-//     box-shadow: 0 1px 0 0 #ce93d8;
-// }
-
-.score {
-  width: 50%;
-  background-color: white;
-}
-
-</style>
