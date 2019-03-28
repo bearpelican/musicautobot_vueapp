@@ -19,7 +19,7 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.play(state.notes, state.bpm)
+          this.play(state.sequence.notes, state.sequence.bpm)
           break
         }
         case 'stop': {

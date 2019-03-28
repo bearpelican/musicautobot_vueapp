@@ -10,9 +10,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import NoteListItem from '@/components/vueseq/NoteListItem'
 import notes from '@/lib/getNotes'
+const { mapState } = createNamespacedHelpers('sequence')
 
 export default {
   components: {

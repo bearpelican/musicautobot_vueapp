@@ -23,12 +23,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import ScoreRow from '@/components/vueseq/ScoreRow'
 import Note from '@/components/vueseq/Note'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   components: {

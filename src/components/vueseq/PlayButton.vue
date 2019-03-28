@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   computed: {

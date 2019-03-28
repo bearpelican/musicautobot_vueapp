@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
 import { positionToTiming } from '@/lib/positioning'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   props: {

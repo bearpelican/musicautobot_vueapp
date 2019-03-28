@@ -11,9 +11,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import Key from '@/components/vueseq/Key'
 import { allKeys, getTypeOfKey } from '@/lib/getOctaves'
+const { mapState } = createNamespacedHelpers('sequence')
 
 export default {
   components: {
