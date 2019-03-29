@@ -56,6 +56,9 @@ export default {
         console.log(songItem)
         // this.$store.commit('updateSongItem', songItem)
         this.updateSongItem(songItem)
+        // (AS) TODO: figure out why we have to pass songItem to fetchSongMidi. Store should already be updated by then
+        console.log('Fetching song midi')
+        this.fetchSongMidi(songItem)
       },
       get () {
         return this.songItem
@@ -63,7 +66,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchSongs']),
+    ...mapActions(['fetchSongs', 'fetchSongMidi']),
     ...mapMutations(['updateSongItem']),
     // Searching
     songDisplayName (item) {

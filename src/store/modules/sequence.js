@@ -2,7 +2,7 @@
 // import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
 import createSynthPlugin from '@/store/plugins/synthPlugin'
-import { midiToNotes } from '@/lib/convert'
+import { midiFileToNotes, midiToNotes } from '@/lib/convert'
 
 // Vue.use(Vuex)
 
@@ -57,19 +57,28 @@ export const mutations = {
   play (state) {
     state.appState = 'playing'
   },
-  stop () {},
+  stop () { },
   finishMusic () {
     state.appState = 'editing'
   },
-  async loadMidi (state) {
-    let { notes, bpm } = await midiToNotes('./audio/sample/chorus_key_cmajor.mid')
+  async loadMidiFile (state) {
+    let { notes, bpm } = await midiFileToNotes('./audio/sample/chorus_key_cmajor.mid')
+    state.notes = notes
+    state.bpm = bpm
+  },
+  async loadMidi (state, midi) {
+    let { notes, bpm } = await midiToNotes(midi)
     state.notes = notes
     state.bpm = bpm
   }
 }
 
 export function generateSimpleActions (mutations) {
-  const actions = {}
+  const actions = {
+    // loadMidi (midi) {
+
+    // }
+  }
   mutations.forEach(mutation => {
     actions[mutation] = ({ commit }, payload) => {
       if (payload === 0 || payload) {
