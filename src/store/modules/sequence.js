@@ -1,7 +1,6 @@
 // import Vue from 'vue'
 // import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
-import createSynthPlugin from '@/store/plugins/synthPlugin'
 import { midiFileToNotes, midiToNotes } from '@/lib/convert'
 
 // Vue.use(Vuex)
@@ -121,6 +120,5 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions,
-  plugins: [createSynthPlugin]
+  actions
 }

@@ -11,10 +11,10 @@
       <predict-controls></predict-controls>
     </div>
 
-    <div v-if="!this._.isEmpty(this.midiSeq) || this.debug">
+    <!-- <div v-if="!this._.isEmpty(this.midiSeq) || this.debug">
       <hr />
       <sequencer></sequencer>
-    </div>
+    </div> -->
 
     <!-- <img class='score' :src="scoreImageSrc" alt=""> -->
 
@@ -26,7 +26,7 @@
 import { ModelListSelect } from 'vue-search-select'
 import SongMeta from '@/components/vuepred/SongMeta'
 import PredictControls from '@/components/vuepred/PredictControls'
-import Sequencer from '@/components/Sequencer'
+// import Sequencer from '@/components/Sequencer'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 
@@ -85,8 +85,8 @@ export default {
   components: {
     ModelListSelect,
     SongMeta,
-    PredictControls,
-    Sequencer
+    PredictControls
+    // Sequencer
   }
 }
 
