@@ -3,9 +3,13 @@ import { secondsToTiming, timingToSeconds } from '@/lib/positioning'
 import _ from 'lodash'
 // import Tone from 'tone'
 
-export async function midiToNotes (midiFile) {
+export async function midiFileToNotes (midiFile) {
   // load a midi file in the browser
   const midi = await Midi.fromUrl(midiFile)
+  return this.midiToNotes(midi)
+}
+
+export async function midiToNotes (midi) {
   // the file name decoded from the first track
   // const name = midi.name
   // get the tracks
@@ -36,6 +40,10 @@ export async function midiToNotes (midiFile) {
     // track.instrument.name
   })
   return { notes, bpm }
+}
+
+export function bufferToMidi (arraybuffer) {
+  return new Midi(arraybuffer)
 }
 
 export function notesToToneNotes (notes, bpm) {

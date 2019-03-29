@@ -17,9 +17,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loadMidi']),
+    ...mapActions(['loadMidiFile']),
     toggle () {
-      this.loadMidi()
+      this.loadMidiFile()
     }
   }
 }

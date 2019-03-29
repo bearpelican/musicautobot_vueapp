@@ -1,4 +1,5 @@
 import $backend from '@/backend'
+import { bufferToMidi } from '@/lib/convert'
 
 export const state = {
   songs: [],
@@ -32,6 +33,9 @@ export const mutations = {
   },
   updateMidiSong (state, midiSong) {
     state.midiSong = midiSong
+  },
+  updateMidiSeq (state, midiSeq) {
+    state.midiSeq = midiSeq
   }
 }
 
@@ -51,9 +55,21 @@ export const actions = {
       commit('updateScoreImage', result)
     })
   },
-  fetchMidi ({ commit }) {
-    $backend.fetchMidi(this.pID).then(result => {
-      commit('updateMidiSong', result)
+  // updateSequenceStore ({ dispatch }, midi) {
+  //   dispatch('sequence/loadMidi', midi, { root: true })
+  // },
+  fetchPredMidi ({ commit, dispatch }) {
+    $backend.fetchPredMidi(this.pID).then(result => {
+      const midi = bufferToMidi(result)
+      commit('updateMidiSeq', midi)
+      dispatch('sequence/loadMidi', midi, { root: true })
+    })
+  },
+  fetchSongMidi ({ commit, dispatch }, songItem) {
+    $backend.fetchSongMidi(songItem.sid).then(result => {
+      const midi = bufferToMidi(result)
+      commit('updateMidiSeq', midi)
+      dispatch('sequence/loadMidi', midi, { root: true })
     })
   }
 }

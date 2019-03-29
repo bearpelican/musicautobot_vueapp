@@ -31,6 +31,7 @@ export class SynthPlugin {
   stop () {
     this.synth.stop()
     this.notes = []
+    print('Stopped called')
     for (let timeoutId of this.timeoutIds) {
       clearTimeout(timeoutId)
     }
