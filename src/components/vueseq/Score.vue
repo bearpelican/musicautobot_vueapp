@@ -20,7 +20,7 @@
         :key="index + '-beat'",
         :index="index"
       )
-      beat-line(
+      progress-line(
         :key=progress-beat
         :index=0
       )
@@ -30,7 +30,7 @@
 import ScoreRow from '@/components/vueseq/ScoreRow'
 import Note from '@/components/vueseq/Note'
 import ScoreLine from '@/components/vueseq/ScoreLine'
-import BeatLine from '@/components/vueseq/BeatLine'
+import ProgressLine from '@/components/vueseq/ProgressLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -41,7 +41,7 @@ export default {
     ScoreRow,
     Note,
     ScoreLine,
-    BeatLine
+    ProgressLine
   },
   data () {
     return {

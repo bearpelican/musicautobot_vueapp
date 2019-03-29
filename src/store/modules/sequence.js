@@ -13,7 +13,8 @@ export const state = {
   previewingKeyNumber: null,
   appState: 'editing',
   bpm: 120,
-  progressTime: 0
+  progressTime: 0,
+  notesPlaying: []
 }
 
 export const mutations = {
@@ -66,6 +67,9 @@ export const mutations = {
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
   },
+  updateNotesPlaying (state, notesPlaying) {
+    state.notesPlaying = notesPlaying
+  },
   async loadMidiFile (state, file = './audio/sample/chorus_key_cmajor.mid') {
     let { notes, bpm } = await midiFileToNotes(file)
     state.notes = notes
@@ -110,7 +114,8 @@ export const actions = {
     'finishMusic',
     'loadMidi',
     'loadMidiFile',
-    'updateProgressTime'
+    'updateProgressTime',
+    'updateNotesPlaying'
   ])
 }
 

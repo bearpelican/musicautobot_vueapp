@@ -1,4 +1,5 @@
 import { notesToToneNotes } from '@/lib/convert'
+import { secondsToTiming } from '@/lib/positioning'
 import Tone from 'tone'
 
 export class SynthPlugin {
@@ -12,6 +13,7 @@ export class SynthPlugin {
     this.currentPreview = null
     this.syncedEvents = []
     this.progress = null
+    this.stopTimeout = null
 
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
@@ -46,6 +48,10 @@ export class SynthPlugin {
     if (this.progress != null) {
       clearInterval(this.progress)
       this.progress = null
+    }
+    if (this.stopTimeout != null) {
+      clearTimeout(this.stopTimeout)
+      this.stopTimeout = null
     }
     Tone.Transport.stop()
     Tone.Transport.cancel(0)
@@ -89,28 +95,42 @@ export class SynthPlugin {
   //   // })
   // }
   playTransport (notes, bpm) {
+    const delay = 2
+
     this.reset()
 
     Tone.Transport.bpm.value = bpm
     this.notes = notesToToneNotes(notes, bpm)
 
-    this.notes.forEach(note => {
+    let endTime = 0
+    let currentTime = 0
+    let notesPlaying = []
+    this.notes.forEach((note, index) => {
       Tone.Transport.schedule((time) => {
+        if (note.time > currentTime + 0.02) {
+          console.log(note.time, currentTime, note.time - currentTime)
+          notesPlaying = []
+          currentTime = note.time
+        } else {
+          notesPlaying.push(note.name)
+          this.store.commit('sequence/updateNotesPlaying', notesPlaying)
+          console.log('Notes playing:', notesPlaying)
+        }
         this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration)
       }, note.time)
+      endTime = Math.max(endTime, note.duration + note.time)
     })
     Tone.Transport.start()
-
     this.progress = setInterval(() => {
-      console.log(Tone.Transport.position)
-      console.log(Tone.Transport.seconds)
-      let comps = Tone.Transport.position.split(':').map(parseFloat)
-      console.log(comps)
-      const time = comps[0] * 16 + comps[1] * 4 + comps[2]
-      console.log('Computed time:', time)
+      // const position = tonePositionToTiming(Tone.Transport.position)
+      const time = secondsToTiming(Tone.Transport.seconds, bpm) - 1
+      // console.log('Seconds:', time)
+      this.store.commit('sequence/updateProgressTime', time)
+    }, 5)
 
-      this.store.commit('sequence/finishMusic', time)
-    }, 500)
+    this.stopTimeout = setTimeout(() => {
+      this.stop()
+    }, (endTime + delay) * 1000)
   }
 }
 
