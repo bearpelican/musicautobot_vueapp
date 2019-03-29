@@ -13,7 +13,6 @@ import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/vueseq/ButtonContainer'
 // import "./style.css";
 import { createNamespacedHelpers } from 'vuex'
-import Tone from 'tone'
 const { mapActions } = createNamespacedHelpers('sequence')
 
 export default {
@@ -24,19 +23,10 @@ export default {
     ButtonContainer
   },
   methods: {
-    ...mapActions(['loadMidiFile']),
-    bindTone () {
-      console.log(document.querySelector('.tp'))
-      // document.querySelector(".tp").bind(Tone.Transport);
-      // document.querySelector(".tp").addEventListener("position", e => {
-      //   console.log('Position changed')
-      //   document.querySelector("#progress").style = `left: ${e.detail*100}%`;
-      // });
-    }
+    ...mapActions(['loadMidiFile'])
   },
   mounted () {
     this.loadMidiFile()
-    this.bindTone()
   }
 }
 </script>
