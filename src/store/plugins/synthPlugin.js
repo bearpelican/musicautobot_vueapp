@@ -11,6 +11,7 @@ export class SynthPlugin {
     this.part = null
     this.currentPreview = null
     this.syncedEvents = []
+    this.progress = null
 
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
@@ -38,12 +39,19 @@ export class SynthPlugin {
     })
   }
   stop () {
+    this.reset()
+    this.store.commit('sequence/finishMusic')
+  }
+  reset () {
+    if (this.progress != null) {
+      clearInterval(this.progress)
+      this.progress = null
+    }
     Tone.Transport.stop()
     Tone.Transport.cancel(0)
     // Tone.Transport.cancel(0)
     // this.synth.unsync().sync()
     this.notes = []
-    this.store.commit('sequence/finishMusic')
   }
   startPreview (keyNumber) {
     this.finishPreview()
@@ -57,6 +65,7 @@ export class SynthPlugin {
     }
   }
   play (notes, bpm) {
+    this.reset()
     this.notes = notesToToneNotes(notes, bpm)
     const now = Tone.now() + 0.5
     this.notes.forEach(note => {
@@ -80,6 +89,9 @@ export class SynthPlugin {
   //   // })
   // }
   playTransport (notes, bpm) {
+    this.reset()
+
+    Tone.Transport.bpm.value = bpm
     this.notes = notesToToneNotes(notes, bpm)
 
     this.notes.forEach(note => {
@@ -89,23 +101,16 @@ export class SynthPlugin {
     })
     Tone.Transport.start()
 
-    // bind the transport
-    this.bind()
-    // Tone.Transport.bind('position', () => {
-    //   console.log('Position changed')
-    // })
-    // Object.observe(Tone.Transport, () => {
-    // console.log('hjfkdslfjdslf')
-    // })
-    // .addEventListener('position', e => {
-    //   console.log('dsjfklsdjfkldsjfsdklfjsdklfj')
-    // })
-    // this.addEventListener('position', e)
-    // document.querySelector("tone-play-toggle").bind(Tone.Transport);
-    // document.querySelector("tone-position").bind(Tone.Transport);
-    // document.querySelector("tone-position").addEventListener("position", e => {
-    // 	document.querySelector("#progress").style = `left: ${e.detail*100}%`;
-    // });
+    this.progress = setInterval(() => {
+      console.log(Tone.Transport.position)
+      console.log(Tone.Transport.seconds)
+      let comps = Tone.Transport.position.split(':').map(parseFloat)
+      console.log(comps)
+      const time = comps[0] * 16 + comps[1] * 4 + comps[2]
+      console.log('Computed time:', time)
+
+      this.store.commit('sequence/finishMusic', time)
+    }, 500)
   }
 }
 
