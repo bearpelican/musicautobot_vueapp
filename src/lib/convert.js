@@ -1,7 +1,6 @@
 import Midi from '@tonejs/midi'
 import { secondsToTiming, timingToSeconds } from '@/lib/positioning'
 import _ from 'lodash'
-// import Tone from 'tone'
 
 export async function midiFileToNotes (midiFile) {
   // load a midi file in the browser
