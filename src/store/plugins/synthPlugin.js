@@ -78,22 +78,28 @@ export class SynthPlugin {
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
     })
   }
-  // playPart (notes, bpm) {
-  //   this.notes = notesToToneNotes(notes, bpm)
-  //   this.part = new Tone.Part((time, value) => {
-  //     // the value is an object which contains both the note and the velocity
-  //     this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
-  //   }, this.notes)
-  //   this.part.loop = true
-  //   this.part.loopEnd = 10
-  //   this.part.start(0)
-  //   this.part.start()
-  //   Tone.Transport.start(0)
-  //   Tone.Transport.start()
-  //   // this.notes.forEach(note => {
-  //   //   this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
-  //   // })
-  // }
+  playPart (notes, bpm) {
+    // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
+    // this.notes = notesToToneNotes(notes, bpm)
+    // var synth = new Tone.PolySynth(8).toMaster()
+
+    // MidiConvert.load("path/to/midi.mid", function(midi) {
+
+    //   // make sure you set the tempo before you schedule the events
+    //   Tone.Transport.bpm.value = midi.header.bpm
+
+    //   // pass in the note events from one of the tracks as the second argument to Tone.Part
+    //   var midiPart = new Tone.Part(function(time, note) {
+
+    //     //use the events to play the synth
+    //     synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+
+    //   }, midi.tracks[0].notes).start()
+
+    //   // start the transport to hear the events
+    //   Tone.Transport.start()
+    // })
+  }
   playTransport (notes, bpm) {
     const delay = 2
 

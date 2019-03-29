@@ -33,10 +33,10 @@ export default {
 #sequencer * {
   user-select: none;
   /* overflow: hidden; */
-  position: relative;
+  /* position: relative; */
 }
 section {
   width: 100%;
-  height: 100%;
+  height: 50%;
 }
 </style>

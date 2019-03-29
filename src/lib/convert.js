@@ -64,8 +64,35 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
   return toneNotes
 }
 
+export async function defaultMidiCreation () {
+  // create a new midi file
+  // create a new midi file
+  var midi = new Midi()
+  // add a track
+  const track = midi.addTrack()
+  track.channel = 1
+  track.instrument.number = 1
+  track.addNote({
+    midi: 60,
+    time: 0,
+    duration: 0.2
+  })
+    .addNote({
+      name: 'C5',
+      time: 0.3,
+      duration: 0.1
+    })
+    .addCC({
+      number: 64,
+      value: 127,
+      time: 0.2
+    })
+  return midi
+}
+
 export async function storeToMidi (state, seedLen = null) {
   // create a new midi file
+  const bpm = state.sequence.bpm
   var midi = new Midi()
   // midi.header.tempos.push({ bpm: state.sequence.bpm })
   // add a track
@@ -76,7 +103,7 @@ export async function storeToMidi (state, seedLen = null) {
   }
   console.log('Got store notes')
   console.log(storeNotes)
-  let notes = notesToToneNotes(storeNotes, state.sequence.bpm, false)
+  let notes = notesToToneNotes(storeNotes, bpm, false)
   notes.forEach(n => {
     track.addNote(n)
   })
@@ -86,6 +113,6 @@ export async function storeToMidi (state, seedLen = null) {
   console.log(notes)
   console.log(track)
   // write the output
-  return midi
+  return { midi, bpm }
   // fs.writeFileSync("output.mid", new Buffer(midi.toArray()))
 }

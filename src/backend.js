@@ -50,11 +50,15 @@ export default {
     return $axios.post('predict/file', { np_file: file, n_words: nWords, seed_len: seedLen })
       .then(response => response.data.result)
   },
-  predictMidi (midi, nWords, seedLen) {
+  predictMidi ({ midi, nWords, seedLen = null, bpm = 120 }) {
     const formData = new FormData()
-    formData.append('midi', midi)
+    const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
+    formData.append('midi', blob)
     formData.append('n_words', nWords)
-    formData.append('seed_len', seedLen)
+    formData.append('bpm', bpm)
+    if (seedLen != null) {
+      formData.append('seed_len', seedLen)
+    }
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
