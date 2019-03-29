@@ -57,12 +57,14 @@ export const mutations = {
   play (state) {
     state.appState = 'playing'
   },
-  stop () { },
+  stop (state) {
+    state.appState = 'editing'
+  },
   finishMusic () {
     state.appState = 'editing'
   },
-  async loadMidiFile (state) {
-    let { notes, bpm } = await midiFileToNotes('./audio/sample/chorus_key_cmajor.mid')
+  async loadMidiFile (state, file = './audio/sample/chorus_key_cmajor.mid') {
+    let { notes, bpm } = await midiFileToNotes(file)
     state.notes = notes
     state.bpm = bpm
   },
@@ -74,11 +76,7 @@ export const mutations = {
 }
 
 export function generateSimpleActions (mutations) {
-  const actions = {
-    // loadMidi (midi) {
-
-    // }
-  }
+  const actions = { }
   mutations.forEach(mutation => {
     actions[mutation] = ({ commit }, payload) => {
       if (payload === 0 || payload) {
@@ -107,7 +105,8 @@ export const actions = {
     'play',
     'stop',
     'finishMusic',
-    'loadMidi'
+    'loadMidi',
+    'loadMidiFile'
   ])
 }
 
