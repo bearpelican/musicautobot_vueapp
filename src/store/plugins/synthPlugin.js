@@ -112,7 +112,7 @@ export class SynthPlugin {
           notesPlaying = []
           currentTime = note.time
         } else {
-          notesPlaying.push(note.name)
+          notesPlaying.push(note.index)
           this.store.commit('sequence/updateNotesPlaying', notesPlaying)
           console.log('Notes playing:', notesPlaying)
         }

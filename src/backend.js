@@ -47,7 +47,7 @@ export default {
 
   // Predict
   predictFile (file, nWords, seedLen) {
-    return $axios.post('predict', { np_file: file, n_words: nWords, seed_len: seedLen })
+    return $axios.post('predict/file', { np_file: file, n_words: nWords, seed_len: seedLen })
       .then(response => response.data.result)
   },
   predictMidi (midi, nWords, seedLen) {
@@ -60,7 +60,7 @@ export default {
         'content-type': 'multipart/form-data'
       }
     }
-    return $axios.post('predict', formData, config)
+    return $axios.post('predict/midi', formData, config)
       .then(response => response.data.result)
   },
   testScore () {
