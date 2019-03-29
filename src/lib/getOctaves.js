@@ -38,12 +38,10 @@ export function getKeyNumber (key) {
 }
 
 export function getTypeOfKey (key) {
-  // console.log('Getting key type', key, octave[key.substring(0, key.length - 1)])
   return octave[key.substring(0, key.length - 1)]
 }
 
 export function getKey (keyNumber) {
-  console.log('Trying to get key:', keyNumber)
   const key = allKeys[keyNumber - 1]
   if (!key) {
     throw new Error(`The key of (${keyNumber}) was not found.`)

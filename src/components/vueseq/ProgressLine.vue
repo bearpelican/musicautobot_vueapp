@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:style="{ left, 'border-left-color': borderColor }")
+  div(:style="{ left }")
 </template>
 
 <script>
@@ -15,9 +15,6 @@ export default {
     ...mapState(['progressTime']),
     left () {
       return `${this.progressTime * pixelPerBeat}px`
-    },
-    borderColor () {
-      return (this.index % 4 === 0) ? 'rgb(95, 95, 95)' : '#bbdefb'
     }
   }
 }

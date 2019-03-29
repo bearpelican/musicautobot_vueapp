@@ -45,38 +45,46 @@ export function bufferToMidi (arraybuffer) {
   return new Midi(arraybuffer)
 }
 
-export function notesToToneNotes (notes, bpm) {
+export function notesToToneNotes (notes, bpm, includeIndex = true) {
   let toneNotes = notes
     .map((note, index) => {
-      console.log(index)
-      return {
-        name: index, // This may break storeToMidi.
+      const toneNote = {
         midi: note.key,
         time: timingToSeconds(note.timing, bpm),
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
       }
+      if (includeIndex) {
+        toneNote['index'] = index
+      }
+      return toneNote
     })
-    .sort((a, b) => {
-      return a.time - b.time
-    })
-    .filter(note => {
-      return note.time > 0
-    })
+    .sort((a, b) => a.time - b.time)
+    .filter(n => n.time > 0)
   return toneNotes
 }
 
-export async function storeToMidi (state) {
+export async function storeToMidi (state, seedLen = null) {
   // create a new midi file
   var midi = new Midi()
-  midi.header.tempos.push({ bpm: state.sequence.bpm })
+  // midi.header.tempos.push({ bpm: state.sequence.bpm })
   // add a track
   const track = midi.addTrack()
-  let notes = notesToToneNotes(state.sequence.notes, state.sequence.bpm)
-
-  notes.forEach(note => {
-    track.addNote(note)
+  let storeNotes = state.sequence.notes
+  if (seedLen != null) {
+    storeNotes = storeNotes.filter(n => n.timing <= seedLen)
+  }
+  console.log('Got store notes')
+  console.log(storeNotes)
+  let notes = notesToToneNotes(storeNotes, state.sequence.bpm, false)
+  notes.forEach(n => {
+    track.addNote(n)
   })
+  console.log(notes[0])
+  // track.addNote(notes[0])
+  console.log('Woohoo added all notes')
+  console.log(notes)
+  console.log(track)
   // write the output
   return midi
   // fs.writeFileSync("output.mid", new Buffer(midi.toArray()))

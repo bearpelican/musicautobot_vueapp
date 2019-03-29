@@ -1,8 +1,8 @@
 <template>
     <div class="flex-result">
-      Number steps:<input v-model.number='nSteps' type='number'>
-      Seed Length:<input v-model.number='seedLen' type='number'>
-      <button v-on:click='predict'>Predict</button>
+      Number steps:<input v-model.number='selectSteps' type='number'>
+      Seed Length:<input v-model.number='selectSeed' type='number'>
+      <button v-on:click='predictMidi'>Predict</button>
     </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSteps', 'updateSeedLen']),
-    ...mapActions(['predict'])
+    ...mapActions(['predictMidi'])
   },
   mounted () {
   },

@@ -71,6 +71,9 @@ def predict_file():
 def predict_midi():
     args = request.form.to_dict()
     print(args)
+    print(request.files)
+    print(request.form)
+    print(request.data)
     pred, seed, full = predict_from_midi(learn, **args)
     pid = save_preds(pred, seed, full, out_path)
     bpm = htlist[np_file]['ht_bpm']

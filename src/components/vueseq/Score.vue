@@ -21,8 +21,10 @@
         :index="index"
       )
       progress-line(
-        :key=progress-beat
-        :index=0
+        :key=progress-line
+      )
+      seed-line(
+        :key=seed-line
       )
 </template>
 
@@ -31,6 +33,7 @@ import ScoreRow from '@/components/vueseq/ScoreRow'
 import Note from '@/components/vueseq/Note'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
+import SeedLine from '@/components/vueseq/SeedLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -41,7 +44,8 @@ export default {
     ScoreRow,
     Note,
     ScoreLine,
-    ProgressLine
+    ProgressLine,
+    SeedLine
   },
   data () {
     return {
