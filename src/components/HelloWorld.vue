@@ -10,6 +10,11 @@
       <li>Edit the sequence if you'd like</li>
       <li>Predict!</li>
     </ol> -->
+    <!-- <h3>Example output</h3>
+    <ul>
+      <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Web App</a></li>
+      <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Training</a></li>
+    </ul> -->
     <h3>Source Code</h3>
     <ul>
       <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Web App</a></li>
@@ -25,10 +30,14 @@
     </ul>
     <h3>Acknowledgements</h3>
     <ul>
-      <li><a href="https://www.jurassictechnologies.com/" target="_blank">Jurassic Tech</a></li>
-      <li><a href="https://www.fast.ai/" target="_blank">Fast.Ai</a></li>
+      <li><a href="https://github.com/shundroid/vue-midi-sequencer/" target="_blank">shundroid</a></li>
       <li><a href="https://github.com/wayne391/Lead-Sheet-Dataset" target="_blank">wayne391</a></li>
+      <li><a href="https://www.fast.ai/" target="_blank">Fast.Ai</a></li>
       <li><a href="https://github.com/huggingface/" target="_blank">Hugging Face</a></li>
+    </ul>
+    <h3>Sponsors =)</h3>
+    <ul>
+      <li><a href="https://www.jurassictechnologies.com/" target="_blank">Jurassic Tech</a></li>
       <li><a href="https://www.southparkcommons.com/" target="_blank">South Park Commons</a></li>
       <li><a href="https://www.palapavc.com/" target="_blank">Palapa Ventures</a></li>
     </ul>

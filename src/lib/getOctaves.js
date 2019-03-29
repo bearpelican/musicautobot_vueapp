@@ -45,7 +45,7 @@ export function getKeyNumber (key) {
 }
 
 export function getTypeOfKey (key) {
-  console.log('Getting key type', key, octave[key.substring(0, key.length - 1)])
+  // console.log('Getting key type', key, octave[key.substring(0, key.length - 1)])
   return octave[key.substring(0, key.length - 1)]
 }
 

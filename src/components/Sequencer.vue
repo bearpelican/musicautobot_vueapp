@@ -10,7 +10,6 @@
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/vueseq/ButtonContainer'
-import store from '@/store'
 // import "./style.css";
 
 export default {
@@ -19,8 +18,7 @@ export default {
     Keyboard,
     Score,
     ButtonContainer
-  },
-  store
+  }
 }
 </script>
 

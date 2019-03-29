@@ -6,7 +6,7 @@ import _ from 'lodash'
 export async function midiFileToNotes (midiFile) {
   // load a midi file in the browser
   const midi = await Midi.fromUrl(midiFile)
-  return this.midiToNotes(midi)
+  return midiToNotes(midi)
 }
 
 export async function midiToNotes (midi) {

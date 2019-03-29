@@ -45,31 +45,32 @@ export class SynthPlugin {
     this.synth.stop()
   }
   play (notes, bpm) {
+    console.log('PLAYYYYY')
     this.notes = notesToToneNotes(notes, bpm)
     this.notes.forEach(note => {
       this.synth.triggerAttackRelease(note.frequency, note.duration, note.time)
     })
   }
-  next (currentSynth, index = 0) {
-    if (index < this.notes.length) {
-      const note = this.notes[index]
-      currentSynth.play(note.frequency, note.length)
-      if (index + 1 >= this.notes.length) {
-        this.timeoutIds.push(setTimeout(this.stop, note.length, currentSynth))
-        return
-      }
-      if (this.notes[index + 1].seconds === note.seconds) {
-        this.next(currentSynth, index + 1)
-      } else {
-        this.timeoutIds.push(setTimeout(
-          this.next,
-          this.notes[index + 1].seconds - note.seconds,
-          currentSynth,
-          index + 1
-        ))
-      }
-    }
-  };
+  // next (currentSynth, index = 0) {
+  //   if (index < this.notes.length) {
+  //     const note = this.notes[index]
+  //     currentSynth.play(note.frequency, note.length)
+  //     if (index + 1 >= this.notes.length) {
+  //       this.timeoutIds.push(setTimeout(this.stop, note.length, currentSynth))
+  //       return
+  //     }
+  //     if (this.notes[index + 1].seconds === note.seconds) {
+  //       this.next(currentSynth, index + 1)
+  //     } else {
+  //       this.timeoutIds.push(setTimeout(
+  //         this.next,
+  //         this.notes[index + 1].seconds - note.seconds,
+  //         currentSynth,
+  //         index + 1
+  //       ))
+  //     }
+  //   }
+  // };
 }
 
 function createPianoSynth () {
