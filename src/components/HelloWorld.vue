@@ -5,10 +5,15 @@
       This project uses recent advances in text generation
       <a href="https://arxiv.org/abs/1901.02860" target="_blank">source code</a> to generate pop music from midi files.
     </p>
+    <!-- <ol>
+      <li>Search for a song on our archives to seed the model</li>
+      <li>Edit the sequence if you'd like</li>
+      <li>Predict!</li>
+    </ol> -->
     <h3>Source Code</h3>
     <ul>
-      <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Vue/Flask Web App (this site)</a></li>
-      <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Midi model training project</a></li>
+      <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Web App</a></li>
+      <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Training</a></li>
     </ul>
     <h3>Data Sources</h3>
     <ul>
@@ -46,11 +51,12 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+
 a {
   color: #42b983;
 }
