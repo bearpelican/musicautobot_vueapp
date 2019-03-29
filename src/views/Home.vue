@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js + Flask App"/>
+    <HelloWorld msg="Pop Music Generator"/>
   </div>
 </template>
 
