@@ -8228,10 +8228,10 @@ token-stream@0.0.1:
   resolved "https://registry.yarnpkg.com/token-stream/-/token-stream-0.0.1.tgz#ceeefc717a76c4316f126d0b9dbaa55d7e7df01a"
   integrity sha1-zu78cXp2xDFvEm0LnbqlXX598Bo=
 
-tone@^13.4.9:
-  version "13.4.9"
-  resolved "https://registry.yarnpkg.com/tone/-/tone-13.4.9.tgz#c5e9f69d0cdea6d2fa03e108766b10d5f9185dde"
-  integrity sha512-jU3MJOzt9wcGbo57TIzgAQe13EgwvdC7N6N/cA6ZkGYHH8gop+L6a87NRP3LIBCcJxVps6I6i/39ZUJI2aCWUA==
+tone@^13.8.4:
+  version "13.8.4"
+  resolved "https://registry.yarnpkg.com/tone/-/tone-13.8.4.tgz#be5f8ec50cb36b6848243ad6743411b608a0c0a3"
+  integrity sha512-beV2JpvqFTlkJ7NW7pvWZ2nlU1vfZlNtfl3OukuHkrvP+Er25l0nPlDeuUU0BD6Q8/vjaeWW9B6q4RgL+OfTrQ==
 
 topo@3.x.x:
   version "3.0.3"

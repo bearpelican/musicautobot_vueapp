@@ -10,6 +10,7 @@ export class SynthPlugin {
     this.synth = createPianoSynth()
     this.part = null
     this.currentPreview = null
+    this.syncedEvents = []
 
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
@@ -38,6 +39,9 @@ export class SynthPlugin {
   }
   stop () {
     Tone.Transport.stop()
+    Tone.Transport.cancel(0)
+    // Tone.Transport.cancel(0)
+    // this.synth.unsync().sync()
     this.notes = []
     this.store.commit('sequence/finishMusic')
   }
@@ -59,40 +63,49 @@ export class SynthPlugin {
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
     })
   }
-  playPart (notes, bpm) {
-    this.notes = notesToToneNotes(notes, bpm)
-    const now = Tone.now() + 0.5
-    this.part = new Tone.Part((time, value) => {
-      // the value is an object which contains both the note and the velocity
-      this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
-    }, this.notes)
-    this.part.loop = true
-    this.part.loopEnd = 10
-    this.part.start(0)
-    this.part.start()
-    Tone.Transport.start(0)
-    Tone.Transport.start()
-    // this.notes.forEach(note => {
-    //   this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
-    // })
-  }
+  // playPart (notes, bpm) {
+  //   this.notes = notesToToneNotes(notes, bpm)
+  //   this.part = new Tone.Part((time, value) => {
+  //     // the value is an object which contains both the note and the velocity
+  //     this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
+  //   }, this.notes)
+  //   this.part.loop = true
+  //   this.part.loopEnd = 10
+  //   this.part.start(0)
+  //   this.part.start()
+  //   Tone.Transport.start(0)
+  //   Tone.Transport.start()
+  //   // this.notes.forEach(note => {
+  //   //   this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
+  //   // })
+  // }
   playTransport (notes, bpm) {
     this.notes = notesToToneNotes(notes, bpm)
-    // const now = Tone.now() + 0.5
-    // this.part = new Tone.Part((time, value) => {
-    //   //the value is an object which contains both the note and the velocity
-    //   this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
-    // }, this.notes).start()
 
-    // this.notes = notesToToneNotes(notes, bpm)
-    // const now = Tone.now() + 0.5
-    Tone.Transport.clear()
     this.notes.forEach(note => {
       Tone.Transport.schedule((time) => {
         this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration)
       }, note.time)
     })
     Tone.Transport.start()
+
+    // bind the transport
+    this.bind()
+    // Tone.Transport.bind('position', () => {
+    //   console.log('Position changed')
+    // })
+    // Object.observe(Tone.Transport, () => {
+    // console.log('hjfkdslfjdslf')
+    // })
+    // .addEventListener('position', e => {
+    //   console.log('dsjfklsdjfkldsjfsdklfjsdklfj')
+    // })
+    // this.addEventListener('position', e)
+    // document.querySelector("tone-play-toggle").bind(Tone.Transport);
+    // document.querySelector("tone-position").bind(Tone.Transport);
+    // document.querySelector("tone-position").addEventListener("position", e => {
+    // 	document.querySelector("#progress").style = `left: ${e.detail*100}%`;
+    // });
   }
 }
 
@@ -137,7 +150,7 @@ function createPianoSynth () {
 
 // function createSimpleSynth () {
 //   var synth = new Tone.Synth().toMaster()
-//   debugSynth(synth)
+//   // debugSynth(synth)
 //   return synth
 // }
 
