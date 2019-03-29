@@ -16,7 +16,7 @@
     "core-js": "2",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
-    "tone": "^13.4.9",
+    "tone": "^13.8.4",
     "vue": "^2.6.10",
     "vue-lodash": "^2.0.2",
     "vue-material": "^1.0.0-beta-10.2",
