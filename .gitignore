@@ -17,7 +17,9 @@ selenium-debug.log
 
 # Editor directories and files
 .idea
-.vscode
+ # keep tab and exclude settings
+.vscode/*
+!.vscode/settings.json
 *.suo
 *.ntvs*
 *.njsproj
