@@ -34,14 +34,7 @@ export function getKeyNumber (key) {
   const keyOctave = parseInt(key.charAt(key.length - 1))
   const classidx = Object.keys(octave).indexOf(key.substring(0, key.length - 1))
   const midiNumber = (keyOctave + 1) * 12 + classidx
-  // console.log('Key number:', key, midiNumber, classidx, keyOctave)
   return midiNumber
-  // const index = allKeys.indexOf(key)
-  // console.log('Getting keynymber', key, index)
-  // if (index === -1) {
-  //   throw new Error(`The key (${key}) was not included.`)
-  // }
-  // return index + 1
 }
 
 export function getTypeOfKey (key) {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:style="{ bottom, left, width }", @mousedown="startMoving")
+  div(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
     .selection.begin(@mousedown.stop="startEditingStartTime")
     .selection.end(@mousedown.stop="startEditingEndTime")
 </template>
@@ -39,7 +39,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentNote.length
     }),
-    ...mapState(['isEditingScore']),
+    ...mapState(['isEditingScore', 'notesPlaying']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -48,6 +48,12 @@ export default {
     },
     width () {
       return `${timingToPosition(this.length)}px`
+    },
+    color () {
+      if (this.notesPlaying.indexOf(this.index) === -1) {
+        return '#64b5f6'
+      }
+      return '#000000'
     }
   },
   methods: {
@@ -167,6 +173,7 @@ div {
   position: absolute;
   width: 5px;
   height: 100%;
+  background-color: #3287ce;
   border-color: #64b5f6;
 }
 .begin {

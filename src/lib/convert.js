@@ -46,19 +46,22 @@ export function bufferToMidi (arraybuffer) {
 }
 
 export function notesToToneNotes (notes, bpm) {
-  let toneNotes = notes.sort((a, b) => {
-    return a.timing - b.timing
-  })
-    .filter(note => {
-      return note.timing > 0
-    })
-    .map(note => {
+  let toneNotes = notes
+    .map((note, index) => {
+      console.log(index)
       return {
+        name: index, // This may break storeToMidi.
         midi: note.key,
         time: timingToSeconds(note.timing, bpm),
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
       }
+    })
+    .sort((a, b) => {
+      return a.time - b.time
+    })
+    .filter(note => {
+      return note.time > 0
     })
   return toneNotes
 }
