@@ -52,24 +52,26 @@ export const actions = {
       commit('updatePID', result)
     })
   },
-  // predictMidi ({ commit, rootState, dispatch }) {
-  //   // const seq = rootState.sequence
-  //   const midi = storeToMidi(rootState, this.seedLen)
-  //   $backend.predictMidi(midi, this.nSteps, this.seedLen).then(result => {
-  //     commit('updatePID', result)
-  //     dispatch('predict/fetchPredMidi', { root: true })
-  //   })
-  // },
-
   async predictMidi ({ commit, rootState, dispatch }) {
-    const seq = rootState.sequence
+    // const seq = rootState.sequence
     const { nSteps, seedLen } = rootState.predict
-    console.log('Predicting midi')
-    console.log(nSteps, seedLen)
+    const { midi, bpm } = await storeToMidi(rootState, seedLen)
+
+    // const bpm = 120
+    // const midi = await defaultMidiCreation()
+    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
+    $backend.predictMidi({ midi, nSteps, bpm }).then(result => {
+      commit('updatePID', result)
+      console.log('Result returned from predict:', result)
+      dispatch('fetchPredMidi', result)
+    })
+  },
+  async predictMidiTest ({ commit, rootState, dispatch }) {
+    const { nSteps, seedLen } = rootState.predict
     const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
     $backend.predictMidi(midi, nSteps, seedLen).then(result => {
       commit('updatePID', result)
-      dispatch('predict/fetchPredMidi', { root: true })
+      dispatch('fetchPredMidi', result, { root: true })
     })
   },
   fetchScore ({ commit, rootState }) {
@@ -80,8 +82,9 @@ export const actions = {
   // updateSequenceStore ({ dispatch }, midi) {
   //   dispatch('sequence/loadMidi', midi, { root: true })
   // },
-  fetchPredMidi ({ commit, dispatch, rootState }) {
-    $backend.fetchPredMidi(rootState.predict.pID).then(result => {
+  fetchPredMidi ({ commit, dispatch, rootState }, pID) {
+    console.log('SJKFLSJFJSLKDFJ FETCH PRED MIDI CALLED')
+    $backend.fetchPredMidi(pID).then(result => {
       const midi = bufferToMidi(result)
       commit('updateMidiSeq', midi)
       dispatch('sequence/loadMidi', midi, { root: true })

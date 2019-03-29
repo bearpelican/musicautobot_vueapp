@@ -21,6 +21,8 @@ data = load_data(path=path, cache_name='tmp/hook', **config)
 learn = load_learner(data, config, load_path)
 htlist = get_htlist(path, source_dir)
 
+DEF_TYPE = 'full'
+
 @app.route('/hello/', methods=['GET', 'POST'])
 def hello_world():
     return 'Hello, World!'
@@ -62,7 +64,7 @@ def predict_file():
     pred, seed, full = predict_from_file(learn, **args)
     pid = save_preds(pred, seed, full, out_path)
     bpm = htlist[np_file]['ht_bpm']
-    midi, score = save_comps(out_path, pid, nptype='full', bpm=bpm)
+    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm)
 
     result = { 'result': pid }
     return jsonify(result)
@@ -70,14 +72,15 @@ def predict_file():
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
     args = request.form.to_dict()
-    print(args)
-    print(request.files)
-    print(request.form)
-    print(request.data)
-    pred, seed, full = predict_from_midi(learn, **args)
+    if 'midi' in request.files:
+        midi = request.files['midi'].read()
+        # print(midi_path.mimetype)
+    elif 'midi_path'in args:
+        midi = args['midi_path']
+    pred, seed, full = predict_from_midi(learn, midi=midi)
     pid = save_preds(pred, seed, full, out_path)
-    bpm = htlist[np_file]['ht_bpm']
-    midi, score = save_comps(out_path, pid, nptype='full', bpm=bpm)
+    bpm = float(args['bpm'])
+    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm)
     
     result = { 'result': pid }
     return jsonify(result)
@@ -88,11 +91,11 @@ def get_song_midi(sid):
 
 @app.route('/midi/pred/<path:pid>')
 def get_pred_midi(pid):
-    return send_from_directory(out_path, f'{pid}/pred.mid', mimetype='audio/midi')
+    return send_from_directory(out_path/pid, f'{DEF_TYPE}.mid', mimetype='audio/midi')
 
 @app.route('/score/pred/<path:pid>/')
 def get_pred_score(pid):
-    return send_from_directory(out_path, f'{pid}/pred-1.png', mimetype='image/png')
+    return send_from_directory(out_path/pid, f'{DEF_TYPE}-1.png', mimetype='image/png')
 
 @app.route('/score/song/<path:sid>/')
 def get_song_score(sid):

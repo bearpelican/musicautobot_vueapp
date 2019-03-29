@@ -94,9 +94,9 @@ export default {
 
 <style lang="scss">
 
-.score {
-  width: 50%;
-  background-color: white;
-}
+// .score {
+//   width: 50%;
+//   background-color: white;
+// }
 
 </style>
