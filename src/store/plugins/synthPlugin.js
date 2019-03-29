@@ -5,16 +5,12 @@ export class SynthPlugin {
   constructor (store) {
     this.store = store
     this.notes = []
-    this.timeoutIds = []
+    this.audioContext = new AudioContext()
+    Tone.setContext(this.audioContext)
+    this.synth = createPianoSynth()
+    this.part = null
+    this.currentPreview = null
 
-    // this.audioContext = new AudioContext()
-    // Tone.setContext(this.audioContext)
-
-    // this.synth = createSimpleSynth()
-
-    this.ts = new testSynth()
-    this.ts.play(Tone.Midi(60), 4)
-    // this.synth = createPianoSynth()
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
         case 'startPreview': {
@@ -26,63 +22,78 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.play(state.sequence.notes, state.sequence.bpm)
+          // this.playPart(state.sequence.notes, state.sequence.bpm)
+          this.playTransport(state.sequence.notes, state.sequence.bpm)
           break
         }
         case 'stop': {
           this.stop()
+          break
+        }
+        default: {
+          break
         }
       }
     })
   }
-  // stop () {
-  //   this.synth.stop()
-  //   this.notes = []
-  //   print('Stopped called')
-  //   for (let timeoutId of this.timeoutIds) {
-  //     clearTimeout(timeoutId)
-  //   }
-  //   this.timeoutIds = []
-  //   this.store.commit('finishMusic')
-  // }
-  // startPreview (keyNumber) {
-  //   this.synth.triggerAttackRelease(Tone.Midi(keyNumber), '4n', 0)
-  // }
-  // finishPreview () {
-  //   this.synth.stop()
-  // }
+  stop () {
+    Tone.Transport.stop()
+    this.notes = []
+    this.store.commit('sequence/finishMusic')
+  }
+  startPreview (keyNumber) {
+    this.finishPreview()
+    this.synth.triggerAttack(Tone.Midi(keyNumber))
+    this.currentPreview = keyNumber
+  }
+  finishPreview () {
+    if (this.currentPreview != null) {
+      this.synth.triggerRelease(Tone.Midi(this.currentPreview))
+      this.currentPreview = null
+    }
+  }
   play (notes, bpm) {
     this.notes = notesToToneNotes(notes, bpm)
-    console.log(this.synth)
-    // this.notes.forEach(note => {
-    //   console.log(note)
-    //   this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, note.time)
-    // })
-
-    // let ts = new testSynth()
-    this.ts.play(Tone.Midi(60), 4)
-    // debugSynth(this.synth)
+    const now = Tone.now() + 0.5
+    this.notes.forEach(note => {
+      this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
+    })
   }
-  // next (currentSynth, index = 0) {
-  //   if (index < this.notes.length) {
-  //     const note = this.notes[index]
-  //     currentSynth.play(note.frequency, note.length)
-  //     if (index + 1 >= this.notes.length) {
-  //       this.timeoutIds.push(setTimeout(this.stop, note.length, currentSynth))
-  //       return
-  //     }
-  //     if (this.notes[index + 1].seconds === note.seconds) {
-  //       this.next(currentSynth, index + 1)
-  //     } else {
-  //       this.timeoutIds.push(setTimeout(
-  //         this.next,
-  //         this.notes[index + 1].seconds - note.seconds,
-  //         currentSynth,
-  //         index + 1
-  //       ))
-  //     }
-  //   }
-  // };
+  playPart (notes, bpm) {
+    this.notes = notesToToneNotes(notes, bpm)
+    const now = Tone.now() + 0.5
+    this.part = new Tone.Part((time, value) => {
+      // the value is an object which contains both the note and the velocity
+      this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
+    }, this.notes)
+    this.part.loop = true
+    this.part.loopEnd = 10
+    this.part.start(0)
+    this.part.start()
+    Tone.Transport.start(0)
+    Tone.Transport.start()
+    // this.notes.forEach(note => {
+    //   this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
+    // })
+  }
+  playTransport (notes, bpm) {
+    this.notes = notesToToneNotes(notes, bpm)
+    // const now = Tone.now() + 0.5
+    // this.part = new Tone.Part((time, value) => {
+    //   //the value is an object which contains both the note and the velocity
+    //   this.synth.triggerAttackRelease(value.note, value.duration, time, value.velocity)
+    // }, this.notes).start()
+
+    // this.notes = notesToToneNotes(notes, bpm)
+    // const now = Tone.now() + 0.5
+    Tone.Transport.clear()
+    this.notes.forEach(note => {
+      Tone.Transport.schedule((time) => {
+        this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration)
+      }, note.time)
+    })
+    Tone.Transport.start()
+  }
 }
 
 function createPianoSynth () {
@@ -118,82 +129,45 @@ function createPianoSynth () {
     'A7': 'A7.[mp3|ogg]',
     'C8': 'C8.[mp3|ogg]'
   }, (synth) => {
-    console.log(Tone.context)
-    debugSynth(synth)
+    // console.log('sdjfklsdjfslkdjf')
+    // debugSynth2(synth)
   }, './audio/salamander/').toMaster()
   return synth
 }
 
-function createSimpleSynth () {
-  console.log('Creating simple synth')
-  var synth = new Tone.Synth().toMaster()
-  // debugSynth(synth)
-  debugSynth(synth)
-  // debugSynth(synth)
-  return synth
-}
+// function createSimpleSynth () {
+//   var synth = new Tone.Synth().toMaster()
+//   debugSynth(synth)
+//   return synth
+// }
 
-export class Note {
-  constructor (osc, frequency, time = null, onDestroyed = null) {
-    this.osc = osc
-    this.osc.frequency.value = frequency
-    this.osc.start()
-    if (time !== null) {
-      setTimeout(() => {
-        this.osc.stop()
-        if (onDestroyed) {
-          onDestroyed()
-        }
-      }, time)
-    }
-  }
-}
-class testSynth {
-  constructor () {
-    this.audioCtx = new AudioContext()
-    // this.audioCtx = window.AudioContext
-    this.gainNode = this.audioCtx.createGain()
-    this.notes = []
-    this.gainNode.gain.value = 0.1
-    this.gainNode.connect(this.audioCtx.destination)
-  }
-  createOsc () {
-    const osc = this.audioCtx.createOscillator()
-    osc.connect(this.gainNode)
-    osc.type = 'square'
-    return osc
-  }
-  play (frequency, time = null) {
-    let note
-    if (time) {
-      note = new Note(this.createOsc(), frequency, time, () => {
-        this.notes.splice(this.notes.indexOf(note), 1)
-      })
-    } else {
-      note = new Note(this.createOsc(), frequency)
-    }
-    this.notes.push(note)
-  }
-  stop () {
-    for (let note of this.notes) {
-      note.osc.stop()
-    }
-    this.notes = []
-  }
-}
+// function debugSynth2 (synth) {
+//   console.log(synth)
+//   s = synth
+//   var part = new Tone.Part(function(time, value){
+//     //the value is an object which contains both the note and the velocity
+//     s.triggerAttackRelease(value.note, "8n", time, value.velocity);
+//   }, [{"time" : 0, "note" : "C3", "velocity": 0.9},
+//        {"time" : "0:2", "note" : "C4", "velocity": 0.5}
+//   ])
+//   part.loop = true
+//   part.start(0)
+//   part.start()
 
-function debugSynth (synth) {
-  console.log('Synth loaded. JDSKLFSDJKLFSJKLD')
-  console.log(synth)
-  synth.triggerAttackRelease('C4', '4n', '8n')
-  // synth.triggerAttack('C4', '4n', '8n')
-  // synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
-  // synth.triggerAttackRelease('G4', '16n', '2n')
-  // synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
-  // synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t') * 2)
-  // synth.triggerAttackRelease('E4', '2n', '0:3')
-  // Tone.Transport.start()
-}
+//   Tone.Transport.loopStart = 0;
+//   Tone.Transport.loopEnd = "1:0";
+//   Tone.Transport.loop = true;
+
+//   Tone.Transport.start(0)
+//   Tone.Transport.start()
+// }
+// function debugSynth (synth) {
+//   const now = Tone.now() + 0.5
+//   synth.triggerAttackRelease('C4', 0.5, now + 0)
+//   synth.triggerAttackRelease('E4', 0.5, now + 1)
+//   synth.triggerAttackRelease('G4', 0.5, now + 2)
+//   synth.triggerAttackRelease('B4', 0.5, now + 3)
+// }
 
 // export default class SynthPlugin
 export default function createSynthPlugin (store) {
