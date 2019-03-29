@@ -25,6 +25,7 @@
     </ul>
     <h3>Acknowledgements</h3>
     <ul>
+      <li><a href="https://www.jurassictechnologies.com/" target="_blank">Jurassic Tech</a></li>
       <li><a href="https://www.fast.ai/" target="_blank">Fast.Ai</a></li>
       <li><a href="https://github.com/wayne391/Lead-Sheet-Dataset" target="_blank">wayne391</a></li>
       <li><a href="https://github.com/huggingface/" target="_blank">Hugging Face</a></li>
