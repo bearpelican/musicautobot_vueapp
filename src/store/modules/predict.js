@@ -6,7 +6,7 @@ export const state = {
   songs: [],
   pID: null,
   songItem: {},
-  nSteps: 240,
+  nSteps: 150,
   seedLen: 10,
   scoreImage: null,
   midiSong: null,
@@ -84,6 +84,7 @@ export const actions = {
   // },
   fetchPredMidi ({ commit, dispatch, rootState }, pID) {
     console.log('SJKFLSJFJSLKDFJ FETCH PRED MIDI CALLED')
+    dispatch('sequence/resetNotes', null, { root: true })
     $backend.fetchPredMidi(pID).then(result => {
       const midi = bufferToMidi(result)
       commit('updateMidiSeq', midi)
@@ -91,6 +92,7 @@ export const actions = {
     })
   },
   fetchSongMidi ({ commit, dispatch }, songItem) {
+    dispatch('sequence/resetNotes', null, { root: true })
     $backend.fetchSongMidi(songItem.sid).then(result => {
       const midi = bufferToMidi(result)
       commit('updateMidiSeq', midi)

@@ -37,7 +37,7 @@ export default {
       scoreImageSrc: null,
       error: '',
       midiSong: null,
-      debug: true
+      debug: false
     }
   },
   // watch: {
