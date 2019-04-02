@@ -78,11 +78,17 @@ export class SynthPlugin {
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
     })
   }
+  endTime (notes) {
+    let maxTime = 0
+    notes.forEach(note => {
+      maxTime = Math.max(maxTime, note.duration + note.time)
+    })
+    return maxTime
+  }
   playPart (notes, bpm) {
     // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
+    this.reset()
     this.notes = notesToToneNotes(notes, bpm)
-    // var synth = new Tone.PolySynth(8).toMaster()
-
     // make sure you set the tempo before you schedule the events
     Tone.Transport.bpm.value = bpm
 
@@ -102,6 +108,10 @@ export class SynthPlugin {
       // console.log('Seconds:', time)
       this.store.commit('sequence/updateProgressTime', time)
     }, 5)
+
+    this.stopTimeout = setTimeout(() => {
+      this.stop()
+    }, (this.endTime(this.notes) + 1) * 1000)
   }
   playTransport (notes, bpm) {
     const delay = 2
