@@ -26,8 +26,8 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          // this.playPart(state.sequence.notes, state.sequence.bpm)
-          this.playTransport(state.sequence.notes, state.sequence.bpm)
+          this.playPart(state.sequence.notes, state.sequence.bpm)
+          // this.playTransport(state.sequence.notes, state.sequence.bpm)
           break
         }
         case 'stop': {
@@ -80,25 +80,28 @@ export class SynthPlugin {
   }
   playPart (notes, bpm) {
     // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
-    // this.notes = notesToToneNotes(notes, bpm)
+    this.notes = notesToToneNotes(notes, bpm)
     // var synth = new Tone.PolySynth(8).toMaster()
 
-    // MidiConvert.load("path/to/midi.mid", function(midi) {
+    // make sure you set the tempo before you schedule the events
+    Tone.Transport.bpm.value = bpm
 
-    //   // make sure you set the tempo before you schedule the events
-    //   Tone.Transport.bpm.value = midi.header.bpm
+    // pass in the note events from one of the tracks as the second argument to Tone.Part
+    let midiPart = new Tone.Part((time, note) => {
+      console.log('TIme:', time)
+      this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time)
+      // this.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+    }, this.notes)
+    midiPart.start()
+    // start the transport to hear the events
+    Tone.Transport.start()
 
-    //   // pass in the note events from one of the tracks as the second argument to Tone.Part
-    //   var midiPart = new Tone.Part(function(time, note) {
-
-    //     //use the events to play the synth
-    //     synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
-
-    //   }, midi.tracks[0].notes).start()
-
-    //   // start the transport to hear the events
-    //   Tone.Transport.start()
-    // })
+    this.progress = setInterval(() => {
+      // const position = tonePositionToTiming(Tone.Transport.position)
+      const time = secondsToTiming(Tone.Transport.seconds, bpm)
+      // console.log('Seconds:', time)
+      this.store.commit('sequence/updateProgressTime', time)
+    }, 5)
   }
   playTransport (notes, bpm) {
     const delay = 2
