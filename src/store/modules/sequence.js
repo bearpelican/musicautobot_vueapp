@@ -8,6 +8,7 @@ import { midiFileToNotes, midiToNotes } from '@/lib/convert'
 export const state = {
   currentNote: defaultNote,
   notes: [],
+  prevNotes: [],
   isEditingScore: false,
   scrollPosition: 0,
   previewingKeyNumber: null,
@@ -90,7 +91,8 @@ export const mutations = {
 }
 
 export function generateSimpleActions (mutations) {
-  const actions = { }
+  const actions = {
+  }
   mutations.forEach(mutation => {
     actions[mutation] = ({ commit }, payload) => {
       if (payload === 0 || payload) {

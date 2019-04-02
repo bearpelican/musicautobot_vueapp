@@ -35,7 +35,6 @@ export default {
 
 @font-face {
   font-family: "notes";
-  /* src: url("../assets/notes.woff") */
   src: "@/assets/notes.woff";
 }
 

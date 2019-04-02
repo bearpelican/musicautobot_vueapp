@@ -84,5 +84,32 @@ export default {
   fetchSongMidi (sid) {
     return $axios.get(`midi/song/${sid}`, { responseType: 'arraybuffer' })
       .then(response => response.data)
+  },
+  async convertToXML ({ midi }) {
+    const formData = new FormData()
+    const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
+    formData.append('midi', blob)
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    const response = await $axios.post('midi/convert', formData, config)
+    console.log('Convert to xml response')
+    console.log(response.data)
+    return response.data
+    // .then(response => response.data.result)
   }
+  // convertToXML ({ midi }) {
+  //   const formData = new FormData()
+  //   const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
+  //   formData.append('midi', blob)
+  //   const config = {
+  //     headers: {
+  //       'content-type': 'multipart/form-data'
+  //     }
+  //   }
+  //   return $axios.post('midi/convert', formData, config)
+  //     .then(response => response.data.result)
+  // }
 }

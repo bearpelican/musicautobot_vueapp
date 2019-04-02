@@ -215,6 +215,5 @@ function createPianoSynth () {
 
 // export default class SynthPlugin
 export default function createSynthPlugin (store) {
-  console.log('Plugin installed:', store)
   return new SynthPlugin(store)
 }

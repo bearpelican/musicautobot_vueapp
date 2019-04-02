@@ -10,7 +10,8 @@ export const state = {
   seedLen: 10,
   scoreImage: null,
   midiSong: null,
-  midiSeq: null
+  midiSeq: null,
+  midiXML: null
 }
 
 export const mutations = {
@@ -37,6 +38,9 @@ export const mutations = {
   },
   updateMidiSeq (state, midiSeq) {
     state.midiSeq = midiSeq
+  },
+  updateMidiXML (state, xml) {
+    state.midiXML = xml
   }
 }
 
@@ -65,6 +69,23 @@ export const actions = {
       console.log('Result returned from predict:', result)
       dispatch('fetchPredMidi', result)
     })
+  },
+  async convertToXML ({ commit, rootState, dispatch }) {
+    // const seq = rootState.sequence
+    const { midi } = await storeToMidi(rootState, null)
+
+    // const bpm = 120
+    // const midi = await defaultMidiCreation()
+    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
+    // $backend.convertToXML({ midi }).then(result => {
+    //   console.log('Result returned from convertToXML:', result)
+    //   dispatch('updateMidiXML', result)
+    // })
+
+    let result = await $backend.convertToXML({ midi })
+    console.log('Result returned from convertToXML:', result)
+    commit('updateMidiXML', result)
+    return result
   },
   async predictMidiTest ({ commit, rootState, dispatch }) {
     const { nSteps, seedLen } = rootState.predict
