@@ -71,10 +71,10 @@ export default {
     return this.fetchScore('1de8021e-941b-4047-a881-223103266eba')
   },
   testMidi () {
-    return this.fetchMidi('1de8021e-941b-4047-a881-223103266eba')
+    return this.fetchMidi({ midiID: '1de8021e-941b-4047-a881-223103266eba', type: 'pred' })
   },
-  fetchMidi (pid) {
-    return $axios.get(`predict/${pid}/midi`, { responseType: 'arraybuffer' })
+  fetchMidi ({ midiID, type }) {
+    return $axios.get(`midi/${type}/${midiID}`, { responseType: 'arraybuffer' })
       .then(response => response.data)
   },
   fetchPredMidi (pid) {

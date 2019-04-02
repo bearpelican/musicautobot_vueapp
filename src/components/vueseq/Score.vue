@@ -15,6 +15,14 @@
         :storeTiming="note.timing",
         :storeLength="note.length"
       )
+      prev-note(
+        v-for="(note, index) in prevNotes",
+        :key="index + '-prev-note'",
+        :index="index",
+        :storeKeyNumber="note.key",
+        :storeTiming="note.timing",
+        :storeLength="note.length"
+      )
       score-line(
         v-for="(beat, index) in beats",
         :key="index + '-beat'",
@@ -31,6 +39,7 @@
 <script>
 import ScoreRow from '@/components/vueseq/ScoreRow'
 import Note from '@/components/vueseq/Note'
+import PrevNote from '@/components/vueseq/PrevNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
@@ -42,6 +51,7 @@ const { mapActions, mapState } = createNamespacedHelpers('sequence')
 export default {
   components: {
     ScoreRow,
+    PrevNote,
     Note,
     ScoreLine,
     ProgressLine,
@@ -58,7 +68,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['notes']),
+    ...mapState(['notes', 'prevNotes']),
     beats () {
       /* eslint-disable no-console */
       return new Array(Math.max(

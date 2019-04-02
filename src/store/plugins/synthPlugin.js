@@ -115,7 +115,7 @@ export class SynthPlugin {
       Tone.Transport.schedule((time) => {
         if (note.time > currentTime + 0.02) {
           console.log(note.time, currentTime, note.time - currentTime)
-          notesPlaying = []
+          notesPlaying = [note.index]
           currentTime = note.time
         } else {
           notesPlaying.push(note.index)

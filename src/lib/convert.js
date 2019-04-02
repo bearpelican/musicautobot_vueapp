@@ -8,7 +8,7 @@ export async function midiFileToNotes (midiFile) {
   return midiToNotes(midi)
 }
 
-export async function midiToNotes (midi) {
+export function midiToNotes (midi) {
   // the file name decoded from the first track
   // const name = midi.name
   // get the tracks
