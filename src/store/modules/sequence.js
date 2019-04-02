@@ -72,21 +72,22 @@ export const mutations = {
     state.notesPlaying = notesPlaying
   },
   resetNotes (state) {
+    state.progressTime = 0
+    state.prevNotes = state.notes
     state.notes = []
   },
+  // updateNotes (state) {
+
+  // },
   async loadMidiFile (state, file = './audio/sample/chorus_key_cmajor.mid') {
     let { notes, bpm } = await midiFileToNotes(file)
-    state.progressTime = 0
     state.notes = notes
     state.bpm = bpm
   },
   async loadMidi (state, midi) {
-    let { notes, bpm } = await midiToNotes(midi)
-    state.progressTime = 0
+    let { notes, bpm } = midiToNotes(midi)
     state.notes = notes
     state.bpm = bpm
-    console.log('New notes:')
-    console.log(notes)
   }
 }
 
