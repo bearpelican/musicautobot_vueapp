@@ -33,6 +33,7 @@ def song_list():
     # get song name and artist from csv
     result = {
         'result': list(htlist.values())[:100]
+        # 'result': list(htlist.values())
     }
     return jsonify(result)
 
@@ -64,7 +65,7 @@ def predict_file():
     pred, seed, full = predict_from_file(learn, **args)
     pid = save_preds(pred, seed, full, out_path)
     bpm = htlist[np_file]['ht_bpm']
-    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm)
+    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm, types=['midi'])
 
     result = { 'result': pid }
     return jsonify(result)
@@ -80,7 +81,7 @@ def predict_midi():
     pred, seed, full = predict_from_midi(learn, midi=midi)
     pid = save_preds(pred, seed, full, out_path)
     bpm = float(args['bpm'])
-    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm)
+    save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm, types=['midi'])
     
     result = { 'result': pid }
     return jsonify(result)
@@ -108,6 +109,23 @@ def get_song_score(sid):
         stream.write('musicxml.png', out_file)
     return send_from_directory(out_file.parent, out_file.name, mimetype='image/png')
 
-@app.route('/score/midi/')
-def get_midi_score(midi):
-    pass
+@app.route('/midi/convert', methods=['POST'])
+def convert_midi():
+    args = request.form.to_dict()
+    if 'midi' in request.files:
+        midi = request.files['midi'].read()
+        # print(midi_path.mimetype)
+    elif 'midi_path'in args:
+        midi = args['midi_path']
+
+    stream = file2stream(midi) # 1.
+    # print(stream.show('text'))
+    pid = Path(str(uuid.uuid4())).with_suffix('.xml')
+    out_file = out_path/'musicxml'/pid
+    print('Printing to:', out_file)
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    stream_out = stream.write('musicxml', out_file)
+    stream_out = Path(stream_out)
+    print('Stream out:', stream_out)
+    return send_from_directory(stream_out.parent, stream_out.name, mimetype='xml')
+    # return send_from_directory(out_file.parent, out_file.name, mimetype='xml')
