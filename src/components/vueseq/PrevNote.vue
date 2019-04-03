@@ -66,10 +66,17 @@ export default {
 div {
   position: absolute;
   height: 14px;
-  background-color: #94ffbd;
+  /* background-color: #94ffbd; */
   /* border: 2px solid #dbdcdd; */
   /* cursor: move; */
   z-index: 1;
   opacity: 0.5;
+  background: repeating-linear-gradient(
+    45deg,
+    #52803d,
+    #52803d 10px,
+    #72b3c4 10px,
+    #72b3c4 20px
+  );
 }
 </style>

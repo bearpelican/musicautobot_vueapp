@@ -29,22 +29,8 @@ export function midiToNotes (midi) {
       })
       // note.midi, note.time, note.duration, note.name
     })
-
-    // the control changes are an object
-    // the keys are the CC number
-    // track.controlChanges[64]
-    // they are also aliased to the CC number's common name (if it has one)
-    // track.controlChanges.sustain.forEach(cc => {
-    //   // cc.ticks, cc.value, cc.time
-    // })
-
-    // the track also has a channel and instrument
-    // track.instrument.name
   })
-
-  const storeNotes = notes.filter(n => n.timing <= 10)
-  console.log('Midi to notes:', storeNotes) // DEBUG
-  return { notes: storeNotes, bpm, header: midi.header }
+  return { notes, bpm, header: midi.header }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -67,7 +53,6 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
     })
     .sort((a, b) => a.time - b.time)
     .filter(n => n.duration > 0)
-  console.log('Notes to tone notes called:', toneNotes)
   return toneNotes
 }
 
@@ -115,6 +100,20 @@ function defaultMidiHeader (bpm) {
   return defaultHeader
 }
 
+function defaultTrackHeader () {
+  return {
+    name: '',
+    channel: 0,
+    instrument: {
+      number: 0,
+      name: 'acoustic grand piano',
+      family: 'piano'
+    },
+    controlChanges: {},
+    notes: []
+  }
+}
+
 export async function storeToMidi (state, seedLen = null) {
   // create a new midi file
   const bpm = state.sequence.bpm
@@ -128,6 +127,7 @@ export async function storeToMidi (state, seedLen = null) {
 
   let notes = notesToToneNotes(storeNotes, bpm, false)
   const track = midi.addTrack()
+  track.fromJSON(defaultTrackHeader())
   notes.forEach(n => {
     track.addNote(n)
   })
