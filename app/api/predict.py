@@ -23,11 +23,6 @@ htlist = get_htlist(path, source_dir)
 
 DEF_TYPE = 'full'
 
-@app.route('/hello/', methods=['GET', 'POST'])
-def hello_world():
-    return 'Hello, World!'
-
-
 @app.route('/songs/all', methods=['GET', 'POST'])
 def song_list():
     # get song name and artist from csv
@@ -57,76 +52,35 @@ def song_search():
     }
     return jsonify(result)
 
-@app.route('/predict/file', methods=['POST'])
-def predict_file():
-    args = request.json
-    np_file = args['np_file']
-    args['np_file'] = file_path/data_dir/np_file
-    pred, seed, full = predict_from_file(learn, **args)
-    pid = save_preds(pred, seed, full, out_path)
-    bpm = htlist[np_file]['ht_bpm']
-    midi, score = save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm, types=['midi'])
-
-    result = { 'result': pid }
-    return jsonify(result)
-
-@app.route('/predict/midi/direct', methods=['POST'])
-def predict_midi_direct():
-    args = request.form.to_dict()
-    midi = request.files['midi'].read()
-    with open('/tmp/test.mid', 'wb') as f:
-        f.write(midi)
-    return send_from_directory('/tmp', 'test.mid', mimetype='audio/midi')
-
-    seed_np = midi2npenc(midi) # music21 can handle bytes directly
-    print(seed_np)
-    bpm = float(args['bpm'])
-    
-    # pred, seed, full = predict_from_midi(learn, midi=midi)
-    stream = npenc2stream(seed_np, bpm=bpm)
-    mid_out = stream.write("midi")
-    print('Wrote to temporary file:', mid_out)
-    p = Path(mid_out)
-    return send_from_directory(p.parent, p.name, mimetype='audio/midi')
-
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
     args = request.form.to_dict()
-    if 'midi' in request.files:
-        midi = request.files['midi'].read()
-        # print(midi_path.mimetype)
-    elif 'midi_path'in args:
-        midi = args['midi_path']
-    pred, seed, full = predict_from_midi(learn, midi=midi)
-    pid = save_preds(pred, seed, full, out_path)
+    midi = request.files['midi'].read()
     bpm = float(args['bpm'])
-    save_comps(out_path, pid, nptype=DEF_TYPE, bpm=bpm, types=['midi'])
-    
-    result = { 'result': pid }
-    return jsonify(result)
+
+    # debugging 1 - send exact midi back
+    # with open('/tmp/test.mid', 'wb') as f:
+    #     f.write(midi)
+    # return send_from_directory('/tmp', 'test.mid', mimetype='audio/midi')
+
+    # debugging 2 - test music21 conversion
+    # stream = file2stream(midi) # 1.
+
+    # debugging 3 - test npenc conversion
+    # seed_np = midi2npenc(midi) # music21 can handle bytes directly 
+    # stream = npenc2stream(seed_np, bpm=bpm)
+
+    # Main logic
+    pred, seed, full = predict_from_midi(learn, midi=midi)
+    stream = npenc2stream(full, bpm=bpm)
+
+    mid_out = Path(stream.write("midi"))
+    print('Wrote to temporary file:', mid_out)
+    return send_from_directory(mid_out.parent, mid_out.name, mimetype='audio/midi')
 
 @app.route('/midi/song/<path:sid>')
 def get_song_midi(sid):
     return send_from_directory(file_path/data_dir, htlist[sid]['midi'], mimetype='audio/midi')
-
-@app.route('/midi/pred/<path:pid>')
-def get_pred_midi(pid):
-    return send_from_directory(out_path/pid, f'{DEF_TYPE}.mid', mimetype='audio/midi')
-
-@app.route('/score/pred/<path:pid>/')
-def get_pred_score(pid):
-    return send_from_directory(out_path/pid, f'{DEF_TYPE}-1.png', mimetype='image/png')
-
-@app.route('/score/song/<path:sid>/')
-def get_song_score(sid):
-    score_path = out_path/'song/scores'
-    out_file = (score_path/sid).with_suffix('.xml')
-    out_file.mkdir(parents=True, exist_ok=True)
-    if not out_file.exists():
-        midi_file = file_path/data_dir/htlist[sid]['midi']
-        stream = file2stream(midi_file) # 1.
-        stream.write('musicxml.png', out_file)
-    return send_from_directory(out_file.parent, out_file.name, mimetype='image/png')
 
 @app.route('/midi/convert', methods=['POST'])
 def convert_midi():
@@ -137,14 +91,6 @@ def convert_midi():
     elif 'midi_path'in args:
         midi = args['midi_path']
 
-    stream = file2stream(midi) # 1.
-    # print(stream.show('text'))
-    pid = Path(str(uuid.uuid4())).with_suffix('.xml')
-    out_file = out_path/'musicxml'/pid
-    print('Printing to:', out_file)
-    out_file.parent.mkdir(parents=True, exist_ok=True)
-    stream_out = stream.write('musicxml', out_file)
-    stream_out = Path(stream_out)
-    print('Stream out:', stream_out)
+    stream = file2stream(midi).chordify() # 1.
+    stream_out = Path(stream.write('musicxml'))
     return send_from_directory(stream_out.parent, stream_out.name, mimetype='xml')
-    # return send_from_directory(out_file.parent, out_file.name, mimetype='xml')

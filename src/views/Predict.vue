@@ -36,18 +36,11 @@ export default {
     return {
       scoreImageSrc: null,
       error: '',
-      midiSong: null,
       debug: false
     }
   },
-  // watch: {
-  //   predictItem: (val) => {
-  //     this.fetchScore(val.pid)
-  //     // this.fetchMidi(val.pid)
-  //   }
-  // },
   computed: {
-    ...mapState(['songs', 'pID', 'songItem', 'midiSeq']),
+    ...mapState(['songs', 'songItem', 'midiSeq']),
     predictDisabled () {
       return this._.isEmpty(this.songItem)
     },

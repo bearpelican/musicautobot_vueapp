@@ -45,80 +45,25 @@ export const actions = {
       commit('updateSongs', result)
     })
   },
-  predictFile ({ commit, rootState }) {
-    const { songItem, nSteps, seedLen } = rootState.predict
-    $backend.predictFile(songItem.numpy, nSteps, seedLen).then(result => {
-      commit('updatePID', result)
-    })
-  },
   async predictMidi ({ commit, rootState, dispatch }) {
     // const seq = rootState.sequence
     const { nSteps, seedLen } = rootState.predict
-    const { midi, bpm } = await storeToMidi(rootState, seedLen)
-
-    // const bpm = 120
-    // const midi = await defaultMidiCreation()
-    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
-    $backend.predictMidi({ midi, nSteps, bpm }).then(result => {
-      commit('updatePID', result)
-      console.log('Result returned from predict:', result)
-      dispatch('fetchMidi', { midiID: result, type: 'pred' })
-    })
-  },
-  async predictMidiDirect ({ commit, rootState, dispatch }) {
-    // const seq = rootState.sequence
-    const { nSteps, seedLen } = rootState.predict
-    const { midi, bpm } = await storeToMidi(rootState, seedLen)
-    // const bpm = 120
-    // const midi = await defaultMidiCreation()
-    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
+    const { midi, bpm } = await storeToMidi(rootState.sequence, seedLen)
     dispatch('sequence/resetNotes', null, { root: true })
-    const result = await $backend.predictMidiDirect({ midi, nSteps, bpm })
+    const result = await $backend.predictMidi({ midi, nSteps, bpm })
     console.log('Result returned from predict:', result)
     const midiOut = bufferToMidi(result)
     commit('updateMidiSeq', midiOut)
     dispatch('sequence/loadMidi', midiOut, { root: true })
   },
-  async predictMidiLocal ({ commit, rootState, dispatch }) {
-    // const seq = rootState.sequence
-    const { nSteps, seedLen } = rootState.predict
-    const { midi, bpm } = await storeToMidi(rootState, seedLen)
-    // const bpm = 120
-    // const midi = await defaultMidiCreation()
-    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
-    dispatch('sequence/resetNotes', null, { root: true })
-    commit('updateMidiSeq', midi)
-
-    setTimeout(() => {
-      dispatch('sequence/loadMidi', midi, { root: true })
-    }, 2 * 1000)
-    // dispatch('sequence/loadMidi', midi, { root: true })
-  },
   async convertToXML ({ commit, rootState, dispatch }) {
-    // const seq = rootState.sequence
-    const { midi } = await storeToMidi(rootState, null)
-
-    // const bpm = 120
-    // const midi = await defaultMidiCreation()
-    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
-    // $backend.convertToXML({ midi }).then(result => {
-    //   console.log('Result returned from convertToXML:', result)
-    //   dispatch('updateMidiXML', result)
-    // })
+    const { midi } = await storeToMidi(rootState.sequence, null)
 
     let result = await $backend.convertToXML({ midi })
     console.log('Result returned from convertToXML:', result)
     commit('updateMidiXML', result)
     return result
   },
-  fetchScore ({ commit, rootState }) {
-    $backend.fetchScore(rootState.predict.pID).then(result => {
-      commit('updateScoreImage', result)
-    })
-  },
-  // updateSequenceStore ({ dispatch }, midi) {
-  //   dispatch('sequence/loadMidi', midi, { root: true })
-  // },
   fetchMidi ({ commit, dispatch }, { midiID, type }) {
     console.log('SJKFLSJFJSLKDFJ FETCH PRED MIDI CALLED')
     dispatch('sequence/resetNotes', null, { root: true })

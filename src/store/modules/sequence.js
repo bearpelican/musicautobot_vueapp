@@ -14,8 +14,7 @@ export const state = {
   previewingKeyNumber: null,
   appState: 'editing',
   bpm: 120,
-  progressTime: 0,
-  header: null
+  progressTime: 0
 }
 
 export const mutations = {
@@ -70,6 +69,7 @@ export const mutations = {
   },
   resetNotes (state) {
     state.progressTime = 0
+    state.prevNotes = []
     state.prevNotes = state.notes
     state.notes = []
   },
@@ -83,10 +83,9 @@ export const mutations = {
   },
   async loadMidi (state, midi) {
     console.log('Load midi called:')
-    let { notes, bpm, header } = midiToNotes(midi)
+    let { notes, bpm } = midiToNotes(midi)
     state.notes = notes
     state.bpm = bpm
-    state.header = header
   }
 }
 
