@@ -44,7 +44,7 @@ export function midiToNotes (midi) {
 
   const storeNotes = notes.filter(n => n.timing <= 10)
   console.log('Midi to notes:', storeNotes) // DEBUG
-  return { notes, bpm, header: midi.header }
+  return { notes: storeNotes, bpm, header: midi.header }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -66,7 +66,8 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
       return toneNote
     })
     .sort((a, b) => a.time - b.time)
-    .filter(n => n.time > 0)
+    .filter(n => n.duration > 0)
+  console.log('Notes to tone notes called:', toneNotes)
   return toneNotes
 }
 
@@ -123,50 +124,14 @@ export async function storeToMidi (state, seedLen = null) {
     storeNotes = storeNotes.filter(n => n.timing <= seedLen)
   }
   var midi = new Midi()
-  let notes = notesToToneNotes(storeNotes, bpm, false)
-  const track = midi.addTrack()
-  // const midiJson = {
-  //   header: defaultHeader(bpm),
-  //   tracks: [notes]
-  // }
   midi.header.fromJSON(defaultMidiHeader(bpm))
-  notes.forEach(n => {
-    track.addNote(n)
-  })
-  console.log(notes[0])
-  // track.addNote(notes[0])
-  console.log('Woohoo added all notes')
-  console.log(notes)
-  // write the output
-  return { midi, bpm }
-  // fs.writeFileSync("output.mid", new Buffer(midi.toArray()))
-}
-export async function storeToMidiOld (state, seedLen = null) {
-  // create a new midi file
-  const bpm = state.sequence.bpm
-  const header = state.sequence.header
-  var midi = new Midi()
-  midi.header = header
-  // midi.header.tempos.push({ bpm: state.sequence.bpm })
-  // add a track
-  const track = midi.addTrack()
-  let storeNotes = state.sequence.notes
-  if (seedLen != null) {
-    storeNotes = storeNotes.filter(n => n.timing <= seedLen)
-  }
-  console.log('Got store notes')
-  console.log(storeNotes)
-  console.log('BPM:', bpm)
+
   let notes = notesToToneNotes(storeNotes, bpm, false)
+  const track = midi.addTrack()
   notes.forEach(n => {
     track.addNote(n)
   })
-  console.log(notes[0])
-  // track.addNote(notes[0])
-  console.log('Woohoo added all notes')
-  console.log(notes)
-  console.log(track)
-  // write the output
+
+  console.log('Store to midi Notes:', notes)
   return { midi, bpm }
-  // fs.writeFileSync("output.mid", new Buffer(midi.toArray()))
 }
