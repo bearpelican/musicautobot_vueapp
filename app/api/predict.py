@@ -70,6 +70,25 @@ def predict_file():
     result = { 'result': pid }
     return jsonify(result)
 
+@app.route('/predict/midi/direct', methods=['POST'])
+def predict_midi_direct():
+    args = request.form.to_dict()
+    midi = request.files['midi'].read()
+    with open('/tmp/test.mid', 'wb') as f:
+        f.write(midi)
+    return send_from_directory('/tmp', 'test.mid', mimetype='audio/midi')
+
+    seed_np = midi2npenc(midi) # music21 can handle bytes directly
+    print(seed_np)
+    bpm = float(args['bpm'])
+    
+    # pred, seed, full = predict_from_midi(learn, midi=midi)
+    stream = npenc2stream(seed_np, bpm=bpm)
+    mid_out = stream.write("midi")
+    print('Wrote to temporary file:', mid_out)
+    p = Path(mid_out)
+    return send_from_directory(p.parent, p.name, mimetype='audio/midi')
+
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
     args = request.form.to_dict()

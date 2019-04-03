@@ -27,7 +27,6 @@ export class SynthPlugin {
         }
         case 'play': {
           this.playPart(state.sequence.notes, state.sequence.bpm)
-          // this.playTransport(state.sequence.notes, state.sequence.bpm)
           break
         }
         case 'stop': {
@@ -112,44 +111,6 @@ export class SynthPlugin {
     this.stopTimeout = setTimeout(() => {
       this.stop()
     }, (this.endTime(this.notes) + 1) * 1000)
-  }
-  playTransport (notes, bpm) {
-    const delay = 2
-
-    this.reset()
-
-    Tone.Transport.bpm.value = bpm
-    this.notes = notesToToneNotes(notes, bpm)
-
-    let endTime = 0
-    let currentTime = 0
-    let notesPlaying = []
-    this.notes.forEach((note, index) => {
-      Tone.Transport.schedule((time) => {
-        if (note.time > currentTime + 0.02) {
-          console.log(note.time, currentTime, note.time - currentTime)
-          notesPlaying = [note.index]
-          currentTime = note.time
-        } else {
-          notesPlaying.push(note.index)
-          this.store.commit('sequence/updateNotesPlaying', notesPlaying)
-          console.log('Notes playing:', notesPlaying)
-        }
-        this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration)
-      }, note.time)
-      endTime = Math.max(endTime, note.duration + note.time)
-    })
-    Tone.Transport.start()
-    this.progress = setInterval(() => {
-      // const position = tonePositionToTiming(Tone.Transport.position)
-      const time = secondsToTiming(Tone.Transport.seconds, bpm) - 1
-      // console.log('Seconds:', time)
-      this.store.commit('sequence/updateProgressTime', time)
-    }, 5)
-
-    this.stopTimeout = setTimeout(() => {
-      this.stop()
-    }, (endTime + delay) * 1000)
   }
 }
 

@@ -14,8 +14,7 @@ export const state = {
   previewingKeyNumber: null,
   appState: 'editing',
   bpm: 120,
-  progressTime: 0,
-  notesPlaying: []
+  progressTime: 0
 }
 
 export const mutations = {
@@ -67,9 +66,6 @@ export const mutations = {
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
-  },
-  updateNotesPlaying (state, notesPlaying) {
-    state.notesPlaying = notesPlaying
   },
   resetNotes (state) {
     state.progressTime = 0
@@ -125,8 +121,7 @@ export const actions = {
     'resetNotes',
     'loadMidi',
     'loadMidiFile',
-    'updateProgressTime',
-    'updateNotesPlaying'
+    'updateProgressTime'
   ])
 }
 
