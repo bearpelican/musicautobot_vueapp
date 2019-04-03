@@ -2,15 +2,10 @@ import Midi from '@tonejs/midi'
 import { secondsToTiming, timingToSeconds } from '@/lib/positioning'
 import _ from 'lodash'
 
-export async function midiFileToNotes (midiFile) {
-  // load a midi file in the browser
-  const midi = await Midi.fromUrl(midiFile)
-  return midiToNotes(midi)
-}
-
 export function midiToNotes (midi) {
   // the file name decoded from the first track
-  // const name = midi.name
+  const name = midi.name
+
   // get the tracks
   let notes = []
   const bpm = _.get(midi, `header.tempos[0].bpm`, 120)
@@ -24,10 +19,9 @@ export function midiToNotes (midi) {
         timing: secondsToTiming(note.time, bpm),
         length: secondsToTiming(note.duration, bpm)
       })
-      // note.midi, note.time, note.duration, note.name
     })
   })
-  return { notes, bpm }
+  return { notes, bpm, name }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -43,6 +37,7 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
       }
+      console.log('duration:', toneNote.duration, note.length, bpm)
       if (includeIndex) {
         toneNote['index'] = index
       }
@@ -79,9 +74,9 @@ export async function defaultMidiCreation () {
   return midi
 }
 
-function defaultMidiHeader (bpm) {
+function defaultMidiHeader ({ bpm, name = '' }) {
   const defaultHeader = {
-    name: '',
+    name,
     ppq: 220,
     meta: [],
     tempos: [{
@@ -97,9 +92,9 @@ function defaultMidiHeader (bpm) {
   return defaultHeader
 }
 
-function defaultTrackHeader () {
+function defaultTrackHeader ({ name = '' }) {
   return {
-    name: '',
+    name,
     channel: 0,
     instrument: {
       number: 0,
@@ -111,23 +106,23 @@ function defaultTrackHeader () {
   }
 }
 
-export async function storeToMidi (state, seedLen = null) {
+export function storeToMidi (state, seedLen = null) {
   // create a new midi file
-  const bpm = state.bpm
+  const { name, bpm } = state
   let storeNotes = state.notes
   if (seedLen != null) {
     storeNotes = storeNotes.filter(n => n.timing <= seedLen)
   }
   var midi = new Midi()
-  midi.header.fromJSON(defaultMidiHeader(bpm))
+  midi.header.fromJSON(defaultMidiHeader({ bpm, name }))
 
   let notes = notesToToneNotes(storeNotes, bpm, false)
+  console.log('Store to midi Notes:')
+  console.log(notes)
   const track = midi.addTrack()
-  track.fromJSON(defaultTrackHeader())
+  track.fromJSON(defaultTrackHeader({ name }))
   notes.forEach(n => {
     track.addNote(n)
   })
-
-  console.log('Store to midi Notes:', notes)
   return { midi, bpm }
 }
