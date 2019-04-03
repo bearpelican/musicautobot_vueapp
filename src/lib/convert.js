@@ -14,6 +14,9 @@ export function midiToNotes (midi) {
   // get the tracks
   let notes = []
   const bpm = _.get(midi, `header.tempos[0].bpm`, 120)
+  console.log('Loaded midi:')
+  console.log(midi)
+  console.log(JSON.stringify(midi.header))
   midi.tracks.forEach(track => {
     // tracks have notes and controlChanges
 
@@ -38,7 +41,10 @@ export function midiToNotes (midi) {
     // the track also has a channel and instrument
     // track.instrument.name
   })
-  return { notes, bpm }
+
+  const storeNotes = notes.filter(n => n.timing <= 10)
+  console.log('Midi to notes:', storeNotes) // DEBUG
+  return { notes, bpm, header: midi.header }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -90,10 +96,57 @@ export async function defaultMidiCreation () {
   return midi
 }
 
+function defaultMidiHeader (bpm) {
+  const defaultHeader = {
+    name: '',
+    ppq: 220,
+    meta: [],
+    tempos: [{
+      ticks: 0,
+      bpm: bpm
+    }],
+    timeSignatures: [{
+      ticks: 0,
+      timeSignature: [4, 4],
+      measures: 0
+    }]
+  }
+  return defaultHeader
+}
+
 export async function storeToMidi (state, seedLen = null) {
   // create a new midi file
   const bpm = state.sequence.bpm
+  // const header = state.sequence.header
+  let storeNotes = state.sequence.notes
+  if (seedLen != null) {
+    storeNotes = storeNotes.filter(n => n.timing <= seedLen)
+  }
   var midi = new Midi()
+  let notes = notesToToneNotes(storeNotes, bpm, false)
+  const track = midi.addTrack()
+  // const midiJson = {
+  //   header: defaultHeader(bpm),
+  //   tracks: [notes]
+  // }
+  midi.header.fromJSON(defaultMidiHeader(bpm))
+  notes.forEach(n => {
+    track.addNote(n)
+  })
+  console.log(notes[0])
+  // track.addNote(notes[0])
+  console.log('Woohoo added all notes')
+  console.log(notes)
+  // write the output
+  return { midi, bpm }
+  // fs.writeFileSync("output.mid", new Buffer(midi.toArray()))
+}
+export async function storeToMidiOld (state, seedLen = null) {
+  // create a new midi file
+  const bpm = state.sequence.bpm
+  const header = state.sequence.header
+  var midi = new Midi()
+  midi.header = header
   // midi.header.tempos.push({ bpm: state.sequence.bpm })
   // add a track
   const track = midi.addTrack()
@@ -103,6 +156,7 @@ export async function storeToMidi (state, seedLen = null) {
   }
   console.log('Got store notes')
   console.log(storeNotes)
+  console.log('BPM:', bpm)
   let notes = notesToToneNotes(storeNotes, bpm, false)
   notes.forEach(n => {
     track.addNote(n)
