@@ -3,8 +3,8 @@
       Number steps:<input v-model.number='selectSteps' type='number'>
       Seed Length:<input v-model.number='selectSeed' type='number'>
       <!-- <button v-on:click='predictMidi'>Predict</button> -->
-      <button v-on:click='predictMidiLocal'>Predict</button>
-      <!-- <button v-on:click='predictMidiDirect'>Predict</button> -->
+      <!-- <button v-on:click='predictMidiLocal'>Predict</button> -->
+      <button v-on:click='predictMidiDirect'>Predict</button>
     </div>
 </template>
 
