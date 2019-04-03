@@ -6,12 +6,12 @@
                     :custom-text="songDisplayName"
                     placeholder="select song">
     </model-list-select>
-    <div v-if="!this._.isEmpty(this.songItem) || this.debug">
+    <div v-if="showSequence">
       <song-meta></song-meta>
       <predict-controls></predict-controls>
     </div>
 
-    <div v-if="!this._.isEmpty(this.midiSeq) || this.debug">
+    <div v-if="showSequence">
       <hr />
       <sequencer></sequencer>
     </div>
@@ -29,6 +29,7 @@ import PredictControls from '@/components/vuepred/PredictControls'
 import Sequencer from '@/components/Sequencer'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
+const { mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'predict',
@@ -41,8 +42,9 @@ export default {
   },
   computed: {
     ...mapState(['songs', 'songItem', 'midiSeq']),
-    predictDisabled () {
-      return this._.isEmpty(this.songItem)
+    ...seqMapState(['notes']),
+    showSequence () {
+      return !this._.isEmpty(this.notes) || this.debug
     },
     selectedSong: {
       set (songItem) {
@@ -51,7 +53,7 @@ export default {
         this.updateSongItem(songItem)
         // (AS) TODO: figure out why we have to pass songItem to fetchMidi. Store should already be updated by then
         console.log('Fetching song midi')
-        this.fetchMidi({ midiID: songItem.sid, type: 'song' })
+        this.fetchMidi({ midiID: songItem.sid, type: 'song', name: songItem.title })
       },
       get () {
         return this.songItem

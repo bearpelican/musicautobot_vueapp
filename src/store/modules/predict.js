@@ -8,7 +8,6 @@ export const state = {
   nSteps: 150,
   seedLen: 10,
   scoreImage: null,
-  midiSeq: null,
   midiXML: null
 }
 
@@ -31,9 +30,6 @@ export const mutations = {
   updateScoreImage (state, scoreImage) {
     state.scoreImage = scoreImage
   },
-  updateMidiSeq (state, midiSeq) {
-    state.midiSeq = midiSeq
-  },
   updateMidiXML (state, xml) {
     state.midiXML = xml
   }
@@ -48,28 +44,26 @@ export const actions = {
   async predictMidi ({ commit, rootState, dispatch }) {
     // const seq = rootState.sequence
     const { nSteps, seedLen } = rootState.predict
-    const { midi, bpm } = await storeToMidi(rootState.sequence, seedLen)
+    const { midi, bpm } = storeToMidi(rootState.sequence, seedLen)
     dispatch('sequence/resetNotes', null, { root: true })
     const result = await $backend.predictMidi({ midi, nSteps, bpm })
     console.log('Result returned from predict:', result)
     const midiOut = bufferToMidi(result)
-    commit('updateMidiSeq', midiOut)
     dispatch('sequence/loadMidi', midiOut, { root: true })
   },
   async convertToXML ({ commit, rootState, dispatch }) {
-    const { midi } = await storeToMidi(rootState.sequence, null)
+    const { midi } = storeToMidi(rootState.sequence, null)
 
     let result = await $backend.convertToXML({ midi })
     console.log('Result returned from convertToXML:', result)
     commit('updateMidiXML', result)
     return result
   },
-  fetchMidi ({ commit, dispatch }, { midiID, type }) {
-    console.log('SJKFLSJFJSLKDFJ FETCH PRED MIDI CALLED')
+  fetchMidi ({ commit, dispatch }, { midiID, type, name }) {
+    console.log('Fetching midi:', midiID, type)
     dispatch('sequence/resetNotes', null, { root: true })
     $backend.fetchMidi({ midiID, type }).then(result => {
       const midi = bufferToMidi(result)
-      commit('updateMidiSeq', midi)
       dispatch('sequence/loadMidi', midi, { root: true })
     })
   }

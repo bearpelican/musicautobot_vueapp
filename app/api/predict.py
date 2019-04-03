@@ -56,7 +56,7 @@ def song_search():
 def predict_midi():
     args = request.form.to_dict()
     midi = request.files['midi'].read()
-    bpm = float(args['bpm'])
+    bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
 
     # debugging 1 - send exact midi back
     # with open('/tmp/test.mid', 'wb') as f:
@@ -87,7 +87,6 @@ def convert_midi():
     args = request.form.to_dict()
     if 'midi' in request.files:
         midi = request.files['midi'].read()
-        # print(midi_path.mimetype)
     elif 'midi_path'in args:
         midi = args['midi_path']
 

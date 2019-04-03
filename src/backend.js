@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { saveAs } from 'file-saver'
 
 let $axios = axios.create({
   baseURL: '/api/',
@@ -34,15 +35,11 @@ export default {
     const response = await $axios.post('predict/file', { np_file: file, n_words: nWords, seed_len: seedLen })
     return response.data.result
   },
-  async predictMidi ({ midi, nWords, seedLen = null, bpm = 120 }) {
+  async predictMidi ({ midi, nWords, bpm = 120 }) {
     const formData = new FormData()
-    const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
-    formData.append('midi', blob)
+    formData.append('midi', this.midiToBlob(midi))
     formData.append('n_words', nWords)
     formData.append('bpm', bpm)
-    if (seedLen != null) {
-      formData.append('seed_len', seedLen)
-    }
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -59,8 +56,7 @@ export default {
   },
   async convertToXML ({ midi }) {
     const formData = new FormData()
-    const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
-    formData.append('midi', blob)
+    formData.append('midi', this.midiToBlob(midi))
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -70,5 +66,11 @@ export default {
     console.log('Convert to xml response')
     console.log(response.data)
     return response.data
+  },
+  midiToBlob (midi) {
+    return new Blob([midi.toArray()], { type: 'audio/midi' })
+  },
+  saveMidi ({ midi, fileName }) {
+    saveAs(this.midiToBlob(midi), fileName)
   }
 }

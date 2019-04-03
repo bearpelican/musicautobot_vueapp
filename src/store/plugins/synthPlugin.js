@@ -26,7 +26,7 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.playPart(state.sequence.notes, state.sequence.bpm)
+          this.play(state.sequence.notes, state.sequence.bpm)
           break
         }
         case 'stop': {
@@ -68,14 +68,6 @@ export class SynthPlugin {
       this.synth.triggerRelease(Tone.Midi(this.currentPreview))
       this.currentPreview = null
     }
-  }
-  play (notes, bpm) {
-    this.reset()
-    this.notes = notesToToneNotes(notes, bpm)
-    const now = Tone.now() + 0.5
-    this.notes.forEach(note => {
-      this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, now + note.time)
-    })
   }
   endTime (notes) {
     let maxTime = 0

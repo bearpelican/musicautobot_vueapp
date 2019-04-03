@@ -1,7 +1,8 @@
 // import Vue from 'vue'
 // import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
-import { midiFileToNotes, midiToNotes } from '@/lib/convert'
+import $backend from '@/backend'
+import { midiToNotes, storeToMidi } from '@/lib/convert'
 
 // Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export const state = {
   previewingKeyNumber: null,
   appState: 'editing',
   bpm: 120,
+  name: 'placeholder',
   progressTime: 0
 }
 
@@ -73,19 +75,17 @@ export const mutations = {
     state.prevNotes = state.notes
     state.notes = []
   },
-  // updateNotes (state) {
-
-  // },
-  async loadMidiFile (state, file = './audio/sample/chorus_key_cmajor.mid') {
-    let { notes, bpm } = await midiFileToNotes(file)
-    state.notes = notes
-    state.bpm = bpm
-  },
   async loadMidi (state, midi) {
     console.log('Load midi called:')
-    let { notes, bpm } = midiToNotes(midi)
+    let { notes, bpm, name } = midiToNotes(midi)
     state.notes = notes
     state.bpm = bpm
+    state.name = name
+  },
+  async saveMidi (state) {
+    console.log('Save midi called:', state)
+    const { midi, name } = storeToMidi(state, null)
+    $backend.saveMidi({ midi, name })
   }
 }
 
@@ -120,10 +120,11 @@ export const actions = {
     'play',
     'stop',
     'finishMusic',
+    'updateProgressTime',
     'resetNotes',
     'loadMidi',
     'loadMidiFile',
-    'updateProgressTime'
+    'saveMidi'
   ])
 }
 
