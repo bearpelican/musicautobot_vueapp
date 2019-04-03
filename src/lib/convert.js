@@ -14,9 +14,6 @@ export function midiToNotes (midi) {
   // get the tracks
   let notes = []
   const bpm = _.get(midi, `header.tempos[0].bpm`, 120)
-  console.log('Loaded midi:')
-  console.log(midi)
-  console.log(JSON.stringify(midi.header))
   midi.tracks.forEach(track => {
     // tracks have notes and controlChanges
 
@@ -30,7 +27,7 @@ export function midiToNotes (midi) {
       // note.midi, note.time, note.duration, note.name
     })
   })
-  return { notes, bpm, header: midi.header }
+  return { notes, bpm }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -116,9 +113,8 @@ function defaultTrackHeader () {
 
 export async function storeToMidi (state, seedLen = null) {
   // create a new midi file
-  const bpm = state.sequence.bpm
-  // const header = state.sequence.header
-  let storeNotes = state.sequence.notes
+  const bpm = state.bpm
+  let storeNotes = state.notes
   if (seedLen != null) {
     storeNotes = storeNotes.filter(n => n.timing <= seedLen)
   }
