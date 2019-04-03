@@ -69,6 +69,20 @@ export const actions = {
       dispatch('fetchMidi', { midiID: result, type: 'pred' })
     })
   },
+  async predictMidiDirect ({ commit, rootState, dispatch }) {
+    // const seq = rootState.sequence
+    const { nSteps, seedLen } = rootState.predict
+    const { midi, bpm } = await storeToMidi(rootState, seedLen)
+    // const bpm = 120
+    // const midi = await defaultMidiCreation()
+    // const midi = await Midi.fromUrl('./audio/sample/chorus_key_cmajor.mid')
+    dispatch('sequence/resetNotes', null, { root: true })
+    const result = await $backend.predictMidiDirect({ midi, nSteps, bpm })
+    console.log('Result returned from predict:', result)
+    const midiOut = bufferToMidi(result)
+    commit('updateMidiSeq', midiOut)
+    dispatch('sequence/loadMidi', midiOut, { root: true })
+  },
   async convertToXML ({ commit, rootState, dispatch }) {
     // const seq = rootState.sequence
     const { midi } = await storeToMidi(rootState, null)

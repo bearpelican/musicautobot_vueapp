@@ -34,7 +34,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentNote.length
     }),
-    ...mapState(['isEditingScore', 'notesPlaying']),
+    ...mapState(['isEditingScore']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -68,7 +68,8 @@ div {
   height: 14px;
   background-color: #94ffbd;
   /* border: 2px solid #dbdcdd; */
-  cursor: move;
+  /* cursor: move; */
   z-index: 1;
+  opacity: 0.5;
 }
 </style>

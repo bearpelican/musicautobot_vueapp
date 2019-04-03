@@ -67,6 +67,25 @@ export default {
     return $axios.post('predict/midi', formData, config)
       .then(response => response.data.result)
   },
+  async predictMidiDirect ({ midi, nWords, seedLen = null, bpm = 120 }) {
+    const formData = new FormData()
+    const blob = new Blob([midi.toArray()], { type: 'audio/midi' })
+    formData.append('midi', blob)
+    formData.append('n_words', nWords)
+    formData.append('bpm', bpm)
+    if (seedLen != null) {
+      formData.append('seed_len', seedLen)
+    }
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      },
+      responseType: 'arraybuffer'
+    }
+    const response = await $axios.post('predict/midi/direct', formData, config)
+    console.log('Response:', response)
+    return response.data
+  },
   testScore () {
     return this.fetchScore('1de8021e-941b-4047-a881-223103266eba')
   },
@@ -75,14 +94,6 @@ export default {
   },
   fetchMidi ({ midiID, type }) {
     return $axios.get(`midi/${type}/${midiID}`, { responseType: 'arraybuffer' })
-      .then(response => response.data)
-  },
-  fetchPredMidi (pid) {
-    return $axios.get(`midi/pred/${pid}`, { responseType: 'arraybuffer' })
-      .then(response => response.data)
-  },
-  fetchSongMidi (sid) {
-    return $axios.get(`midi/song/${sid}`, { responseType: 'arraybuffer' })
       .then(response => response.data)
   },
   async convertToXML ({ midi }) {

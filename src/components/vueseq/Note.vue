@@ -39,7 +39,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentNote.length
     }),
-    ...mapState(['isEditingScore', 'notesPlaying', 'progressTime']),
+    ...mapState(['isEditingScore', 'progressTime']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -50,9 +50,6 @@ export default {
       return `${timingToPosition(this.length)}px`
     },
     color () {
-      // if (this.notesPlaying.indexOf(this.index) === -1) {
-      //   return '#64b5f6'
-      // }
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
         return '#000000'
       }
