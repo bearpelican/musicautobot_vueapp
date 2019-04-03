@@ -36,7 +36,7 @@ export default {
     }),
     ...mapState(['isEditingScore']),
     bottom () {
-      return `${keyNumberToOffset(this.keyNumber)}px`
+      return `${keyNumberToOffset(this.keyNumber) + 2}px`
     },
     left () {
       return `${timingToPosition(this.timing)}px`
@@ -65,12 +65,13 @@ export default {
 <style scoped>
 div {
   position: absolute;
-  height: 14px;
+  height: 10px;
   /* background-color: #94ffbd; */
   /* border: 2px solid #dbdcdd; */
   /* cursor: move; */
-  z-index: 1;
-  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.2;
   background: repeating-linear-gradient(
     45deg,
     #52803d,
