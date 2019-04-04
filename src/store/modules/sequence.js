@@ -23,7 +23,8 @@ export const state = {
   version: 0,
   bpm: 120,
   name: 'placeholder',
-  duration: 0
+  duration: 0,
+  synthType: 'piano'
 }
 
 export const mutations = {
@@ -76,7 +77,11 @@ export const mutations = {
   finishMusic () {
     state.appState = 'editing'
   },
-  changeSynth (state, { type }) {
+  updateSynthType (state, { synthType }) {
+    state.synthType = synthType
+  },
+  updateBPM (state, { bpm }) {
+    state.bpm = bpm
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
@@ -141,7 +146,8 @@ export const actions = {
     'stop',
     'finishMusic',
     'updateProgressTime',
-    'resetNotes'
+    'updateBPM',
+    'updateSynthType'
   ])
 }
 

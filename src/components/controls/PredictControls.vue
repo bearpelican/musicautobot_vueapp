@@ -6,26 +6,26 @@
 
     <md-speed-dial-content>
 
-      <md-button class="predict-control-group">
-        <div class='predHeader'>Randomness</div>
+      <md-button class="control-group">
+        <div class='control-group-header'>Randomness</div>
         <div>
-          <div class='predLabel'>Note:</div>
-          <b-form-input id="noteTemp" class="predSlider" type="range" v-model.number='selectNoteTemp' min="0.5" max="1.5" step="0.05"></b-form-input>
+          <div class='control-group-label'>Note: {{ this.noteTempPCT }}%</div>
+          <b-form-input id="noteTemp" class="control-group-slider" type="range" v-model.number='selectNoteTemp' min="0.5" max="1.5" step="0.05"></b-form-input>
         </div>
         <div>
-          <div class='predLabel'>Tempo:</div>
-          <b-form-input id="durTemp" class="predSlider" type="range" v-model.number='selectDurationTemp' min="0.5" max="1.1" step="0.05"></b-form-input>
+          <div class='control-group-label'>Duration: {{ this.durationTempPCT }}%</div>
+          <b-form-input id="durTemp" class="control-group-slider" type="range" v-model.number='selectDurationTemp' min="0.3" max="1.1" step="0.05"></b-form-input>
         </div>
       </md-button>
-      <md-button class="predict-control-group">
-        <div class='predHeader'>Timesteps</div>
+      <md-button class="control-group">
+        <div class='control-group-header'>Timesteps</div>
         <div>
-          <div class='predLabel'>Predict:</div>
-          <b-form-input id="predLen" class="predSlider" type="range" v-model.number='selectSteps' min="100" max="350" step="1"></b-form-input>
+          <div class='control-group-label'>Predict: {{ this.nSteps }}</div>
+          <b-form-input id="predLen" class="control-group-slider" type="range" v-model.number='selectSteps' min="100" max="350" step="1"></b-form-input>
         </div>
         <div>
-          <div class='predLabel'>Seed:</div>
-          <b-form-input id="seedLen" class="predSlider" type="range" v-model.number='selectSeed' min="1" max="50" step="1"></b-form-input>
+          <div class='control-group-label'>Seed: {{ this.seedLen }}</div>
+          <b-form-input id="seedLen" class="control-group-slider" type="range" v-model.number='selectSeed' min="1" max="50" step="1"></b-form-input>
         </div>
       </md-button>
     </md-speed-dial-content>
@@ -59,8 +59,14 @@ export default {
       get () { return this.noteTemp }
     },
     selectDurationTemp: {
-      set (seedLen) { this.updateDurationTemp(seedLen) },
-      get () { return this.noteTemp }
+      set (durationTemp) { this.updateDurationTemp(durationTemp) },
+      get () { return this.durationTemp }
+    },
+    noteTempPCT () {
+      return parseInt((this.noteTemp - 0.5) / 1 * 100)
+    },
+    durationTempPCT () {
+      return parseInt((this.durationTemp - 0.3) / 0.8 * 100)
     }
   },
   methods: {
@@ -77,20 +83,22 @@ export default {
 
 <style scoped>
 
-.predict-control-group {
-  height: 100px;
+.control-group {
+  height: 120px;
+  border-radius: 30px;
 }
 
-.predSlider {
-  width: 100px;
+.control-group-slider {
+  width: 120px;
 }
 
-.predLabel {
-  font-size: 0.5rem;
+.control-group-label {
+  font-size: 0.8rem;
   color: black;
+  margin-bottom: 0px;
 }
 
-.predHeader {
+.control-group-header {
   font-size: 0.8rem;
   color: black;
   margin: 5px 0px;

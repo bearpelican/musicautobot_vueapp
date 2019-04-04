@@ -5,19 +5,20 @@
     // note-list
     file-controls
     predict-controls
-    play-button
+    // play-button
+    sequence-controls
 </template>
 
 <script>
 import NoteList from '@/components/controls/NoteList'
-import PlayButton from '@/components/controls/PlayButton'
+import SequenceControls from '@/components/controls/SequenceControls'
 import FileControls from '@/components/controls/FileControls'
 import PredictControls from '@/components/controls/PredictControls'
 
 export default {
   components: {
     NoteList,
-    PlayButton,
+    SequenceControls,
     FileControls,
     PredictControls
   }
@@ -29,6 +30,7 @@ export default {
   background-color: #ffa07a80;
   /* background-color: #ffa07a; */
 }
+
 </style>
 
 <style scoped>
