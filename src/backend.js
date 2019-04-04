@@ -30,22 +30,14 @@ export default {
 
   // S3 hosting
   async fetchSongs () {
-    // const config = {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Headers': '*'
-    //   },
-    //   // responseType: 'arraybuffer'
-    // }
     const response = await $axios.get(S3BUCKET + 'json/htlist.json')
-    console.log(response)
+    // console.log(response)
     return response.data
   },
   async fetchMidi (midiID) {
     const rs = midiID.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `seed/${rs}.mid`, { responseType: 'arraybuffer' })
-    console.log(response)
+    // console.log(response)
     return response.data
   },
   // Old backend file serving (switched to s3)
