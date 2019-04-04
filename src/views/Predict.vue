@@ -1,11 +1,6 @@
 <template>
   <div class="predict">
-    <model-list-select :list="songs"
-                    v-model="selectedSong"
-                    option-value="sid"
-                    option-text="display"
-                    placeholder="select song">
-    </model-list-select>
+    <search></search>
     <div v-if="showSequence">
       <song-meta></song-meta>
     </div>
@@ -19,9 +14,9 @@
 
 <script>
 
-import { ModelListSelect } from 'vue-search-select'
 import SongMeta from '@/components/vueseq/SongMeta'
 import Sequencer from '@/components/Sequencer'
+import Search from '@/components/Search'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 const { mapState: seqMapState } = createNamespacedHelpers('sequence')
@@ -69,9 +64,10 @@ export default {
     this.fetchSongs()
   },
   components: {
-    ModelListSelect,
+    // ModelListSelect,
     SongMeta,
-    Sequencer
+    Sequencer,
+    Search
   }
 }
 
