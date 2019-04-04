@@ -39,7 +39,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentNote.length
     }),
-    ...mapState(['isEditingScore', 'progressTime']),
+    ...mapState(['isEditingScore', 'progressTime', 'version']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -56,6 +56,11 @@ export default {
       return '#64b5f6'
     }
   },
+  watch: {
+    version () {
+      this.reload()
+    }
+  },
   methods: {
     ...mapActions([
       'updateNoteLength',
@@ -63,6 +68,11 @@ export default {
       'updateNoteKeyNumber',
       'removeNote'
     ]),
+    reload () {
+      this.length = this.storeLength
+      this.timing = this.storeTiming
+      this.keyNumber = this.storeKeyNumber
+    },
     addListeners () {
       window.addEventListener('mousemove', this.updateEditing)
       window.addEventListener('mouseup', this.finishEditing)
