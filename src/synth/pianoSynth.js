@@ -1,10 +1,7 @@
 // import SynthBase from '@/synth/synthBase'
 import Tone from 'tone'
 
-export default function getPianoSynth () {
-  let audioContext = new AudioContext()
-  Tone.setContext(audioContext)
-
+export function createPianoSynth () {
   return new Tone.Sampler({
     'A0': 'A0.[mp3|ogg]',
     'C1': 'C1.[mp3|ogg]',
