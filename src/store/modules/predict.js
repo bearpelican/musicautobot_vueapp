@@ -1,5 +1,5 @@
 import $backend from '@/backend'
-import { bufferToMidi, storeToMidi } from '@/lib/convert'
+import { storeToMidi } from '@/lib/convert'
 
 export const state = {
   songs: [],
@@ -48,8 +48,7 @@ export const actions = {
     dispatch('sequence/resetNotes', null, { root: true })
     const result = await $backend.predictMidi({ midi, nSteps, bpm })
     console.log('Result returned from predict:', result)
-    const midiOut = bufferToMidi(result)
-    dispatch('sequence/loadMidi', midiOut, { root: true })
+    dispatch('sequence/loadMidiBuffer', result, { root: true })
   },
   async convertToXML ({ commit, rootState, dispatch }) {
     const { midi } = storeToMidi(rootState.sequence, null)
@@ -59,13 +58,11 @@ export const actions = {
     commit('updateMidiXML', result)
     return result
   },
-  fetchMidi ({ commit, dispatch }, { midiID, type, name }) {
+  async fetchMidi ({ commit, dispatch }, { midiID, type, name }) {
     console.log('Fetching midi:', midiID, type)
     dispatch('sequence/resetNotes', null, { root: true })
-    $backend.fetchMidi({ midiID, type }).then(result => {
-      const midi = bufferToMidi(result)
-      dispatch('sequence/loadMidi', midi, { root: true })
-    })
+    const result = await $backend.fetchMidi({ midiID, type })
+    dispatch('sequence/loadMidiBuffer', result, { root: true })
   }
 }
 

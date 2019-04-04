@@ -10,13 +10,14 @@
     )
       md-icon 'folder_open' -->
   <md-speed-dial>
-    <md-speed-dial-target v-on:click="saveMidi">
+    <md-speed-dial-target @click="exportMidi">
       <md-icon>save</md-icon>
     </md-speed-dial-target>
 
     <md-speed-dial-content>
-      <md-button class="md-icon-button" v-on:click="loadMidi">
+      <md-button class="md-icon-button" @click="$refs.fileUpload.click()">
         <md-icon>cloud_upload</md-icon>
+        <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
       </md-button>
 
       <!-- Save state for editing later? -->
@@ -44,10 +45,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loadMidiFile', 'saveMidi']),
-    loadMidi () {
-      console.log('Loading midi file')
-      // this.loadMidiFile()
+    ...mapActions(['importMidi', 'exportMidi']),
+    loadLocalFile (event) {
+      const file = this._.get(event, 'target.files[0]')
+      if (this._.get(file, 'name', '').split('.').pop() !== 'mid') {
+        console.log('Error loading file', file)
+        // (AS) todo: show error UI
+        return
+      }
+
+      const reader = new FileReader()
+      reader.onload = e => this.importMidi(e.target.result)
+      reader.readAsArrayBuffer(file)
     }
   }
 }

@@ -2,7 +2,7 @@
 // import Vuex from 'vuex'
 import { defaultNote } from '@/lib/config'
 import $backend from '@/backend'
-import { midiToNotes, storeToMidi } from '@/lib/convert'
+import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
 
 // Vue.use(Vuex)
 
@@ -69,28 +69,45 @@ export const mutations = {
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
   },
-  resetNotes (state) {
+  resetNotes (state, savePrevious = true) {
     state.progressTime = 0
     state.prevNotes = []
-    state.prevNotes = state.notes
+    if (savePrevious) state.prevNotes = state.notes
     state.notes = []
   },
-  async loadMidi (state, midi) {
-    console.log('Load midi called:')
-    let { notes, bpm, name } = midiToNotes(midi)
+  updateNotes (state, { notes, bpm, name }) {
     state.notes = notes
     state.bpm = bpm
     state.name = name
-  },
-  async saveMidi (state) {
-    console.log('Save midi called:', state)
-    const { midi, name } = storeToMidi(state, null)
-    $backend.saveMidi({ midi, name })
   }
 }
 
 export function generateSimpleActions (mutations) {
   const actions = {
+    async loadMidi ({ commit, dispatch }, midi) {
+      console.log('Load midi called.')
+      const { notes, bpm, name } = midiToNotes(midi)
+
+      setTimeout(() => {
+        commit('updateNotes', { notes, bpm, name })
+      }, (1 * 5))
+
+      // commit('updateNotes', { notes, bpm, name })
+    },
+    loadMidiBuffer ({ commit, dispatch }, midiBuffer) {
+      dispatch('loadMidi', bufferToMidi(midiBuffer))
+    },
+    async exportMidi ({ commit, state, dispatch }) {
+      console.log('Save midi called:', state)
+      const { midi, name } = storeToMidi(state, null)
+      $backend.exportMidi({ midi, name })
+    },
+    importMidi ({ commit, rootState, dispatch }, midiBuffer) {
+      commit('resetNotes', false)
+      console.log('Importing midi file')
+      console.log(midiBuffer)
+      dispatch('loadMidiBuffer', midiBuffer)
+    }
   }
   mutations.forEach(mutation => {
     actions[mutation] = ({ commit }, payload) => {
@@ -121,10 +138,7 @@ export const actions = {
     'stop',
     'finishMusic',
     'updateProgressTime',
-    'resetNotes',
-    'loadMidi',
-    'loadMidiFile',
-    'saveMidi'
+    'resetNotes'
   ])
 }
 
