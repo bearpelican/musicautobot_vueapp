@@ -33,7 +33,7 @@ export const mutations = {
     state.nSteps = noteTemp
   },
   updateDurationTemp (state, durationTemp) {
-    state.seedLen = durationTemp
+    state.durationTemp = durationTemp
   },
   updateScoreImage (state, scoreImage) {
     state.scoreImage = scoreImage
