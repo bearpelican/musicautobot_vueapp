@@ -1,6 +1,5 @@
 <template>
-  <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-selected="selectItem" md-placeholder='Search for a pop song as a starting point!'>
-  <!-- <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-opened="updateSearch" @md-selected="selectedSong"> -->
+  <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-selected="updateSongItem" md-placeholder='Search for a pop song as a starting point!'>
     <label>Select Seed</label>
     <template slot="md-autocomplete-item" slot-scope="{ item, term }">{{ item.display }}</template>
   </md-autocomplete>
@@ -16,11 +15,8 @@ export default {
   name: 'search',
   data () {
     return {
-      // list: [],
       results: [],
       term: null,
-      // item: {},
-      // sid: {},
       fuse: null,
       error: ''
     }
@@ -69,19 +65,11 @@ export default {
         'toLowerCase': () => label.display.toLowerCase(),
         'toString': () => label.display
       }))
-    },
-    selectItem (item) {
-      console.log('Item selected:', item)
-      this.updateSongItem(item)
-      this.fetchMidi(item)
     }
   },
   mounted () {
     // this.loadSearch()
   }
-  // components: {
-  //   ModelListSelect
-  // }
 }
 
 </script>

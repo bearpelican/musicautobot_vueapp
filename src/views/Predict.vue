@@ -18,7 +18,7 @@ import SongMeta from '@/components/vueseq/SongMeta'
 import Sequencer from '@/components/Sequencer'
 import Search from '@/components/Search'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
+const { mapActions, mapState } = createNamespacedHelpers('predict')
 const { mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
@@ -29,42 +29,26 @@ export default {
       debug: true
     }
   },
+  watch: {
+    songItem () {
+      console.log('Song item updated. Fetching midi now', this.songItem)
+      this.fetchMidi(this.songItem)
+    }
+  },
   computed: {
     ...mapState(['songs', 'songItem', 'midiSeq']),
     ...seqMapState(['notes']),
     showSequence () {
       return !this._.isEmpty(this.notes) || this.debug
-    },
-    selectedSong: {
-      set (songItem) {
-        console.log(songItem)
-        // this.$store.commit('updateSongItem', songItem)
-        this.updateSongItem(songItem)
-        // (AS) TODO: figure out why we have to pass songItem to fetchMidi. Store should already be updated by then
-        console.log('Fetching song midi')
-        this.fetchMidi({ midiID: songItem.sid, type: 'song', name: songItem.title })
-      },
-      get () {
-        return this.songItem
-      }
     }
   },
   methods: {
-    ...mapActions(['fetchSongs', 'fetchMidi']),
-    ...mapMutations(['updateSongItem']),
-    // Searching
-    songDisplayName (item) {
-      return `${item.artist} - ${item.title} - ${item.section}`
-    },
-    resetSearch () {
-      this.selectedSong = {}
-    }
+    ...mapActions(['fetchSongs', 'fetchMidi'])
   },
   mounted () {
     this.fetchSongs()
   },
   components: {
-    // ModelListSelect,
     SongMeta,
     Sequencer,
     Search
