@@ -37,7 +37,6 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
       }
-      console.log('duration:', toneNote.duration, note.length, bpm)
       if (includeIndex) {
         toneNote['index'] = index
       }

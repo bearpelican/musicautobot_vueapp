@@ -76,7 +76,7 @@ export class SynthPlugin {
     })
     return maxTime
   }
-  playPart (notes, bpm) {
+  play (notes, bpm) {
     // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
     this.reset()
     this.notes = notesToToneNotes(notes, bpm)

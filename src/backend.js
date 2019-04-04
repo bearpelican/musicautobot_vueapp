@@ -63,14 +63,14 @@ export default {
       }
     }
     const response = await $axios.post('midi/convert', formData, config)
-    console.log('Convert to xml response')
-    console.log(response.data)
+    // console.log('Convert to xml response')
+    // console.log(response.data)
     return response.data
   },
   midiToBlob (midi) {
     return new Blob([midi.toArray()], { type: 'audio/midi' })
   },
-  saveMidi ({ midi, fileName }) {
+  exportMidi ({ midi, fileName }) {
     saveAs(this.midiToBlob(midi), fileName)
   }
 }
