@@ -8,11 +8,13 @@ let $axios = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
+const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/'
+
 // Request Interceptor
-$axios.interceptors.request.use(function (config) {
-  config.headers['Authorization'] = 'Fake Token'
-  return config
-})
+// $axios.interceptors.request.use(function (config) {
+//   config.headers['Authorization'] = 'Fake Token'
+//   return config
+// })
 
 // Response Interceptor to handle and log errors
 $axios.interceptors.response.use(function (response) {
@@ -26,10 +28,36 @@ $axios.interceptors.response.use(function (response) {
 export default {
   axios: $axios,
 
+  // S3 hosting
   async fetchSongs () {
-    const response = await $axios.get('songs/all')
-    return response.data.result
+    // const config = {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Access-Control-Allow-Origin': '*',
+    //     'Access-Control-Allow-Headers': '*'
+    //   },
+    //   // responseType: 'arraybuffer'
+    // }
+    const response = await $axios.get(S3BUCKET + 'json/htlist.json')
+    console.log(response)
+    return response.data
   },
+  async fetchMidi (midiID) {
+    const rs = midiID.split('').reverse().join('')
+    const response = await $axios.get(S3BUCKET + `seed/${rs}.mid`, { responseType: 'arraybuffer' })
+    console.log(response)
+    return response.data
+  },
+  // Old backend file serving (switched to s3)
+  // async fetchSongs () {
+  //   const response = await $axios.get('songs/all')
+  //   return response.data.result
+  // },
+  // async fetchMidi ({ midiID, type }) {
+  //   const response = await $axios.get(`midi/${type}/${midiID}`, { responseType: 'arraybuffer' })
+  //   return response.data
+  // },
+
   // Predict
   async predictFile (file, nWords, seedLen) {
     const response = await $axios.post('predict/file', { np_file: file, n_words: nWords, seed_len: seedLen })
@@ -50,10 +78,8 @@ export default {
     console.log('Response:', response)
     return response.data
   },
-  async fetchMidi ({ midiID, type }) {
-    const response = await $axios.get(`midi/${type}/${midiID}`, { responseType: 'arraybuffer' })
-    return response.data
-  },
+
+  // Score viewing - perhaps create a separate server
   async convertToXML ({ midi }) {
     const formData = new FormData()
     formData.append('midi', this.midiToBlob(midi))

@@ -2,8 +2,8 @@
   <div class="predict">
     <model-list-select :list="songs"
                     v-model="selectedSong"
-                    option-value="midi"
-                    :custom-text="songDisplayName"
+                    option-value="sid"
+                    option-text="display"
                     placeholder="select song">
     </model-list-select>
     <div v-if="showSequence">
@@ -14,9 +14,6 @@
       <hr />
       <sequencer></sequencer>
     </div>
-
-    <!-- <img class='score' :src="scoreImageSrc" alt=""> -->
-
   </div>
 </template>
 
@@ -33,7 +30,6 @@ export default {
   name: 'predict',
   data () {
     return {
-      scoreImageSrc: null,
       error: '',
       debug: true
     }
@@ -71,9 +67,6 @@ export default {
   },
   mounted () {
     this.fetchSongs()
-    // this.testScore()
-    // this.testMidi()
-    // this.scoreImageSrc = require("@/assets/jtech-logo.png")
   },
   components: {
     ModelListSelect,
