@@ -52,7 +52,7 @@ export const mutations = {
   scroll (state, scrollPosition) {
     state.scrollPosition = scrollPosition
   },
-  startPreview (state, keyNumber) {
+  startPreview (state, { keyNumber, timeout }) {
     state.previewingKeyNumber = keyNumber
   },
   finishPreview (state) {

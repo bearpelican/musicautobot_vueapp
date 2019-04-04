@@ -66,7 +66,8 @@ export default {
       'updateNoteLength',
       'updateNoteTiming',
       'updateNoteKeyNumber',
-      'removeNote'
+      'removeNote',
+      'startPreview'
     ]),
     reload () {
       this.length = this.storeLength
@@ -118,6 +119,9 @@ export default {
           nextKeyNumber = this.storeKeyNumber +
             Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
           console.log('Next key number:', nextKeyNumber)
+          if (this.keyNumber !== nextKeyNumber) {
+            this.startPreview({ keyNumber: nextKeyNumber, timeout: 2 })
+          }
           break
         }
         case 'editing-start-time': {
