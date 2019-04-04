@@ -76,6 +76,8 @@ export const mutations = {
   finishMusic () {
     state.appState = 'editing'
   },
+  changeSynth (state, { type }) {
+  },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
   },

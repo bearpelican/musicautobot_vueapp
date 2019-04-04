@@ -1,5 +1,7 @@
 import { notesToToneNotes } from '@/lib/convert'
 import { secondsToTiming } from '@/lib/positioning'
+import { createPianoSynth } from '@/synth/pianoSynth'
+import { createDefaultPolySynth } from '@/synth/defaultSynths'
 import Tone from 'tone'
 import _ from 'lodash'
 
@@ -18,6 +20,10 @@ export class SynthPlugin {
 
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
+        case 'changeSynth': {
+          this.changeSynth(mutation.payload)
+          break
+        }
         case 'startPreview': {
           this.startPreview(mutation.payload)
           break
@@ -58,6 +64,14 @@ export class SynthPlugin {
     // Tone.Transport.cancel(0)
     // this.synth.unsync().sync()
     this.notes = []
+  }
+  changeSynth ({ type }) {
+    this.synth.unsync()
+    if (type === 'test') {
+      this.synth = createDefaultPolySynth()
+    } else {
+      this.synth = createPianoSynth()
+    }
   }
   startPreview ({ keyNumber, timeout }) {
     this.finishPreview()
@@ -110,45 +124,6 @@ export class SynthPlugin {
       this.stop()
     }, (this.endTime(this.notes) + 1) * 1000)
   }
-}
-
-function createPianoSynth () {
-  const synth = new Tone.Sampler({
-    'A0': 'A0.[mp3|ogg]',
-    'C1': 'C1.[mp3|ogg]',
-    'D#1': 'Ds1.[mp3|ogg]',
-    'F#1': 'Fs1.[mp3|ogg]',
-    'A1': 'A1.[mp3|ogg]',
-    'C2': 'C2.[mp3|ogg]',
-    'D#2': 'Ds2.[mp3|ogg]',
-    'F#2': 'Fs2.[mp3|ogg]',
-    'A2': 'A2.[mp3|ogg]',
-    'C3': 'C3.[mp3|ogg]',
-    'D#3': 'Ds3.[mp3|ogg]',
-    'F#3': 'Fs3.[mp3|ogg]',
-    'A3': 'A3.[mp3|ogg]',
-    'C4': 'C4.[mp3|ogg]',
-    'D#4': 'Ds4.[mp3|ogg]',
-    'F#4': 'Fs4.[mp3|ogg]',
-    'A4': 'A4.[mp3|ogg]',
-    'C5': 'C5.[mp3|ogg]',
-    'D#5': 'Ds5.[mp3|ogg]',
-    'F#5': 'Fs5.[mp3|ogg]',
-    'A5': 'A5.[mp3|ogg]',
-    'C6': 'C6.[mp3|ogg]',
-    'D#6': 'Ds6.[mp3|ogg]',
-    'F#6': 'Fs6.[mp3|ogg]',
-    'A6': 'A6.[mp3|ogg]',
-    'C7': 'C7.[mp3|ogg]',
-    'D#7': 'Ds7.[mp3|ogg]',
-    'F#7': 'Fs7.[mp3|ogg]',
-    'A7': 'A7.[mp3|ogg]',
-    'C8': 'C8.[mp3|ogg]'
-  }, (synth) => {
-    // console.log('sdjfklsdjfslkdjf')
-    // debugSynth2(synth)
-  }, './audio/salamander/').toMaster()
-  return synth
 }
 
 // function createSimpleSynth () {
