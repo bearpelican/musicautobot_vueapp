@@ -1,6 +1,6 @@
 // import Vue from 'vue'
 // import Vuex from 'vuex'
-import { defaultNoteLength } from '@/lib/config'
+import { defaultLength } from '@/lib/config'
 import $backend from '@/backend'
 import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
 
@@ -9,7 +9,8 @@ import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
 export const state = {
   // UI state
   progressTime: 0,
-  currentNoteLength: defaultNoteLength,
+  currentLength: defaultLength,
+  selectedNote: null,
   isEditingScore: false,
   scrollPosition: 0,
   previewingKeyNumber: null,
@@ -26,8 +27,11 @@ export const state = {
 }
 
 export const mutations = {
-  updateCurrentNoteLength (state, noteLength) {
-    state.currentNoteLength = noteLength
+  updateCurrentLength (state, noteLength) {
+    state.currentLength = noteLength
+  },
+  updateSelectedNote (state, index) {
+    state.selectedNote = index
   },
   addNote (state, { key, timing, length }) {
     state.notes.push({
@@ -120,7 +124,7 @@ export function generateSimpleActions (mutations) {
 
 export const actions = {
   ...generateSimpleActions([
-    'updateCurrentNoteLength',
+    'updateCurrentLength',
     'addNote',
     'removeNote',
     'updateNoteLength',

@@ -1,18 +1,18 @@
-const notes = [
-  { label: 'whole', length: 4, font: 'A' },
-  { label: 'half', length: 2, font: 'B' },
-  { label: 'quarter', length: 1, font: 'C' },
-  { label: 'eighth', length: 0.5, font: 'D' },
-  { label: 'sixteenth', length: 0.25, font: 'E' },
-  { label: '32nd', length: 0.125, font: 'F' }
+const noteLengths = [
+  { label: 'whole', value: 4, font: 'A' },
+  { label: 'half', value: 2, font: 'B' },
+  { label: 'quarter', value: 1, font: 'C' },
+  { label: 'eighth', value: 0.5, font: 'D' },
+  { label: 'sixteenth', value: 0.25, font: 'E' },
+  { label: '32nd', value: 0.125, font: 'F' }
 ]
 
-export default notes
+export default noteLengths
 
-export function getNoteFromLength (length) {
-  for (let note of notes) {
-    if (note.length === length) {
-      return note
+export function getLengthFromValue (value) {
+  for (let noteLength of noteLengths) {
+    if (noteLength.value === value) {
+      return noteLength
     }
   }
 }

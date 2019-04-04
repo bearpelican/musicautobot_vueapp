@@ -1,18 +1,18 @@
 <template lang="pug">
   md-speed-dial.md-fab-bottom-right(md-mode="scale")
     md-button.md-fab.note-preview(md-fab-trigger)
-      | {{ currentNote.font }}
+      | {{ currentLength.font }}
     note-list-item(
-      v-for="(note, index) in notes",
+      v-for="(noteLength, index) in noteLengths",
       :key="index"
-      :note="note"
+      :noteLength="noteLength"
     )
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import NoteListItem from '@/components/controls/NoteListItem'
-import notes from '@/lib/getNotes'
+import noteLengths from '@/lib/getNotes'
 const { mapState } = createNamespacedHelpers('sequence')
 
 export default {
@@ -20,11 +20,11 @@ export default {
     NoteListItem
   },
   data () {
-    return { notes }
+    return { noteLengths }
   },
   computed: {
     ...mapState([
-      'currentNote'
+      'currentLength'
     ])
   }
 }
