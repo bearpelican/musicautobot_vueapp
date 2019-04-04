@@ -1,6 +1,6 @@
 <template lang="pug">
   md-button.md-fab.md-mini.md-clean.button(@click.native="click")
-    | {{ note.font }}
+    | {{ noteLength.font }}
 </template>
 
 <script>
@@ -9,14 +9,14 @@ const { mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   props: {
-    note: Object
+    noteLength: Object
   },
   methods: {
     ...mapActions([
-      'updateCurrentNoteLength'
+      'updateCurrentLength'
     ]),
     click () {
-      this.updateCurrentNoteLength(this.note)
+      this.updateCurrentLength(this.noteLength)
     }
   }
 }

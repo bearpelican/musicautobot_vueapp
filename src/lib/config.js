@@ -1,6 +1,6 @@
-import { getNoteFromLength } from '@/lib/getNotes'
+import { getLengthFromValue } from '@/lib/getNotes'
 
-export const defaultNoteLength = getNoteFromLength(1)
+export const defaultLength = getLengthFromValue(1)
 export const pixelPerBeat = 50
 export const keyWidth = 14
 export const defaultBeats = 200

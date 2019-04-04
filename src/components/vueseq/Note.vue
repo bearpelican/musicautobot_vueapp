@@ -1,7 +1,7 @@
 <template lang="pug">
   div(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
-    .selection.begin(@mousedown.stop="startEditingStartTime")
-    .selection.end(@mousedown.stop="startEditingEndTime")
+    .selection.begin(@mousedown.stop="startEditingStartTime" :style="{ 'background-color': selectionColor }")
+    .selection.end(@mousedown.stop="startEditingEndTime" :style="{ 'background-color': selectionColor }")
 </template>
 
 <script>
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     ...mapState({
-      minimumUnit: state => state.currentNote.length
+      minimumUnit: state => state.currentLength.value
     }),
     ...mapState(['isEditingScore', 'progressTime', 'version']),
     bottom () {
@@ -48,6 +48,13 @@ export default {
     },
     width () {
       return `${timingToPosition(this.length)}px`
+    },
+    selectionColor () {
+      if (this.length === 0) {
+        console.log('Length:', this.length)
+        return '#d32c2c'
+      }
+      return '#3287ce'
     },
     color () {
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
