@@ -45,10 +45,9 @@ export const actions = {
     // const seq = rootState.sequence
     const { nSteps, seedLen } = rootState.predict
     const { midi, bpm } = storeToMidi(rootState.sequence, seedLen)
-    dispatch('sequence/resetNotes', null, { root: true })
-    const result = await $backend.predictMidi({ midi, nSteps, bpm })
-    console.log('Result returned from predict:', result)
-    dispatch('sequence/loadMidiBuffer', result, { root: true })
+    const midiBuffer = await $backend.predictMidi({ midi, nSteps, bpm })
+    console.log('Result returned from predict:', midiBuffer)
+    dispatch('sequence/loadMidiBuffer', { midiBuffer }, { root: true })
   },
   async convertToXML ({ commit, rootState, dispatch }) {
     const { midi } = storeToMidi(rootState.sequence, null)
@@ -60,9 +59,8 @@ export const actions = {
   },
   async fetchMidi ({ commit, dispatch }, { midiID, type, name }) {
     console.log('Fetching midi:', midiID, type)
-    dispatch('sequence/resetNotes', null, { root: true })
-    const result = await $backend.fetchMidi({ midiID, type })
-    dispatch('sequence/loadMidiBuffer', result, { root: true })
+    const midiBuffer = await $backend.fetchMidi({ midiID, type })
+    dispatch('sequence/loadMidiBuffer', { midiBuffer, savePrevious: false }, { root: true })
   }
 }
 

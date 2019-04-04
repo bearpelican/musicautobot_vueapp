@@ -12,6 +12,7 @@ export const state = {
   prevNotes: [],
   isEditingScore: false,
   scrollPosition: 0,
+  version: 0,
   previewingKeyNumber: null,
   appState: 'editing',
   bpm: 120,
@@ -69,13 +70,11 @@ export const mutations = {
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
   },
-  resetNotes (state, savePrevious = true) {
+  updateNotes (state, { notes, bpm, name, savePrevious = true }) {
+    state.version += 1
     state.progressTime = 0
-    state.prevNotes = []
-    if (savePrevious) state.prevNotes = state.notes
-    state.notes = []
-  },
-  updateNotes (state, { notes, bpm, name }) {
+    console.log('Version:', state.version)
+    state.prevNotes = savePrevious ? state.notes : []
     state.notes = notes
     state.bpm = bpm
     state.name = name
@@ -84,29 +83,22 @@ export const mutations = {
 
 export function generateSimpleActions (mutations) {
   const actions = {
-    async loadMidi ({ commit, dispatch }, midi) {
+    loadMidi ({ commit, dispatch }, { midi, savePrevious = true }) {
       console.log('Load midi called.')
       const { notes, bpm, name } = midiToNotes(midi)
-
-      setTimeout(() => {
-        commit('updateNotes', { notes, bpm, name })
-      }, (1 * 5))
-
-      // commit('updateNotes', { notes, bpm, name })
+      commit('updateNotes', { notes, bpm, name, savePrevious })
     },
-    loadMidiBuffer ({ commit, dispatch }, midiBuffer) {
-      dispatch('loadMidi', bufferToMidi(midiBuffer))
+    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, savePrevious = true }) {
+      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), savePrevious })
     },
-    async exportMidi ({ commit, state, dispatch }) {
+    exportMidi ({ commit, state, dispatch }) {
       console.log('Save midi called:', state)
       const { midi, name } = storeToMidi(state, null)
       $backend.exportMidi({ midi, name })
     },
     importMidi ({ commit, rootState, dispatch }, midiBuffer) {
-      commit('resetNotes', false)
       console.log('Importing midi file')
-      console.log(midiBuffer)
-      dispatch('loadMidiBuffer', midiBuffer)
+      dispatch('loadMidiBuffer', { midiBuffer, savePrevious: false })
     }
   }
   mutations.forEach(mutation => {
