@@ -9,7 +9,7 @@
 <script>
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
-import ButtonContainer from '@/components/vueseq/ButtonContainer'
+import ButtonContainer from '@/components/controls/ButtonContainer'
 // import "./style.css";
 
 export default {
@@ -26,7 +26,6 @@ export default {
 
 @font-face {
   font-family: "notes";
-  /* src: url("../assets/notes.woff") */
   src: "@/assets/notes.woff";
 }
 

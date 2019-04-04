@@ -7,6 +7,8 @@ export const state = {
   songItem: {},
   nSteps: 150,
   seedLen: 10,
+  durationTemp: 0.5,
+  noteTemp: 1.2,
   scoreImage: null,
   midiXML: null
 }
@@ -26,6 +28,12 @@ export const mutations = {
   },
   updateSeedLen (state, seedLen) {
     state.seedLen = seedLen
+  },
+  updateNoteTemp (state, noteTemp) {
+    state.nSteps = noteTemp
+  },
+  updateDurationTemp (state, durationTemp) {
+    state.seedLen = durationTemp
   },
   updateScoreImage (state, scoreImage) {
     state.scoreImage = scoreImage
