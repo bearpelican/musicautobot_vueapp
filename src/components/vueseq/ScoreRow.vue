@@ -22,7 +22,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addNote', 'startEditingScore', 'finishEditingScore']),
+    ...mapActions(['addNote', 'startEditingScore', 'finishEditingScore', 'startPreview']),
     add (event) {
       if (this.appState === 'playing') return
       this.startEditingScore()
@@ -32,6 +32,7 @@ export default {
         timing: positionToTiming(event.offsetX, this.currentNote.length),
         length: this.currentNote.length
       })
+      this.startPreview({ keyNumber: this.keyNumber, timeout: 2 })
     },
     end () {
       this.finishEditingScore()

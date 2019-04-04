@@ -33,7 +33,7 @@ export default {
     ...mapActions(['startPreview', 'finishPreview']),
     mousedown () {
       window.addEventListener('mouseup', this.mouseup)
-      this.startPreview(getKeyNumber(this.pitch))
+      this.startPreview({ keyNumber: getKeyNumber(this.pitch) })
     },
     mouseup () {
       window.removeEventListener('mouseup', this.mouseup)

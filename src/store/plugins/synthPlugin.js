@@ -1,6 +1,7 @@
 import { notesToToneNotes } from '@/lib/convert'
 import { secondsToTiming } from '@/lib/positioning'
 import Tone from 'tone'
+import _ from 'lodash'
 
 export class SynthPlugin {
   constructor (store) {
@@ -58,10 +59,15 @@ export class SynthPlugin {
     // this.synth.unsync().sync()
     this.notes = []
   }
-  startPreview (keyNumber) {
+  startPreview ({ keyNumber, timeout }) {
     this.finishPreview()
     this.synth.triggerAttack(Tone.Midi(keyNumber))
     this.currentPreview = keyNumber
+    if (_.isNumber(timeout)) {
+      setTimeout(() => {
+        this.finishPreview()
+      }, (timeout) * 1000)
+    }
   }
   finishPreview () {
     if (this.currentPreview != null) {
@@ -85,7 +91,7 @@ export class SynthPlugin {
 
     // pass in the note events from one of the tracks as the second argument to Tone.Part
     let midiPart = new Tone.Part((time, note) => {
-      console.log('TIme:', time)
+      // console.log('TIme:', time)
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time)
       // this.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
     }, this.notes)
