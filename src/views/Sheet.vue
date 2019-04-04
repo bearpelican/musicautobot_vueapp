@@ -30,7 +30,7 @@ export default {
   },
   mounted () {
     console.log(OpenSheetMusicDisplay)
-    this.osmd = new OpenSheetMusicDisplay('sheet-container', { drawingParameters: 'compact' })
+    this.osmd = new OpenSheetMusicDisplay('sheet-container', { drawingParameters: 'compact', drawPartNames: false })
     // this.loadSheet('./audio/sample/chorus_key_cmajor.xml')
   },
   methods: {

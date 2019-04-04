@@ -13,10 +13,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updateCurrentNote'
+      'updateCurrentNoteLength'
     ]),
     click () {
-      this.updateCurrentNote(this.note)
+      this.updateCurrentNoteLength(this.note)
     }
   }
 }

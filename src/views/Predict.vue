@@ -8,7 +8,6 @@
     </model-list-select>
     <div v-if="showSequence">
       <song-meta></song-meta>
-      <predict-controls></predict-controls>
     </div>
 
     <div v-if="showSequence">
@@ -24,8 +23,7 @@
 <script>
 
 import { ModelListSelect } from 'vue-search-select'
-import SongMeta from '@/components/vuepred/SongMeta'
-import PredictControls from '@/components/vuepred/PredictControls'
+import SongMeta from '@/components/vueseq/SongMeta'
 import Sequencer from '@/components/Sequencer'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
@@ -37,7 +35,7 @@ export default {
     return {
       scoreImageSrc: null,
       error: '',
-      debug: false
+      debug: true
     }
   },
   computed: {
@@ -80,7 +78,6 @@ export default {
   components: {
     ModelListSelect,
     SongMeta,
-    PredictControls,
     Sequencer
   }
 }

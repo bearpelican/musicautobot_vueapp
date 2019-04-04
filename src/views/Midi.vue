@@ -10,7 +10,7 @@
 <script>
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
-import ButtonContainer from '@/components/vueseq/ButtonContainer'
+import ButtonContainer from '@/components/controls/ButtonContainer'
 // import "./style.css";
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('sequence')

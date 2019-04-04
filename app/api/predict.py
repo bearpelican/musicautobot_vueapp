@@ -90,6 +90,9 @@ def convert_midi():
     elif 'midi_path'in args:
         midi = args['midi_path']
 
-    stream = file2stream(midi).chordify() # 1.
+    stream = file2stream(midi) # 1.
+    # stream = file2stream(midi).chordify() # 1.
+    stream.show('text')
+    stream.show('musicxml')
     stream_out = Path(stream.write('musicxml'))
     return send_from_directory(stream_out.parent, stream_out.name, mimetype='xml')

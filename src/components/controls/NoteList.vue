@@ -11,7 +11,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import NoteListItem from '@/components/vueseq/NoteListItem'
+import NoteListItem from '@/components/controls/NoteListItem'
 import notes from '@/lib/getNotes'
 const { mapState } = createNamespacedHelpers('sequence')
 
