@@ -27,9 +27,9 @@ export default {
     ...mapState(['songs', 'songItem']),
     placeholder () {
       if (this._.has(this.songItem, 'sid')) {
-        return 'Select a new seed...'
+        return 'Select a new song...'
       }
-      return 'Get started by selecting a seed to generate from! Examples: Bach, EDM, La Bamba...'
+      return 'Search for a song... '
     }
   },
   watch: {

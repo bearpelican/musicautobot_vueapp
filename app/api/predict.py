@@ -21,18 +21,16 @@ data = load_data(path=path, cache_name='tmp/hook', **config)
 learn = load_learner(data, config, load_path)
 htlist = get_htlist(path, source_dir)
 
-DEF_TYPE = 'full'
+# @app.route('/songs/all', methods=['GET', 'POST'])
+# def song_list():
+#     # get song name and artist from csv
+#     result = {
+#         'result': list(htlist.values())[:100]
+#         # 'result': list(htlist.values())
+#     }
+#     return jsonify(result)
 
-@app.route('/songs/all', methods=['GET', 'POST'])
-def song_list():
-    # get song name and artist from csv
-    result = {
-        'result': list(htlist.values())[:100]
-        # 'result': list(htlist.values())
-    }
-    return jsonify(result)
-
-# originally for backend searching
+# # originally for backend searching
 # @app.route('/songs/list')
 # def song_list():
 #     # get song name and artist from csv
@@ -43,14 +41,14 @@ def song_list():
 #     }
 #     return jsonify(result)
 
-@app.route('/songs/search', methods=['GET', 'POST'])
-def song_search():
-    keywords = request.values.get('keywords', '')
-    res = search_htlist(htlist, config, keywords)
-    result = {
-        'result': res
-    }
-    return jsonify(result)
+# @app.route('/songs/search', methods=['GET', 'POST'])
+# def song_search():
+#     keywords = request.values.get('keywords', '')
+#     res = search_htlist(htlist, config, keywords)
+#     result = {
+#         'result': res
+#     }
+#     return jsonify(result)
 
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
