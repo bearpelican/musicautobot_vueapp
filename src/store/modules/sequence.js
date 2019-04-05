@@ -3,6 +3,7 @@
 import { defaultLength } from '@/lib/config'
 import $backend from '@/backend'
 import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
+import _ from 'lodash'
 
 // Vue.use(Vuex)
 
@@ -22,7 +23,7 @@ export const state = {
   // Metadata
   version: 0,
   bpm: 120,
-  name: 'placeholder',
+  name: 'Placeholder',
   duration: 0,
   synthType: 'piano'
 }
@@ -80,8 +81,11 @@ export const mutations = {
   updateSynthType (state, { synthType }) {
     state.synthType = synthType
   },
-  updateBPM (state, { bpm }) {
+  updateBPM (state, bpm) {
     state.bpm = bpm
+  },
+  updateName (state, name) {
+    state.name = name
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
@@ -99,14 +103,15 @@ export const mutations = {
 
 export function generateSimpleActions (mutations) {
   const actions = {
-    loadMidi ({ commit, dispatch }, { midi, savePrevious = true }) {
+    loadMidi ({ commit, state, dispatch }, { midi, name, savePrevious = true }) {
       console.log('Load midi called.')
-      const { notes, bpm, name } = midiToNotes(midi)
+      const { notes, name: midiName, bpm } = midiToNotes(midi)
+      if (_.isEmpty(name)) name = midiName
       console.log('Loaded bpm, name:', bpm, name)
       commit('updateNotes', { notes, bpm, name, savePrevious })
     },
-    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, savePrevious = true }) {
-      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), savePrevious })
+    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, name, savePrevious = true }) {
+      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), name, savePrevious })
     },
     exportMidi ({ commit, state, dispatch }) {
       console.log('Save midi called:', state)
@@ -148,7 +153,8 @@ export const actions = {
     'finishMusic',
     'updateProgressTime',
     'updateBPM',
-    'updateSynthType'
+    'updateSynthType',
+    'updateName'
   ])
 }
 

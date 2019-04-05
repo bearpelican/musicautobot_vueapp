@@ -10,7 +10,8 @@ export const state = {
   durationTemp: 0.5,
   noteTemp: 1.2,
   scoreImage: null,
-  midiXML: null
+  midiXML: null,
+  loading: false
 }
 
 export const mutations = {
@@ -30,7 +31,7 @@ export const mutations = {
     state.seedLen = seedLen
   },
   updateNoteTemp (state, noteTemp) {
-    state.nSteps = noteTemp
+    state.noteTemp = noteTemp
   },
   updateDurationTemp (state, durationTemp) {
     state.durationTemp = durationTemp
@@ -40,6 +41,9 @@ export const mutations = {
   },
   updateMidiXML (state, xml) {
     state.midiXML = xml
+  },
+  updateLoading (state, loading) {
+    state.loading = loading
   }
 }
 
@@ -65,10 +69,13 @@ export const actions = {
     commit('updateMidiXML', result)
     return result
   },
-  async fetchMidi ({ commit, dispatch }, { sid, name }) {
+  async fetchMidi ({ commit, dispatch }, { sid, display: name }) {
     console.log('Fetching midi:', sid, name)
+    commit('updateLoading', true)
     const midiBuffer = await $backend.fetchMidi(sid)
     dispatch('sequence/loadMidiBuffer', { midiBuffer, name, savePrevious: false }, { root: true })
+    // dispatch('sequence/updateName', { name }, { root: true })
+    commit('updateLoading', false)
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="about">
     <h1>{{ msg }}</h1>
     <p>
       This project uses recent advances in text generation
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'About',
   props: {
     msg: String
   }

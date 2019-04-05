@@ -40,8 +40,8 @@ img {
 
 .container {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 50px;
+  right: 100px;
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
