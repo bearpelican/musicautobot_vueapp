@@ -35,7 +35,8 @@ export default {
   /* position: relative; */
 }
 section {
-  width: 100%;
-  height: 50%;
+  /* width: 80%;
+  height: 50%; */
+  margin: 0px 100px;
 }
 </style>

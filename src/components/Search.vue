@@ -1,8 +1,10 @@
 <template>
-  <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-selected="updateSongItem" md-placeholder='Search for a pop song as a starting point!'>
-    <label>Select Seed</label>
-    <template slot="md-autocomplete-item" slot-scope="{ item, term }">{{ item.display }}</template>
-  </md-autocomplete>
+  <div>
+    <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-selected="songSelected" md-placeholder='Search for a pop song as a starting point!'>
+      <label>{{ placeholder }}</label>
+      <template slot="md-autocomplete-item" slot-scope="{ item, term }">{{ item.display }}</template>
+    </md-autocomplete>
+  </div>
 </template>
 
 <script>
@@ -22,7 +24,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['songs', 'songItem'])
+    ...mapState(['songs', 'songItem']),
+    placeholder () {
+      if (this._.has(this.songItem, 'sid')) {
+        return 'Select a new seed...'
+      }
+      return 'Get started by selecting a seed to generate from! Examples: Bach, EDM, La Bamba...'
+    }
   },
   watch: {
     songs () {
@@ -42,17 +50,20 @@ export default {
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
-          'display'
-          // "genres"
+          'display',
+          'genres'
         ]
       }
       this.fuse = new Fuse(this.songs, options)
+
+      // let results = this.fuse.search('avicii', { limit: 10 })
+      // this.results = this.getSanitizedLabels(results)
     },
     async updateSearch (term) {
       console.log('Searching')
-      this.term = term || ''
+      this.term = term
       console.log(this.term)
-      let results = await this.fuse.search(this.term, { limit: 10 })
+      let results = await this.fuse.search(term, { limit: 10 })
       // this.results = await this.fuse.search(searchTerm)
       this.results = this.getSanitizedLabels(results)
       console.log(this.results)
@@ -65,6 +76,10 @@ export default {
         'toLowerCase': () => label.display.toLowerCase(),
         'toString': () => label.display
       }))
+    },
+    songSelected (item) {
+      console.log('Song selected:', item)
+      return this.updateSongItem(item)
     }
   },
   mounted () {
@@ -74,11 +89,22 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 // .active-purple-2 input[type=text]:focus:not([readonly]) {
 //     border-bottom: 1px solid #ce93d8;
 //     box-shadow: 0 1px 0 0 #ce93d8;
 // }
 
+.md-field {
+  margin: 0px;
+}
+</style>
+
+<style>
+
+.md-menu-content {
+  background-color: #ffffffd8;
+  z-index: 3;
+}
 </style>

@@ -1,14 +1,22 @@
 <template>
   <div class="predict">
-    <search></search>
-    <div v-if="showSequence">
-      <song-meta></song-meta>
-    </div>
+    <search id='song-search'></search>
+    <hr style='margin-top: 0px;' />
+    <div id='sequence-header'>
 
-    <div v-if="showSequence">
-      <hr />
-      <sequencer></sequencer>
+      <div v-if="loading" style="position:absolute; left:0; right:0; margin:auto">
+        <!-- <b-spinner type="grow" label="Spinning"></b-spinner> -->
+        <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+        <b-spinner type="grow" label="Spinning"></b-spinner>
+        <b-spinner type="grow" variant="primary" label="Spinning"></b-spinner>
+        <label style='font-size: 2em; margin: 0px 10px;'>Loading Song...</label>
+        <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+        <b-spinner type="grow" label="Spinning"></b-spinner>
+        <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+      </div>
+      <input id="sequence-title" v-model="seqName" v-if="!loading" class="form-input">
     </div>
+    <sequencer v-if="showSequence"></sequencer>
   </div>
 </template>
 
@@ -19,7 +27,7 @@ import Sequencer from '@/components/Sequencer'
 import Search from '@/components/Search'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('predict')
-const { mapState: seqMapState } = createNamespacedHelpers('sequence')
+const { mapActions: seqMapActions, mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'predict',
@@ -36,14 +44,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['songs', 'songItem', 'midiSeq']),
-    ...seqMapState(['notes']),
+    ...mapState(['songs', 'songItem', 'midiSeq', 'loading']),
+    ...seqMapState(['notes', 'name']),
     showSequence () {
       return !this._.isEmpty(this.notes) || this.debug
+    },
+    seqName: {
+      set (name) { this.updateName(name) },
+      get () { return this.name }
     }
   },
   methods: {
-    ...mapActions(['fetchSongs', 'fetchMidi'])
+    ...mapActions(['fetchSongs', 'fetchMidi']),
+    ...seqMapActions(['updateName'])
   },
   mounted () {
     this.fetchSongs()
@@ -59,9 +72,17 @@ export default {
 
 <style lang="scss">
 
-// .score {
-//   width: 50%;
-//   background-color: white;
-// }
+#song-search {
+  margin: 0px 210px;
+}
 
+#sequence-title {
+  display: inline-block;
+  width: 50%;
+  height: 40px;
+  transition: all 0.3s ease-out;
+  text-align: center;
+  font-size: 2em;
+  border: none;
+}
 </style>
