@@ -29,10 +29,10 @@
         :index="index"
       )
       progress-line(
-        :key=progress-line
+        :key="progress-line"
       )
       seed-line(
-        :key=seed-line
+        :key="seed-line"
       )
 </template>
 
