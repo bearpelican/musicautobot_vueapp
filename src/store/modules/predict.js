@@ -38,6 +38,7 @@ export const mutations = {
   },
   updateLoadingState (state, loadingState) {
     state.loadingState = loadingState
+    console.log('Updating loading state:', loadingState)
   }
 }
 
@@ -49,13 +50,26 @@ export const actions = {
   },
   async predictMidi ({ commit, rootState, dispatch }) {
     // const seq = rootState.sequence
-    commit('updateLoadingState', 'Generating new sequence...')
+    commit('updateLoadingState', 'Making music...')
     const { nSteps, seedLen } = rootState.predict
-    const { midi, bpm, name } = storeToMidi(rootState.sequence, seedLen)
+
+    let counter = -2
+    const progress = setInterval(() => {
+      // console.log('Seconds:', time)
+      if (counter > 0) {
+        commit('updateLoadingState', `Generating steps (${counter} / ${seedLen})...`)
+      }
+      counter += 1
+    }, 1000 * seedLen * 2)
+
+    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
     const midiBuffer = await $backend.predictMidi({ midi, nSteps, bpm })
+
+    clearInterval(progress)
+
     console.log('Result returned from predict:', midiBuffer)
     commit('updateLoadingState', 'Loading sequence...')
-    await dispatch('sequence/loadMidiBuffer', { midiBuffer, name }, { root: true })
+    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName }, { root: true })
     commit('updateLoadingState', null)
   },
   async convertToXML ({ commit, rootState, dispatch }) {
@@ -66,13 +80,13 @@ export const actions = {
     commit('updateMidiXML', result)
     return result
   },
-  async fetchMidi ({ commit, dispatch }, { sid, display: name }) {
-    console.log('Fetching midi:', sid, name)
+  async fetchMidi ({ commit, dispatch }, { sid, display: seqName }) {
+    console.log('Fetching midi:', sid, seqName)
     // commit('updateLoading', true)
     commit('updateLoadingState', 'Fetching song...')
     const midiBuffer = await $backend.fetchMidi(sid)
     commit('updateLoadingState', 'Loading sequence...')
-    await dispatch('sequence/loadMidiBuffer', { midiBuffer, name, savePrevious: false }, { root: true })
+    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
     // dispatch('sequence/updateName', { name }, { root: true })
     // commit('updateLoading', false)

@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 export function midiToNotes (midi) {
   // the file name decoded from the first track
-  const name = midi.name
+  const midiName = midi.name
 
   // get the tracks
   let notes = []
@@ -21,7 +21,7 @@ export function midiToNotes (midi) {
       })
     })
   })
-  return { notes, bpm, name }
+  return { notes, bpm, midiName }
 }
 
 export function bufferToMidi (arraybuffer) {
@@ -107,19 +107,19 @@ function defaultTrackHeader ({ name = '' }) {
 
 export function storeToMidi (state, seedLen = null) {
   // create a new midi file
-  const { name, bpm } = state
+  const { seqName, bpm } = state
   let storeNotes = state.notes
   if (seedLen != null) {
     storeNotes = storeNotes.filter(n => n.timing <= seedLen)
   }
   var midi = new Midi()
-  midi.header.fromJSON(defaultMidiHeader({ bpm, name }))
+  midi.header.fromJSON(defaultMidiHeader({ bpm, seqName }))
 
   let notes = notesToToneNotes(storeNotes, bpm, false)
   console.log('Store to midi Notes:')
   console.log(notes)
   const track = midi.addTrack()
-  track.fromJSON(defaultTrackHeader({ name }))
+  track.fromJSON(defaultTrackHeader({ seqName }))
   notes.forEach(n => {
     track.addNote(n)
   })
