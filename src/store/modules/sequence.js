@@ -23,7 +23,7 @@ export const state = {
   // Metadata
   version: 0,
   bpm: 120,
-  name: 'Placeholder',
+  seqName: 'Placeholder',
   duration: 0,
   synthType: 'piano'
 }
@@ -82,41 +82,41 @@ export const mutations = {
     state.synthType = synthType
   },
   updateBPM (state, bpm) {
-    state.bpm = bpm
+    state.bpm = parseInt(bpm)
   },
-  updateName (state, name) {
-    state.name = name
+  updateSeqName (state, seqName) {
+    state.seqName = seqName
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
   },
-  updateNotes (state, { notes, bpm, name, savePrevious = true }) {
+  updateNotes (state, { notes, bpm, seqName, savePrevious = true }) {
     state.version += 1
     state.progressTime = 0
     console.log('Version:', state.version)
     state.prevNotes = savePrevious ? state.notes : []
     state.notes = notes
-    state.bpm = bpm
-    state.name = name
+    state.bpm = parseInt(bpm)
+    state.seqName = seqName
   }
 }
 
 export function generateSimpleActions (mutations) {
   const actions = {
-    loadMidi ({ commit, state, dispatch }, { midi, name, savePrevious = true }) {
+    loadMidi ({ commit, state, dispatch }, { midi, seqName, savePrevious = true }) {
       console.log('Load midi called.')
       const { notes, name: midiName, bpm } = midiToNotes(midi)
-      if (_.isEmpty(name)) name = midiName
+      if (_.isEmpty(seqName)) seqName = midiName
       console.log('Loaded bpm, name:', bpm, name)
-      commit('updateNotes', { notes, bpm, name, savePrevious })
+      commit('updateNotes', { notes, bpm, seqName, savePrevious })
     },
-    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, name, savePrevious = true }) {
-      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), name, savePrevious })
+    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, seqName, savePrevious = true }) {
+      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
     },
     exportMidi ({ commit, state, dispatch }) {
       console.log('Save midi called:', state)
-      const { midi, name } = storeToMidi(state, null)
-      $backend.exportMidi({ midi, name })
+      const { midi, seqName } = storeToMidi(state, null)
+      $backend.exportMidi({ midi, fileName: `${seqName}.mid` })
     },
     importMidi ({ commit, rootState, dispatch }, midiBuffer) {
       console.log('Importing midi file')
@@ -154,7 +154,7 @@ export const actions = {
     'updateProgressTime',
     'updateBPM',
     'updateSynthType',
-    'updateName'
+    'updateSeqName'
   ])
 }
 

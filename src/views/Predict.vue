@@ -28,6 +28,7 @@ export default {
   },
   watch: {
     songItem (val) {
+      console.log('Song item changed:', val)
       if (!this._.isEmpty(val)) {
         console.log('Song item updated. Fetching midi now', val)
         this.fetchMidi(val)
@@ -35,22 +36,22 @@ export default {
     }
   },
   computed: {
-    ...mapState(['loadingState', 'firstTime']),
+    ...mapState(['songItem', 'loadingState', 'firstTime']),
     sequenceStyle () {
       return {
-        visiblity: (!this.firstTime || this.debug) ? 'visible' : 'hidden',
-        disabled: this.loadingState !== null
+        visibility: (!this.firstTime || this.debug) ? 'visible' : 'hidden',
+        'pointer-events': (this.loadingState === null) ? 'all' : 'none',
+        opacity: (this.loadingState === null) ? 1 : 0.5
       }
     },
     loadingStyle () {
       return {
-        display: (this.loadingState === null) ? 'block' : 'none'
-        // visibility: 'visible'
+        display: (this.loadingState !== null) ? 'block' : 'none'
       }
     }
   },
   methods: {
-    ...mapActions(['fetchSongs', 'fetchMidi']),
+    ...mapActions(['fetchSongs', 'fetchMidi'])
   },
   mounted () {
     this.fetchSongs()
