@@ -33,5 +33,6 @@ export function createPianoSynth () {
     'F#7': 'Fs7.[mp3|ogg]',
     'A7': 'A7.[mp3|ogg]',
     'C8': 'C8.[mp3|ogg]'
-  }, () => { }, './audio/salamander/').toMaster()
+  // }, () => { }, './audio/salamander/').toMaster()
+  }, () => { }, 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/audio/salamander/').toMaster()
 }
