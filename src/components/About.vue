@@ -20,7 +20,7 @@
       <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Web App</a></li>
       <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Training</a></li>
     </ul>
-    <h3>Data Sources</h3>
+    <!-- <h3>Data Sources</h3>
     <ul>
       <li><a href="https://www.hooktheory.com/" target="_blank">Hook Theory</a></li>
       <li><a href="http://www.piano-e-competition.com/" target="_blank">Yamaha Piano E-Comp</a></li>
@@ -40,7 +40,7 @@
       <li><a href="https://www.jurassictechnologies.com/" target="_blank">Jurassic Tech</a></li>
       <li><a href="https://www.southparkcommons.com/" target="_blank">South Park Commons</a></li>
       <li><a href="https://www.palapavc.com/" target="_blank">Palapa Ventures</a></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
