@@ -71,25 +71,7 @@ export default {
 }
 
 .control-group {
-  height: 120px;
   margin: 0px 10px;
-  border-radius: 30px;
-}
-
-.control-group-slider {
-  width: 120px;
-}
-
-.control-group-label {
-  font-size: 0.8rem;
-  color: black;
-}
-
-.control-group-header {
-  font-size: 0.8rem;
-  color: black;
-  margin: 5px 0px;
-  /* background-color: #ff743d80; */
 }
 
 #synth-form-group {

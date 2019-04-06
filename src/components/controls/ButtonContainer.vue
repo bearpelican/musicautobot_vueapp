@@ -25,15 +25,42 @@ export default {
 }
 </script>
 
-<style>
-.container .md-button {
-  background-color: #ffa07a80;
+<style lang='scss'>
+
+.container {
   /* background-color: #ffa07a; */
+
+  .control-group {
+    height: 140px;
+    border-radius: 16px;
+    // background-color: #dfeffcd8;
+  }
+
+  .control-group-slider {
+    width: 120px;
+  }
+
+  .control-group-label {
+    font-size: 0.8rem;
+    color: #222222;
+    margin-bottom: 0px;
+  }
+
+  .control-group-header {
+    font-size: 0.8rem;
+    color: #42b983;
+    margin: 5px 0px;
+    /* background-color: #ff743d80; */
+  }
+
+  // .btn-outline-primary {
+  //   background-color: red;
+  // }
 }
 
 </style>
 
-<style scoped>
+<style scoped lang='scss'>
 img {
   max-height: 30px;
 }
@@ -46,6 +73,7 @@ img {
   flex-direction: row-reverse;
   align-items: flex-end;
   pointer-events: none;
+
 }
 
 .container > * {
@@ -60,4 +88,5 @@ img {
   width: 56px;
   height: 56px;
 }
+
 </style>

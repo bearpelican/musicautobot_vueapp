@@ -123,5 +123,5 @@ export function storeToMidi (state, seedLen = null) {
   notes.forEach(n => {
     track.addNote(n)
   })
-  return { midi, bpm }
+  return { midi, bpm, seqName }
 }

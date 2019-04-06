@@ -83,26 +83,4 @@ export default {
 
 <style scoped>
 
-.control-group {
-  height: 120px;
-  border-radius: 30px;
-}
-
-.control-group-slider {
-  width: 120px;
-}
-
-.control-group-label {
-  font-size: 0.8rem;
-  color: black;
-  margin-bottom: 0px;
-}
-
-.control-group-header {
-  font-size: 0.8rem;
-  color: black;
-  margin: 5px 0px;
-  /* background-color: #ff743d80; */
-}
-
 </style>
