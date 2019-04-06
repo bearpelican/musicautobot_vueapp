@@ -13,13 +13,16 @@ export const state = {
   currentLength: defaultLength,
   selectedNote: null,
   isEditingScore: false,
-  scrollPosition: 0,
+  scrollTopPosition: 0,
+  scrollLeftPosition: 0,
   previewingKeyNumber: null,
   appState: 'editing',
   // Notes
   notes: [],
   prevNotes: [],
   history: [], // (AS) save history so people can revert { metadata, notes }
+  sequenceRange: null,
+  sequenceLength: 80,
   // Metadata
   version: 0,
   bpm: 120,
@@ -60,8 +63,11 @@ export const mutations = {
   finishEditingScore (state) {
     state.isEditingScore = false
   },
-  scroll (state, scrollPosition) {
-    state.scrollPosition = scrollPosition
+  scrollTop (state, scrollTopPosition) {
+    state.scrollTopPosition = scrollTopPosition
+  },
+  scrollLeft (state, scrollLeftPosition) {
+    state.scrollLeftPosition = scrollLeftPosition
   },
   startPreview (state, { keyNumber, timeout }) {
     state.previewingKeyNumber = keyNumber
@@ -145,7 +151,8 @@ export const actions = {
     'updateNoteKeyNumber',
     'startEditingScore',
     'finishEditingScore',
-    'scroll',
+    'scrollTop',
+    'scrollLeft',
     'startPreview',
     'finishPreview',
     'play',

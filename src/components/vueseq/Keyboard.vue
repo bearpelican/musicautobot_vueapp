@@ -30,10 +30,10 @@ export default {
       }).reverse()
     }
   },
-  computed: mapState(['scrollPosition']),
+  computed: mapState(['scrollTopPosition']),
   watch: {
-    scrollPosition () {
-      this.$el.scrollTop = this.scrollPosition
+    scrollTopPosition () {
+      this.$el.scrollTop = this.scrollTopPosition
     }
   }
 }

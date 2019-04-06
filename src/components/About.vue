@@ -2,8 +2,8 @@
   <div class="about">
     <h1>{{ msg }}</h1>
     <p>
-      This project uses recent advances in text generation
-      <a href="https://arxiv.org/abs/1901.02860" target="_blank">source code</a> to generate pop music from midi files.
+      This project uses recent advances in
+      <a href="https://arxiv.org/abs/1901.02860" target="_blank">text generation</a> to generate pop music from midi files.
     </p>
     <!-- <ol>
       <li>Search for a song on our archives to seed the model</li>

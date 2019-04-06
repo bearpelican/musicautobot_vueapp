@@ -85,9 +85,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['scroll']),
+    ...mapActions(['scrollTop']),
     onScroll () {
-      this.scroll(this.$el.scrollTop)
+      this.scrollTop(this.$el.scrollTop)
     }
   }
 }
