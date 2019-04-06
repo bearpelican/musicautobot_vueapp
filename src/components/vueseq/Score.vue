@@ -77,7 +77,7 @@ export default {
           return {
             timing: Math.max(a.timing, b.timing)
           }
-        }, { timing: 0 }).timing) + 2
+        }, { timing: 0 }).timing) + 16
       ))
     },
     width () {

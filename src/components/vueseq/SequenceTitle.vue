@@ -23,6 +23,9 @@ export default {
   },
   methods: {
     ...mapActions(['updateSeqName'])
+  },
+  mounted () {
+    this.$refs.editableTitle.textContent = this.seqName
   }
 }
 </script>
