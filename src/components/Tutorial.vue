@@ -11,7 +11,7 @@
       <!-- <p>Some search hints... Bach, EDM, La Bamba, etc.</p> -->
       <p class='tutorial-header'>Choose a song to start.</p>
       <p class='tutorial-p'>We'll use this to generate new music in the same style!</p>
-      <p class='tutorial-p'>Some search hints: Chopin, Vida Loca</p>
+      <p class='tutorial-p'>Some search hints: Chopin, La Bamba</p>
     </div>
   </div>
 </template>
@@ -73,25 +73,24 @@ export default {
 }
 svg {
   width: 200px;
-  height: 200px; 
+  height: 200px;
   margin: 0 auto;
 
   transform: scale(1, -1) rotate(60deg);
   float: left;
 
-  .draw-arrow {  
+  .draw-arrow {
     stroke-width: 3;
-    // stroke: dodgerblue; 
-    stroke: #6ee4af; 
+    // stroke: dodgerblue;
+    stroke: #6ee4af;
     fill: none;
     stroke-dasharray: 400;
-    stroke-dashoffset: 400; 
+    stroke-dashoffset: 400;
 
     animation-delay: 2s;
     animation-duration: 2.0s;
     animation-fill-mode: forwards;
     animation-name: draw;
-
 
     &.tail-1 {
       animation-delay: 2.5s;
