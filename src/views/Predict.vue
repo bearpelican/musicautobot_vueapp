@@ -2,9 +2,11 @@
   <div class="predict">
     <search id='song-search'></search>
     <hr style='margin-top: 0px; position: relative; top: -22px' />
-    <tutorial v-if="firstTime" id='first-tutorial'></tutorial>
+    <tutorial v-if="firstTime" id='tutorial-one'></tutorial>
     <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
-    <sequencer :style="sequenceStyle"></sequencer>
+    <tutorial-two id='tutorial-two'></tutorial-two>
+    <sequencer :style="sequenceStyle">
+    </sequencer>
   </div>
 </template>
 
@@ -15,6 +17,7 @@ import Sequencer from '@/components/Sequencer'
 import Search from '@/components/Search'
 import Loading from '@/components/Loading'
 import Tutorial from '@/components/Tutorial'
+import TutorialTwo from '@/components/TutorialTwo'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('predict')
 
@@ -62,7 +65,8 @@ export default {
     Sequencer,
     Search,
     Loading,
-    Tutorial
+    Tutorial,
+    TutorialTwo
   }
 }
 
@@ -76,14 +80,18 @@ export default {
   right: 0;
   margin: auto;
   top: 50%;
-  z-index: 3
+  z-index: 3;
 }
 
 #song-search {
   margin: 0px 210px;
 }
 
-#first-tutorial {
+#tutorial-one {
   position: absolute;
+}
+#tutorial-two {
+  position: absolute;
+  z-index: 3;
 }
 </style>
