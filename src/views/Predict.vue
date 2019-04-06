@@ -27,6 +27,7 @@ export default {
     }
   },
   watch: {
+
     songItem (val) {
       console.log('Song item changed:', val)
       if (!this._.isEmpty(val)) {

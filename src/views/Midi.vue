@@ -12,8 +12,8 @@ import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/controls/ButtonContainer'
 // import "./style.css";
-import { createNamespacedHelpers } from 'vuex'
-const { mapActions } = createNamespacedHelpers('sequence')
+// import { createNamespacedHelpers } from 'vuex'
+// const { mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'midi',
@@ -21,13 +21,13 @@ export default {
     Keyboard,
     Score,
     ButtonContainer
-  },
-  methods: {
-    ...mapActions(['loadMidiFile'])
-  },
-  mounted () {
-    this.loadMidiFile()
   }
+  // methods: {
+  //   ...mapActions(['loadMidiFile'])
+  // },
+  // mounted () {
+  //   this.loadMidiFile()
+  // }
 }
 </script>
 

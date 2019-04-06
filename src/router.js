@@ -3,19 +3,18 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Predict from './views/Predict.vue'
 import Sheet from './views/Sheet.vue'
-import Midi from './views/Midi.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: '/about',
+      name: 'about',
       component: Home
     },
     {
-      path: '/predict',
+      path: '/',
       name: 'predict',
       component: Predict
     },
@@ -23,11 +22,6 @@ export default new Router({
       path: '/sheet',
       name: 'sheet',
       component: Sheet
-    },
-    {
-      path: '/midi',
-      name: 'midi',
-      component: Midi
     }
   ]
 })
