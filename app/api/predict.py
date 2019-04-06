@@ -6,20 +6,11 @@ from .src.serve import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
-data_dir = 'data/midi/v9/'
-source_dir = 'midi_encode/np/shortdur'
-
-file_path = Path(__file__).parent
-path = file_path/data_dir/source_dir
-out_path = file_path/'data/generated/'
-
-config = get_config(vocab_path=path/'tmp/all')
-saved_models = get_files(path/'models/hook', recurse=True)
-load_path = saved_models[0]
-
-data = load_data(path=path, cache_name='tmp/hook', **config)
-learn = load_learner(data, config, load_path)
-htlist = get_htlist(path, source_dir)
+path = Path(__file__).parent/'data_serve'
+config = get_config(vocab_path=path)
+data = load_data(path=path, cache_name='tmp', **config)
+learn = load_learner(data, config, path/'model.pth')
+# htlist = get_htlist(path, source_dir)
 
 # @app.route('/songs/all', methods=['GET', 'POST'])
 # def song_list():
@@ -76,9 +67,9 @@ def predict_midi():
     print('Wrote to temporary file:', mid_out)
     return send_from_directory(mid_out.parent, mid_out.name, mimetype='audio/midi')
 
-@app.route('/midi/song/<path:sid>')
-def get_song_midi(sid):
-    return send_from_directory(file_path/data_dir, htlist[sid]['midi'], mimetype='audio/midi')
+# @app.route('/midi/song/<path:sid>')
+# def get_song_midi(sid):
+#     return send_from_directory(file_path/data_dir, htlist[sid]['midi'], mimetype='audio/midi')
 
 @app.route('/midi/convert', methods=['POST'])
 def convert_midi():
