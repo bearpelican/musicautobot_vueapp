@@ -140,3 +140,27 @@ Here are the commands we need to run to get things setup on the Heroku side:
 ### Heroku deployment - One Click Deploy
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gtalarico/flask-vuejs-template)
+
+
+
+
+### Python install
+
+```bash
+conda install gunicorn flask
+pip install flask-restplus python-dotenv flask-cors
+```
+
+
+### Ubuntu yarn install
+
+https://linuxize.com/post/how-to-install-yarn-on-ubuntu-18-04/
+
+```bash
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install yarn
+cd ~/vue_midi_generator
+yarn install
+```
