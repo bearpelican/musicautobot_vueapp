@@ -34,6 +34,12 @@ export default {
     height: 140px;
     border-radius: 16px;
     // background-color: #dfeffcd8;
+
+    &.md-button:not([disabled]).md-focused:before,
+    &.md-button:not([disabled]):active:before,
+    &.md-button:not([disabled]):hover:before {
+      opacity: 0;
+    }
   }
 
   .control-group-slider {
@@ -51,6 +57,10 @@ export default {
     color: #42b983;
     margin: 5px 0px;
     /* background-color: #ff743d80; */
+  }
+
+  .md-speed-dial {
+    width: 65px;
   }
 
   // .btn-outline-primary {
