@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    label#version {{ `(v${version}) ` }}
+    // label#version {{ `(v${version}) ` }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
 </template>
 
@@ -41,8 +41,9 @@ export default {
   display: inline-block;
   transition: all 0.3s ease-out;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.4em;
   border: none;
+  padding-bottom: 10px;
 }
 
 </style>
