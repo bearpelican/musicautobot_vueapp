@@ -20,7 +20,7 @@ export const state = {
   // Notes
   notes: [],
   prevNotes: [],
-  history: [], // (AS) save history so people can revert { metadata, notes }
+  history: [{ version: 1 }, { version: 2 }], // (AS) save history so people can revert { metadata, notes }
   sequenceRange: null,
   sequenceLength: 80,
   // Metadata
@@ -95,6 +95,14 @@ export const mutations = {
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
+  },
+  updateHistory (state) {
+    const { version, notes, bpm, seqName } = state
+    if (!_.isEmpty(notes)) {
+      history.push({
+        version, notes, bpm, seqName
+      })
+    }
   },
   updateNotes (state, { notes, bpm, seqName, savePrevious = true }) {
     state.version += 1

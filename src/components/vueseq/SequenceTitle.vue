@@ -1,6 +1,20 @@
 <template lang="pug">
   div
-    // label#version {{ `(v${version}) ` }}
+    label#version {{ `(v${version}) ` }}
+
+      // note(
+      //   v-for="(note, index) in notes",
+      //   :key="index + '-note'",
+      //   :index="index",
+      //   :storeKeyNumber="note.key",
+      //   :storeTiming="note.timing",
+      //   :storeLength="note.length"
+      // )
+
+    md-field#version2
+      md-select(v-model="selectedVersion")
+        md-option(:value="version") {{ versionString(version) }}
+        md-option(v-for="(snapshot, index) in history" :value="snapshot.version") {{ versionString(snapshot.version) }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
 </template>
 
@@ -8,10 +22,13 @@
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
-// import "./style.css";
 
 export default {
   name: 'sequence-title',
+  data () {
+    return {
+    }
+  },
   watch: {
     seqName (val) {
       console.log('Seq name changed:', val)
@@ -19,10 +36,20 @@ export default {
     }
   },
   computed: {
-    ...mapState(['seqName', 'version'])
+    ...mapState(['seqName', 'version', 'history']),
+    selectedVersion: {
+      set (version) {
+        this.updateVersion(noteTemp)
+      },
+      get () { return this.version }
+      // get () { return `(v${this.version}) ` }
+    }
   },
   methods: {
-    ...mapActions(['updateSeqName'])
+    ...mapActions(['updateSeqName']),
+    versionString (version) {
+      return `(v${version})`
+    }
   },
   mounted () {
     this.$refs.editableTitle.textContent = this.seqName
@@ -30,10 +57,42 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss'>
+
+#version2 {
+
+  /* margin-right: 10px; */
+  width: 40px;
+  display: inline-block;
+  margin: 0;
+  margin-right: 10px;
+
+  .md-input {
+    color: #489e77;
+    -webkit-text-fill-color: unset;
+    font-size: 1.6em;
+  }
+  span .md-item-list-text {
+    font-size: 1.2em;
+  }
+  .md-menu {
+    .md-icon {
+      display: none;
+    }
+  }
+}
+
+// #version2 * {
+//   -webkit-text-fill-color: unset;
+//   font-size: 1.6em;
+// }
+
+#version2::after {
+  display: none;
+}
 
 #version {
-  font-size: 2em;
+  font-size: 1.6em;
   color: #489e77;
   margin-right: 10px;
 }
@@ -41,7 +100,7 @@ export default {
   display: inline-block;
   transition: all 0.3s ease-out;
   text-align: center;
-  font-size: 1.4em;
+  font-size: 1.6em;
   border: none;
   padding-bottom: 10px;
 }

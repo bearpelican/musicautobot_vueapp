@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       error: '',
-      debug: false
+      debug: true
     }
   },
   watch: {
