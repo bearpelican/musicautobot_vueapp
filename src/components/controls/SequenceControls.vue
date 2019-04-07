@@ -7,8 +7,8 @@
     transition="scale-transition" -->
   >
     <template v-slot:activator>
-      <v-btn color="blue darken-2" dark fab>
-      <!-- <v-btn color="blue darken-2" dark fab @click="toggle"> -->
+      <!-- <v-btn color="blue darken-2" dark fab> -->
+      <v-btn color="blue darken-2" dark fab @click="toggle">
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
     </template>
