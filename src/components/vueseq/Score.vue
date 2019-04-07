@@ -1,5 +1,5 @@
 <template lang="pug">
-  .score(@scroll="onScroll")
+  .score(@scroll="onScroll" ref="scoreContainer")
     .inner(:style="{ width }")
       score-row(
         v-for="(key, index) in keys",
@@ -13,7 +13,8 @@
         :index="index",
         :storeKeyNumber="note.key",
         :storeTiming="note.timing",
-        :storeLength="note.length"
+        :storeLength="note.length",
+        :scoreOffset="scoreOffset"
       )
       prev-note(
         v-for="(note, index) in prevNotes",
@@ -82,6 +83,9 @@ export default {
     },
     width () {
       return `${this.beats.length * pixelPerBeat}px`
+    },
+    scoreOffset () {
+      return this.$refs.scoreContainer.getBoundingClientRect().left
     }
   },
   methods: {

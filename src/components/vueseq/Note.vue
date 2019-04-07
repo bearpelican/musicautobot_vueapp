@@ -17,7 +17,8 @@ export default {
     index: Number,
     storeKeyNumber: Number,
     storeTiming: Number,
-    storeLength: Number
+    storeLength: Number,
+    scoreOffset: Number
   },
   mounted () {
     if (this.isEditingScore) {
@@ -92,7 +93,7 @@ export default {
     startMoving (event) {
       this.addListeners()
       this.state = 'moving'
-      this.movingOffsetX = event.layerX
+      this.movingOffsetX = event.offsetX
       this.movingFirstY = event.clientY + this.getScrollTop()
     },
     startEditingEndTime () {
@@ -111,28 +112,26 @@ export default {
       switch (this.state) {
         case 'editing-end-time': {
           nextLength = positionToTiming(
-            event.clientX - 100 + this.getScrollLeft(),
+            event.clientX - this.scoreOffset + this.getScrollLeft(),
             this.minimumUnit
           ) - this.timing
           break
         }
         case 'moving': {
           nextTiming = positionToTiming(
-            event.clientX - 100 - this.movingOffsetX + this.getScrollLeft(),
+            event.clientX - this.scoreOffset - this.movingOffsetX + this.getScrollLeft(),
             this.minimumUnit
           )
-          const offset = Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
-          console.log('Moving:', offset)
           nextKeyNumber = this.storeKeyNumber +
             Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
-          console.log('Next key number:', nextKeyNumber)
+          // console.log('Next key number:', nextKeyNumber)
           if (this.keyNumber !== nextKeyNumber) {
             this.startPreview({ keyNumber: nextKeyNumber, timeout: 2 })
           }
           break
         }
         case 'editing-start-time': {
-          nextTiming = positionToTiming(event.clientX - 100, this.minimumUnit)
+          nextTiming = positionToTiming(event.clientX - this.scoreOffset, this.minimumUnit)
           nextLength = this.storeLength + this.storeTiming - this.timing
           break
         }

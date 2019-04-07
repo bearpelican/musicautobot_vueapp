@@ -13,7 +13,6 @@
       </v-btn>
     </template>
     <v-btn class='control-group' @click='voidEvent' :ripple="false">
-    <!-- <v-btn class='control-group' @click='voidEvent' @mousedown='voidEvent' @mouseenter='voidEvent' transition='none'> -->
       <div class='control-group-content'>
         <div class='control-group-header'>Playback</div>
         <div>
