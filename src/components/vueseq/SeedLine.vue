@@ -4,6 +4,7 @@
 
 <script>
 import { pixelPerBeat } from '@/lib/config'
+import { positionToTiming } from '@/lib/positioning'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapMutations } = createNamespacedHelpers('predict')
 
@@ -26,13 +27,11 @@ export default {
   methods: {
     ...mapMutations(['updateSeedLen']),
     moveLine (event) {
-      const newSeedLen = parseInt((event.clientX - this.scoreOffset) / pixelPerBeat)
-      console.log(newSeedLen)
-      // this.updateSeedLen()
+      const quarterLength = 1
+      const newSeedLen = positionToTiming((event.clientX - this.scoreOffset), quarterLength)
+      this.updateSeedLen(newSeedLen)
     },
     beginEditing (event) {
-      const newSeedLen = parseInt((event.clientX - this.scoreOffset) / pixelPerBeat)
-      console.log(newSeedLen)
       this.addListeners()
     },
     addListeners () {
@@ -43,11 +42,6 @@ export default {
       window.removeEventListener('mousemove', this.moveLine)
       window.removeEventListener('mouseup', this.finishEditing)
     },
-    // startMoving (event) {
-    //   this.addListeners()
-    //   this.movingOffsetX = event.layerX
-    //   this.movingFirstY = event.clientY + this.getScrollTop()
-    // },
     finishEditing () {
       this.removeListeners()
     }
