@@ -57,10 +57,10 @@ export const actions = {
     const progress = setInterval(() => {
       // console.log('Seconds:', time)
       if (counter > 0) {
-        commit('updateLoadingState', `Generating steps (${counter} / ${seedLen})...`)
+        commit('updateLoadingState', `Generating steps (${counter} / ${nSteps})...`)
       }
       counter += 1
-    }, 1000 * seedLen * 2)
+    }, 1000 * 2)
 
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
     const midiBuffer = await $backend.predictMidi({ midi, nSteps, bpm })
