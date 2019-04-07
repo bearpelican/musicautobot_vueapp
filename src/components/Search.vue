@@ -52,17 +52,19 @@ export default {
       return 'Search for a song... '
     },
     selectSong: {
-      set (songItem) { 
-        this.updateSongItem(songItem) },
-      get () { 
-        return this.songItem }
+      set (songItem) {
+        this.updateSongItem(songItem)
+      },
+      get () {
+        return this.songItem
+      }
     },
     searchResults: {
-      async set (val) { 
-        return await this.updateSearch(val)
+      async set (val) {
+        await this.updateSearch(val)
       },
-      get () { }
-    },
+      get () { return null }
+    }
   },
   watch: {
     songs () {

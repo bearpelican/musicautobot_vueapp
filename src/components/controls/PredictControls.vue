@@ -4,15 +4,15 @@
     transition="scale-transition">
   <!-- <v-speed-dial bottom right
     direction="top"
-    transition="scale-transition"
-  > -->
+    transition="scale-transition" -->
+  >
     <template v-slot:activator>
       <!-- <v-btn color="blue darken-2" dark fab> -->
       <v-btn color="blue darken-2" dark fab @click="predictMidi">
         <v-icon>cached</v-icon>
       </v-btn>
     </template>
-    <v-btn class='control-group'>
+    <v-btn class='control-group' @click='voidEvent' :ripple="false">
       <div class='control-group-content'>
         <div class='control-group-header'>Randomness</div>
         <div>
@@ -25,7 +25,7 @@
         </div>
       </div>
     </v-btn>
-    <v-btn class='control-group'>
+    <v-btn class='control-group' @click='voidEvent' :ripple="false">
       <div class='control-group-content'>
         <div class='control-group-header'>Timesteps</div>
         <div>
@@ -80,7 +80,11 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSteps', 'updateSeedLen', 'updateNoteTemp', 'updateDurationTemp']),
-    ...mapActions(['predictMidi'])
+    ...mapActions(['predictMidi']),
+    voidEvent (event) {
+      event.handled = true
+      event.stopPropagation()
+    }
   },
   mounted () {
   },

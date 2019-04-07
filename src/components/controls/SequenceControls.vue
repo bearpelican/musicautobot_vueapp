@@ -1,44 +1,19 @@
 <template>
-  <!-- <md-speed-dial id="control-sequence">
-    <md-speed-dial-target @click="toggle">
-      <md-icon>{{ icon }}</md-icon>
-    </md-speed-dial-target>
-
-    <md-speed-dial-content>
-      <md-button class="control-group">
-        <div>
-          <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-          <b-form-input id="noteTemp" class="control-group-slider" type="range" v-model.number='selectBPM' min="60" max="150" step="1"></b-form-input>
-        </div>
-        <b-form-group id='synth-form-group'>
-          <div class='control-group-label'>Synth</div>
-          <b-form-radio-group
-            id="synth-radios"
-            v-model="selectSynthType"
-            :options="synthOptions"
-            buttons
-            size="sm"
-            button-variant="outline-primary"
-          ></b-form-radio-group>
-        </b-form-group>
-      </md-button>
-    </md-speed-dial-content>
-  </md-speed-dial> -->
-
   <v-speed-dial bottom right open-on-hover
     direction="top"
     transition="scale-transition">
   <!-- <v-speed-dial bottom right
     direction="top"
-    transition="scale-transition"
-  > -->
+    transition="scale-transition" -->
+  >
     <template v-slot:activator>
-      <!-- <v-btn color="blue darken-2" dark fab> -->
-      <v-btn color="blue darken-2" dark fab @click="toggle">
+      <v-btn color="blue darken-2" dark fab>
+      <!-- <v-btn color="blue darken-2" dark fab @click="toggle"> -->
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
     </template>
-    <v-btn class='control-group'>
+    <v-btn class='control-group' @click='voidEvent' :ripple="false">
+    <!-- <v-btn class='control-group' @click='voidEvent' @mousedown='voidEvent' @mouseenter='voidEvent' transition='none'> -->
       <div class='control-group-content'>
         <div class='control-group-header'>Playback</div>
         <div>
@@ -94,7 +69,13 @@ export default {
       } else {
         this.stop()
       }
+    },
+    voidEvent (event) {
+      event.handled = true
+      event.stopPropagation()
     }
+  },
+  mounted () {
   }
 }
 </script>

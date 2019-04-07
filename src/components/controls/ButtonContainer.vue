@@ -31,11 +31,15 @@ export default {
     width: 160px;
     border-radius: 16px;
     background-color: #ffffff;
+    transition: none;
 
     &.v-btn--active:before,
     &.v-btn:focus:before,
     &.v-btn:hover:before {
       background-color: white;
+    }
+    &.v-btn:focus {
+      outline: none;
     }
   }
 
