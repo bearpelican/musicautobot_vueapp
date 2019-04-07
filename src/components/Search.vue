@@ -1,10 +1,29 @@
 <template>
-  <div>
+  <!-- <div>
     <md-autocomplete v-model="term" :md-options="results" @md-changed="updateSearch" @md-selected="songSelected" md-placeholder='Search for a pop song as a starting point!'>
       <label>{{ placeholder }}</label>
       <template slot="md-autocomplete-item" slot-scope="{ item, term }">{{ item.display }}</template>
     </md-autocomplete>
-  </div>
+  </div> -->
+
+  <v-autocomplete
+    v-model="selectSong"
+    hint="Ex: La Bamba, Bach, etc."
+    :items="results"
+    item-text="display"
+    :search-input.sync="searchResults"
+    :label="'Choose a song...'"
+    no-filter
+    persistent-hint
+    return-object
+  >
+    <template v-slot:append-outer>
+      <v-slide-x-reverse-transition
+        mode="out-in"
+      >
+      </v-slide-x-reverse-transition>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>
@@ -20,6 +39,7 @@ export default {
       results: [],
       term: null,
       fuse: null,
+      isLoading: false,
       error: ''
     }
   },
@@ -30,7 +50,19 @@ export default {
         return 'Select a new song...'
       }
       return 'Search for a song... '
-    }
+    },
+    selectSong: {
+      set (songItem) { 
+        this.updateSongItem(songItem) },
+      get () { 
+        return this.songItem }
+    },
+    searchResults: {
+      async set (val) { 
+        return await this.updateSearch(val)
+      },
+      get () { }
+    },
   },
   watch: {
     songs () {
@@ -42,6 +74,7 @@ export default {
     ...mapActions(['fetchSongs', 'fetchMidi']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
+      this.isLoading = true
       const options = {
         shouldSort: true,
         threshold: 0.6,
@@ -56,26 +89,19 @@ export default {
       }
       this.fuse = new Fuse(this.songs, options)
 
-      // let results = this.fuse.search('avicii', { limit: 10 })
-      // this.results = this.getSanitizedLabels(results)
+      this.isLoading = false
+      this.results = this.fuse.search('avicii', { limit: 10 })
+      console.log('Loaded results')
     },
     async updateSearch (term) {
-      console.log('Searching')
+      if (this.fuse === null || this._.isEmpty(term)) return this.results
+      this.isLoading = true
       this.term = term
       console.log(this.term)
-      let results = await this.fuse.search(term, { limit: 10 })
-      // this.results = await this.fuse.search(searchTerm)
-      this.results = this.getSanitizedLabels(results)
+      this.results = await this.fuse.search(term, { limit: 10 })
       console.log(this.results)
+      this.isLoading = false
       return this.results
-    },
-    getSanitizedLabels (results) {
-      // Super hacky fix from here: https://github.com/vuematerial/vue-material/issues/1322
-      // https://github.com/vuematerial/vue-material/issues/1243
-      return results.map(label => ({ ...label,
-        'toLowerCase': () => label.display.toLowerCase(),
-        'toString': () => label.display
-      }))
     },
     songSelected (item) {
       console.log('Song selected:', item)
