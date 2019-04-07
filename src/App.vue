@@ -10,14 +10,6 @@
 </template>
 
 <style lang="scss">
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
-
-@include md-register-theme("default", (
-  primary: #42b983, // The primary color of your application
-  accent: #bbdefb // The accent or secondary color
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

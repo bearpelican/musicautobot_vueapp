@@ -14,13 +14,12 @@ import './filters'
 import 'bootstrap/dist/css/bootstrap.css'
 
 // vue material
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
+import Vuetify from 'vuetify'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
-Vue.use(VueMaterial)
+Vue.use(Vuetify)
 Vue.use(VueLodash, {})
 
 new Vue({
