@@ -1,12 +1,8 @@
 <template lang="pug">
   .container
-    // md-button.md-icon-button.md-raised.md-accent
-    //   md-icon list
-    // note-list
     file-controls
-    predict-controls
-    // play-button
-    sequence-controls
+    // predict-controls
+    // sequence-controls
 </template>
 
 <script>

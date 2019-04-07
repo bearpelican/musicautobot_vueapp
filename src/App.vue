@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Predict</router-link> |
-      <router-link to="/sheet">Sheet</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <v-app id="vuematerial">
+      <div id="nav">
+        <router-link to="/">Predict</router-link> |
+        <router-link to="/sheet">Sheet</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
+      <router-view/>
+    </v-app>
   </div>
 </template>
 
