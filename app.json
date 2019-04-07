@@ -1,0 +1,28 @@
+
+{
+  "name": "Flask VueJs Template",
+  "description": "",
+  "repository": "https://github.com/gtalarico/flask-vuejs-template",
+  "logo": "https://github.com/gtalarico/flask-vuejs-template/raw/master/docs/project-logo.png",
+  "keywords": ["flask", "vue"],
+  "env": {
+    "FLASK_ENV": {
+      "description": "Flask Enviroment",
+      "value": "production"
+    },
+    "SECRET": {
+      "description": "Flask Secret Key",
+      "value": "YourKeyHere"
+    }
+   },
+  "addons": [
+   ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
