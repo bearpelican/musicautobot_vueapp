@@ -58,5 +58,6 @@ div {
   border-left-style: dotted;
   border-left-color: #234325;
   height: 100%;
+  cursor: move;
 }
 </style>

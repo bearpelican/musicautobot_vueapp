@@ -1,7 +1,7 @@
 <template>
   <div class="predict">
     <search id='song-search'></search>
-    <hr style='margin-top: 0px;' />
+    <hr style='margin-top: 0px; position: relative; top: -22px' />
     <tutorial v-if="firstTime" id='first-tutorial'></tutorial>
     <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
     <sequencer :style="sequenceStyle"></sequencer>
