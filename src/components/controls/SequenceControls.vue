@@ -91,8 +91,9 @@ export default {
 }
 
 .control-group-toggle {
+  margin-top: 5px;
   .v-btn {
-    height: 30px;
+    height: 20px;
   }
 }
 

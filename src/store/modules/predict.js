@@ -60,7 +60,7 @@ export const actions = {
         commit('updateLoadingState', `Generating steps (${counter} / ${nSteps})...`)
       }
       counter += 1
-    }, 1000 * 2)
+    }, 1000 * 1)
 
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
     const midiBuffer = await $backend.predictMidi({ midi, nSteps, bpm })
