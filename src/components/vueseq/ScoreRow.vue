@@ -4,6 +4,7 @@
 
 <script>
 import { positionToTiming } from '@/lib/positioning'
+import { pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
@@ -27,9 +28,10 @@ export default {
       if (this.appState === 'playing') return
       this.startEditingScore()
       window.addEventListener('mouseup', this.end)
+      const beatOffset = (pixelPerBeat / 2) // round the timing down when adding notes - otherwise it'll be a half step up
       this.addNote({
         key: this.keyNumber,
-        timing: positionToTiming(event.offsetX, this.currentLength.value),
+        timing: positionToTiming(event.offsetX - beatOffset, this.currentLength.value),
         length: this.currentLength.value
       })
       this.startPreview({ keyNumber: this.keyNumber, timeout: 2 })

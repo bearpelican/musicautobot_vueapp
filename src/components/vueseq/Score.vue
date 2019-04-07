@@ -34,6 +34,7 @@
       )
       seed-line(
         key="seed-line"
+        :scoreOffset="scoreOffset"
       )
 </template>
 
@@ -65,7 +66,8 @@ export default {
           type: getTypeOfKey(key),
           number: getKeyNumber(key)
         }
-      }).reverse()
+      }).reverse(),
+      scoreOffset: 0
     }
   },
   computed: {
@@ -83,10 +85,10 @@ export default {
     },
     width () {
       return `${this.beats.length * pixelPerBeat}px`
-    },
-    scoreOffset () {
-      return this.$refs.scoreContainer.getBoundingClientRect().left
     }
+  },
+  mounted () {
+    this.scoreOffset = this.$el.getBoundingClientRect().left
   },
   methods: {
     ...mapActions(['scrollTop']),

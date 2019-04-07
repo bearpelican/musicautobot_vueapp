@@ -9,7 +9,10 @@ const { mapState, mapMutations } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    index: Number
+    scoreOffset: Number
+  },
+  data () {
+    return { }
   },
   computed: {
     ...mapState(['seedLen', 'songItem']),
@@ -23,12 +26,13 @@ export default {
   methods: {
     ...mapMutations(['updateSeedLen']),
     moveLine (event) {
-      console.log(parseInt(event.layerX / pixelPerBeat))
+      const newSeedLen = parseInt((event.clientX - this.scoreOffset) / pixelPerBeat)
+      console.log(newSeedLen)
       // this.updateSeedLen()
-      // this.addListeners()
     },
     beginEditing (event) {
-      console.log(parseInt(event.layerX / pixelPerBeat))
+      const newSeedLen = parseInt((event.clientX - this.scoreOffset) / pixelPerBeat)
+      console.log(newSeedLen)
       this.addListeners()
     },
     addListeners () {
