@@ -1,8 +1,8 @@
 <template lang="pug">
   .container
     file-controls
-    // predict-controls
-    // sequence-controls
+    predict-controls
+    sequence-controls
 </template>
 
 <script>
@@ -28,18 +28,21 @@ export default {
 
   .control-group {
     height: 140px;
+    width: 160px;
     border-radius: 16px;
-    // background-color: #dfeffcd8;
+    background-color: #ffffff;
 
-    &.md-button:not([disabled]).md-focused:before,
-    &.md-button:not([disabled]):active:before,
-    &.md-button:not([disabled]):hover:before {
-      opacity: 0;
+    &.v-btn--active:before,
+    &.v-btn:focus:before,
+    &.v-btn:hover:before {
+      background-color: white;
     }
   }
 
   .control-group-slider {
     width: 120px;
+    margin: auto;
+    padding: 0px;
   }
 
   .control-group-label {
@@ -79,7 +82,7 @@ img {
   flex-direction: row-reverse;
   align-items: flex-end;
   pointer-events: none;
-
+  z-index: 3;
 }
 
 .container > * {

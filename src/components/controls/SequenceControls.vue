@@ -1,5 +1,5 @@
 <template>
-  <md-speed-dial id="control-sequence">
+  <!-- <md-speed-dial id="control-sequence">
     <md-speed-dial-target @click="toggle">
       <md-icon>{{ icon }}</md-icon>
     </md-speed-dial-target>
@@ -23,7 +23,43 @@
         </b-form-group>
       </md-button>
     </md-speed-dial-content>
-  </md-speed-dial>
+  </md-speed-dial> -->
+
+  <v-speed-dial bottom right open-on-hover
+    direction="top"
+    transition="scale-transition">
+  <!-- <v-speed-dial bottom right
+    direction="top"
+    transition="scale-transition"
+  > -->
+    <template v-slot:activator>
+      <!-- <v-btn color="blue darken-2" dark fab> -->
+      <v-btn color="blue darken-2" dark fab @click="toggle">
+        <v-icon>{{ icon }}</v-icon>
+      </v-btn>
+    </template>
+    <v-btn class='control-group'>
+      <div class='control-group-content'>
+        <div class='control-group-header'>Playback</div>
+        <div>
+          <div class='control-group-label'>BPM: {{ this.bpm }}</div>
+          <v-slider id="noteTemp" class="control-group-slider" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+        </div>
+
+        <div>
+          <div class='control-group-label'>Synth</div>
+          <v-btn-toggle class="control-group-toggle" v-model="selectSynthType">
+            <v-btn flat value="piano">
+              Piano
+            </v-btn>
+            <v-btn flat value="alien">
+              Alien
+            </v-btn>
+          </v-btn-toggle>
+        </div>
+      </div>
+    </v-btn>
+  </v-speed-dial>
 </template>
 
 <script>
@@ -63,7 +99,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 #control-sequence {
   align-items: flex-end;
@@ -72,6 +108,12 @@ export default {
 
 .control-group {
   margin: 0px 10px;
+}
+
+.control-group-toggle {
+  .v-btn {
+    height: 30px;
+  }
 }
 
 #synth-form-group {

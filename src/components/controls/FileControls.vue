@@ -1,40 +1,11 @@
 <template>
-  <!-- <md-speed-dial>
-    <md-speed-dial-target @click="exportMidi">
-      <md-icon>save</md-icon>
-    </md-speed-dial-target>
-
-    <md-speed-dial-content>
-      <md-button class="md-icon-button" @click="$refs.fileUpload.click()">
-        <md-icon>cloud_upload</md-icon>
-        <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
-      </md-button>
-    </md-speed-dial-content>
-  </md-speed-dial> -->
-  <v-speed-dial
-    :bottom="true"
-    :right="true"
-    direction="top"
-    :open-on-hover="true"
-    transition="scale-transition"
-  >
+  <v-speed-dial bottom right open-on-hover direction="top" transition="scale-transition">
     <template v-slot:activator>
-      <v-btn
-        color="blue darken-2"
-        dark
-        fab
-        @click="exportMidi"
-      >
+      <v-btn color="blue darken-2" dark fab @click="exportMidi">
         <v-icon>save</v-icon>
       </v-btn>
     </template>
-    <v-btn
-      fab
-      dark
-      small
-      color="green"
-      @click="$refs.fileUpload.click()"
-    >
+    <v-btn fab dark small color="green" @click="$refs.fileUpload.click()">
       <v-icon>cloud_upload</v-icon>
       <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
     </v-btn>
