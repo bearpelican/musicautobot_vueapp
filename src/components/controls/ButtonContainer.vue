@@ -61,14 +61,6 @@ export default {
     margin: 5px 0px;
     /* background-color: #ff743d80; */
   }
-
-  .md-speed-dial {
-    width: 65px;
-  }
-
-  // .btn-outline-primary {
-  //   background-color: red;
-  // }
 }
 
 </style>
@@ -91,15 +83,6 @@ img {
 
 .container > * {
   pointer-events: all;
-}
-
-.md-fab-bottom-right {
-  position: static;
-}
-
-.md-icon-button {
-  width: 56px;
-  height: 56px;
 }
 
 </style>
