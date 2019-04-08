@@ -36,6 +36,9 @@
         key="seed-line"
         :scoreOffset="scoreOffset"
       )
+      generate-button(
+        :scoreOffset="scoreOffset"
+      )
 </template>
 
 <script>
@@ -45,6 +48,7 @@ import PrevNote from '@/components/vueseq/PrevNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
+import GenerateButton from '@/components/controls/GenerateButton'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -57,7 +61,8 @@ export default {
     Note,
     ScoreLine,
     ProgressLine,
-    SeedLine
+    SeedLine,
+    GenerateButton
   },
   data () {
     return {
@@ -105,7 +110,15 @@ export default {
   height: 100%;
   overflow: scroll;
 }
+
+.score, .inner {
+  transform:rotateX(180deg);
+  -ms-transform:rotateX(180deg); /* IE 9 */
+  -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+}
+
 .inner {
   position: relative;
+
 }
 </style>

@@ -25,7 +25,7 @@
         </div>
       </div>
     </v-btn>
-    <v-btn class='control-group' @click='voidEvent' :ripple="false">
+    <!-- <v-btn class='control-group' @click='voidEvent' :ripple="false">
       <div class='control-group-content'>
         <div class='control-group-header'>Timesteps</div>
         <div>
@@ -37,7 +37,7 @@
           <v-slider id="seedLen" class="control-group-slider" type="range" v-model='selectSeed' :min="1" :max="50" :step="1" hide-details></v-slider>
         </div>
       </div>
-    </v-btn>
+    </v-btn> -->
   </v-speed-dial>
 </template>
 

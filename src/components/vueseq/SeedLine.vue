@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:style="{ left, hidden }" @mousedown="beginEditing")
+  div(:style="{ left }" @mousedown="beginEditing")
 </template>
 
 <script>
@@ -51,12 +51,13 @@ export default {
 
 <style scoped>
 div {
+  z-index: 3;
   position: absolute;
   top: 0;
   width: 8px;
-  border-left-width: 8px;
+  border-left-width: 6px;
   border-left-style: dotted;
-  border-left-color: #234325;
+  border-left-color: #4e2319be;
   height: 100%;
   cursor: move;
 }

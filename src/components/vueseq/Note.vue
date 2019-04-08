@@ -1,7 +1,7 @@
 <template lang="pug">
-  div(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
-    .selection.begin(@mousedown.stop="startEditingStartTime" :style="{ 'background-color': selectionColor }")
-    .selection.end(@mousedown.stop="startEditingEndTime" :style="{ 'background-color': selectionColor }")
+  div.note(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
+    .selection.begin(@mousedown.stop="startEditingStartTime" :style="{ 'border-color': selectionColor }")
+    .selection.end(@mousedown.stop="startEditingEndTime" :style="{ 'border-color': selectionColor }")
 </template>
 
 <script>
@@ -11,6 +11,7 @@ import validateNoteDetails from '@/lib/validateNoteDetails'
 // import { emptyStatement } from 'babel-types'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
+const { mapState: predMapState } = createNamespacedHelpers('predict')
 
 export default {
   props: {
@@ -41,6 +42,7 @@ export default {
       minimumUnit: state => state.currentLength.value
     }),
     ...mapState(['isEditingScore', 'progressTime', 'version']),
+    ...predMapState(['seedLen']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -52,14 +54,19 @@ export default {
     },
     selectionColor () {
       if (this.length === 0) {
-        console.log('Length:', this.length)
         return '#d32c2c'
+      }
+      if (this.timing >= this.seedLen) {
+        return '#B71C1C'
       }
       return '#3287ce'
     },
     color () {
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
-        return '#000000'
+        return '#666666'
+      }
+      if (this.timing >= this.seedLen) {
+        return '#FF5252'
       }
       return '#64b5f6'
     }
@@ -184,26 +191,34 @@ export default {
 div {
   position: absolute;
   height: 14px;
-  background-color: #64b5f6;
-  border: 0.5px solid #42a5f5;
+  /* border: 0.5px solid #42a5f5; */
   cursor: move;
   z-index: 1;
+}
+.note {
+  background-color: #64b5f6;
 }
 .selection {
   position: absolute;
   width: 5px;
   height: 100%;
-  background-color: #3287ce;
-  border-color: #64b5f6;
+
 }
 .begin {
   cursor: w-resize;
   top: 0;
   left: 0;
+
+  border-right-width: 3px;
+  border-right-style: solid;
+  /* border-right-color: #64b5f6; */
 }
 .end {
   cursor: e-resize;
   top: 0;
   right: 0;
+
+  border-left-width: 3px;
+  border-left-style: solid;
 }
 </style>

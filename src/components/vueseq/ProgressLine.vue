@@ -27,7 +27,7 @@ div {
   width: 2px;
   border-left-width: 2px;
   border-left-style: solid;
-  border-left-color: rgb(173, 38, 67);
+  border-left-color: #424242;
   height: 100%;
 }
 </style>
