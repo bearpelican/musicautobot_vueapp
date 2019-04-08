@@ -18,7 +18,7 @@ export default {
   computed: {
     ...mapState(['seedLen', 'songItem']),
     left () {
-      return `${this.seedLen * pixelPerBeat - 8}px`
+      return `${this.seedLen * pixelPerBeat - 5}px`
     },
     hidden () {
       return this._.isEmpty(this.songItem)

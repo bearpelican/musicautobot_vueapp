@@ -57,7 +57,7 @@ export default {
 
   .control-group-header {
     font-size: 0.8rem;
-    color: #42b983;
+    // color: #42b983;
     margin: 5px 0px;
     /* background-color: #ff743d80; */
   }
@@ -80,7 +80,7 @@ img {
 
 .container {
   position: absolute;
-  bottom: 50px;
+  top: 180px;
   right: 100px;
   display: flex;
   flex-direction: row-reverse;

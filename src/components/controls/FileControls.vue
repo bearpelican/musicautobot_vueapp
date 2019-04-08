@@ -1,11 +1,14 @@
 <template>
-  <v-speed-dial bottom right open-on-hover direction="top" transition="scale-transition">
+  <v-speed-dial bottom right open-on-hover direction="bottom" transition="scale-transition">
     <template v-slot:activator>
-      <v-btn color="blue darken-2" dark fab @click="exportMidi">
-        <v-icon>save</v-icon>
+      <v-btn color="grey lighten-5" small fab>
+        <v-icon>folder_open</v-icon>
       </v-btn>
     </template>
-    <v-btn fab dark small color="green" @click="$refs.fileUpload.click()">
+    <v-btn fab dark small color="green lighten-1" @click="exportMidi">
+      <v-icon>save</v-icon>
+    </v-btn>
+    <v-btn fab dark small color="green lighten-1" @click="$refs.fileUpload.click()">
       <v-icon>cloud_upload</v-icon>
       <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
     </v-btn>

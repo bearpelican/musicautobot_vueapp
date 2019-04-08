@@ -1,15 +1,16 @@
 <template>
   <v-speed-dial bottom right open-on-hover
-    direction="top"
+    direction="bottom"
     transition="scale-transition">
   <!-- <v-speed-dial bottom right
     direction="top"
     transition="scale-transition" -->
   >
     <template v-slot:activator>
-      <!-- <v-btn color="blue darken-2" dark fab> -->
-      <v-btn color="blue darken-2" dark fab @click="toggle">
-        <v-icon>{{ icon }}</v-icon>
+      <v-btn color="grey lighten-5" small fab>
+      <!-- <v-btn color="blue darken-2" dark fab @click="toggle"> -->
+        <!-- <v-icon>{{ icon }}</v-icon> -->
+        <v-icon>settings</v-icon>
       </v-btn>
     </template>
     <v-btn class='control-group' @click='voidEvent' :ripple="false">
@@ -17,7 +18,7 @@
         <div class='control-group-header'>Playback</div>
         <div>
           <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-          <v-slider id="noteTemp" class="control-group-slider" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+          <v-slider id="noteTemp" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
         </div>
 
         <div>
@@ -94,6 +95,7 @@ export default {
   margin-top: 5px;
   .v-btn {
     height: 20px;
+    font-size: .8em;
   }
 }
 
@@ -106,6 +108,10 @@ export default {
 
   /* height: 20px;
   font-size: 0.5rem; */
+}
+
+.control-group-header {
+  color: #2196F3;
 }
 
 </style>

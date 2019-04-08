@@ -1,15 +1,12 @@
 <template>
   <v-speed-dial bottom right open-on-hover
-    direction="top"
+    direction="bottom"
     transition="scale-transition">
-  <!-- <v-speed-dial bottom right
-    direction="top"
-    transition="scale-transition" -->
   >
     <template v-slot:activator>
-      <!-- <v-btn color="blue darken-2" dark fab> -->
-      <v-btn color="blue darken-2" dark fab @click="predictMidi">
-        <v-icon>cached</v-icon>
+      <!-- <v-btn color="blue darken-2" dark fab  @click="predictMidi"> -->
+      <v-btn color="grey lighten-5" small fab>
+        <v-icon>shuffle</v-icon>
       </v-btn>
     </template>
     <v-btn class='control-group' @click='voidEvent' :ripple="false">
@@ -17,11 +14,11 @@
         <div class='control-group-header'>Randomness</div>
         <div>
           <div class='control-group-label'>Note: {{ this.noteTempPCT }}%</div>
-          <v-slider id="noteTemp" class="control-group-slider" type="range" v-model='selectNoteTemp' :min="0.5" :max="1.5" :step="0.05" hide-details></v-slider>
+          <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.5" :max="1.5" :step="0.05" hide-details></v-slider>
         </div>
         <div>
           <div class='control-group-label'>Duration: {{ this.durationTempPCT }}%</div>
-          <v-slider id="durTemp" class="control-group-slider" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.1" :step="0.05" hide-details></v-slider>
+          <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.1" :step="0.05" hide-details></v-slider>
         </div>
       </div>
     </v-btn>
@@ -96,4 +93,7 @@ export default {
 
 <style scoped>
 
+.control-group-header {
+  color: #FF5252;
+}
 </style>

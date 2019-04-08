@@ -1,8 +1,7 @@
-<template lang="pug">
-  md-button.md-icon-button.md-raised.md-accent(
-    @click.native="toggle"
-  )
-    md-icon {{ icon }}
+<template>
+  <v-btn color="blue darken-2" dark fab @click="toggle">
+    <v-icon>{{ icon }}</v-icon>
+  </v-btn>
 </template>
 
 <script>
