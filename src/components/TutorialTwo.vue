@@ -52,6 +52,7 @@ export default {
   // position: relative;
   float: left;
   text-align: center;
+  text-shadow: 1px 1px 8px #868686;
   margin-right: 0px;
   // pointer-events: none;
   bottom: 0px;
@@ -75,14 +76,14 @@ export default {
     position: absolute;
     display: inline-block;
     font-size: 2em;
-    top: 350px;
+    top: 210px;
     left: 250px;
     animation-delay: 2s;
   }
   #tutorial-play {
     position: absolute;
     left: 320px;
-    bottom: 220px;
+    bottom: 100px;
     font-size: 1em;
     display: inline-block;
     animation-delay: 4s;
@@ -102,15 +103,13 @@ export default {
 
 svg {
   margin: 0 auto;
-  // bottom: 0px;
-  // transform: scale(1, -1) rotate(60deg);
   float: right;
 
   &.arrow-generate {
     transform: rotate(65deg) scale(1, -1);
     position: absolute;
-    left: 410px;
-    top: 385px;
+    left: 415px;
+    top: 255px;
     width: 250px;
     height: 230px;
   }
@@ -118,15 +117,15 @@ svg {
     transform: rotate(-45deg);
     position: absolute;
     left: 280px;
-    bottom: 140px;
+    bottom: 20px;
     width: 100px;
     height: 100px;
     transform: scale(-1, 1) rotate(-30deg);
   }
   .draw-arrow {
-    stroke-width: 3;
+    stroke-width: 3.5;
     // stroke: dodgerblue;
-    stroke: #6ee4af;
+    stroke: #67d6a4;
     fill: none;
     stroke-dasharray: 400;
     stroke-dashoffset: 400;

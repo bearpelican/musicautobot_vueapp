@@ -1,6 +1,6 @@
 <template lang="pug">
   v-btn(id="generate-button" :style="{ left }" color="red darken-2" dark fab @click="predictMidi")
-    v-icon cached
+    v-icon(id="generate-icon") cached
 </template>
 
 <script>
@@ -38,4 +38,17 @@ export default {
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%)
 }
+
+#generate-icon {
+  animation:rotate 3s  infinite;
+  animation-timing-function: cubic-bezier(1,0,.5,1);
+  -webkit-animation:rotate 5s  infinite;
+  -webkit-animation-timing-function: cubic-bezier(1,0,.5,1);
+}
+
+@-webkit-keyframes rotate {
+    from { -webkit-transform: rotate(360deg) }
+    to { -webkit-transform: rotate(0deg) }
+}
+
 </style>

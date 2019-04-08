@@ -1,44 +1,46 @@
 <template lang="pug">
   .score(@scroll="onScroll" ref="scoreContainer")
     .inner(:style="{ width }")
-      score-row(
-        v-for="(key, index) in keys",
-        :key="index + '-key'",
-        :keyNumber="key.number",
-        :keyType="key.type"
-      )
-      note(
-        v-for="(note, index) in notes",
-        :key="index + '-note'",
-        :index="index",
-        :storeKeyNumber="note.key",
-        :storeTiming="note.timing",
-        :storeLength="note.length",
-        :scoreOffset="scoreOffset"
-      )
-      prev-note(
-        v-for="(note, index) in prevNotes",
-        :key="index + '-prev-note'",
-        :index="index",
-        :storeKeyNumber="note.key",
-        :storeTiming="note.timing",
-        :storeLength="note.length"
-      )
-      score-line(
-        v-for="(beat, index) in beats",
-        :key="index + '-beat'",
-        :index="index"
-      )
-      progress-line(
-        key="progress-line"
-      )
-      seed-line(
-        key="seed-line"
-        :scoreOffset="scoreOffset"
-      )
-      generate-button(
-        :scoreOffset="scoreOffset"
-      )
+      .grid(:style="{ opacity: gridOpacity }")
+        score-row(
+          v-for="(key, index) in keys",
+          :key="index + '-key'",
+          :keyNumber="key.number",
+          :keyType="key.type"
+        )
+        note(
+          v-for="(note, index) in notes",
+          :key="index + '-note'",
+          :index="index",
+          :storeKeyNumber="note.key",
+          :storeTiming="note.timing",
+          :storeLength="note.length",
+          :scoreOffset="scoreOffset"
+        )
+        prev-note(
+          v-for="(note, index) in prevNotes",
+          :key="index + '-prev-note'",
+          :index="index",
+          :storeKeyNumber="note.key",
+          :storeTiming="note.timing",
+          :storeLength="note.length"
+        )
+        score-line(
+          v-for="(beat, index) in beats",
+          :key="index + '-beat'",
+          :index="index"
+        )
+      .grid-controls
+        progress-line(
+          key="progress-line"
+        )
+        seed-line(
+          key="seed-line"
+          :scoreOffset="scoreOffset"
+        )
+        generate-button(
+          :scoreOffset="scoreOffset"
+        )
 </template>
 
 <script>
@@ -63,6 +65,10 @@ export default {
     ProgressLine,
     SeedLine,
     GenerateButton
+  },
+
+  props: {
+    gridOpacity: Number
   },
   data () {
     return {
@@ -112,11 +118,13 @@ export default {
   overflow: scroll;
 }
 
+/*
+For making scroll bar on top: https://stackoverflow.com/questions/18997724/how-to-change-scroll-bar-position-with-css
 .score, .inner {
   transform:rotateX(180deg);
-  -ms-transform:rotateX(180deg); /* IE 9 */
-  -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-}
+  -ms-transform:rotateX(180deg);
+  -webkit-transform:rotateX(180deg);
+} */
 
 .inner {
   position: relative;

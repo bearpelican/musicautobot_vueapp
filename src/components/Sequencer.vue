@@ -3,9 +3,10 @@
     sequence-title
     section
       keyboard
-      score
-      button-container
+      score(:gridOpacity="gridOpacity")
+    button-container
     play-button(id="play-button")
+    tutorial-two(v-if="tutorialStep === 1" id='tutorial-two')
 </template>
 
 <script>
@@ -15,6 +16,10 @@ import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/controls/ButtonContainer'
 import SequenceTitle from '@/components/vueseq/SequenceTitle'
 import PlayButton from '@/components/controls/PlayButton'
+import TutorialTwo from '@/components/TutorialTwo'
+
+import { createNamespacedHelpers } from 'vuex'
+const { mapState } = createNamespacedHelpers('predict')
 
 export default {
   name: 'sequencer',
@@ -23,7 +28,14 @@ export default {
     Score,
     ButtonContainer,
     SequenceTitle,
-    PlayButton
+    PlayButton,
+    TutorialTwo
+  },
+  computed: {
+    ...mapState(['loadingState', 'tutorialStep']),
+    gridOpacity () {
+      return (this.loadingState === null && this.tutorialStep !== 1) ? 1 : 0.5
+    }
   }
 }
 </script>
@@ -35,10 +47,12 @@ export default {
   src: "@/assets/notes.woff";
 }
 
+#sequencer {
+  position: relative;
+}
 #sequencer * {
   user-select: none;
   /* overflow: hidden; */
-  /* position: relative; */
 }
 section {
   /* width: 80%;
@@ -48,8 +62,13 @@ section {
 
 #play-button {
   position: absolute;
-  bottom: 130px;
+  bottom: 10px;
   left: 215px;
+  z-index: 4;
 }
 
+#tutorial-two {
+  position: absolute;
+  z-index: 3;
+}
 </style>

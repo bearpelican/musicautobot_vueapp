@@ -70,8 +70,8 @@ img {
 
 .container {
   position: absolute;
-  top: 180px;
-  right: 100px;
+  top: 50px;
+  right: 90px;
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
