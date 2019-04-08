@@ -85,8 +85,8 @@ export default {
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
-          'display',
-          'genres'
+          'artist',
+          'title'
         ]
       }
       this.fuse = new Fuse(this.songs, options)
