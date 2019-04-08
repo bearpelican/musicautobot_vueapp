@@ -9,14 +9,21 @@ export const state = {
   durationTemp: 0.5,
   noteTemp: 1.2,
   midiXML: null,
-  firstTime: true,
+  tutorialStep: 0,
   loadingState: null
 }
 
 export const mutations = {
   updateSongItem (state, item) {
     state.songItem = item
-    state.firstTime = false
+    if (state.tutorialStep < 1) {
+      state.tutorialStep = 1
+    }
+  },
+  updateTutorialStep (state, step) {
+    if (state.tutorialStep < step) {
+      state.tutorialStep = step
+    }
   },
   updateSongs (state, songs) {
     state.songs = songs
@@ -52,7 +59,7 @@ export const actions = {
     // const seq = rootState.sequence
     commit('updateLoadingState', 'Making music...')
     const { nSteps, seedLen } = rootState.predict
-
+    commit('updateTutorialStep', 2)
     let counter = -2
     const progress = setInterval(() => {
       // console.log('Seconds:', time)

@@ -2,9 +2,9 @@
   <div class="predict">
     <search id='song-search'></search>
     <hr style='margin-top: 0px; position: relative; top: -22px' />
-    <tutorial v-if="firstTime" id='tutorial-one'></tutorial>
+    <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
     <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
-    <tutorial-two id='tutorial-two'></tutorial-two>
+    <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
     <sequencer :style="sequenceStyle">
     </sequencer>
   </div>
@@ -40,12 +40,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['songItem', 'loadingState', 'firstTime']),
+    ...mapState(['songItem', 'loadingState', 'tutorialStep']),
     sequenceStyle () {
       return {
-        visibility: (!this.firstTime || this.debug) ? 'visible' : 'hidden',
+        visibility: (this.tutorialStep !== 0 || this.debug) ? 'visible' : 'hidden',
         'pointer-events': (this.loadingState === null) ? 'all' : 'none',
-        opacity: (this.loadingState === null) ? 1 : 0.5
+        opacity: (this.loadingState === null && this.tutorialStep !== 1) ? 1 : 0.5
       }
     },
     loadingStyle () {
