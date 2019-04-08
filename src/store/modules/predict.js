@@ -4,7 +4,7 @@ import { storeToMidi } from '@/lib/convert'
 export const state = {
   songs: [],
   songItem: {},
-  nSteps: 150,
+  nSteps: 300,
   seedLen: 10,
   durationTemp: 0.5,
   noteTemp: 1.2,
