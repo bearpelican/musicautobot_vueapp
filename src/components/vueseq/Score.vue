@@ -39,10 +39,6 @@
       generate-button(
         :scoreOffset="scoreOffset"
       )
-      play-button(
-        id="play-button"
-        :scoreOffset="scoreOffset"
-      )
 </template>
 
 <script>
@@ -53,7 +49,6 @@ import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
 import GenerateButton from '@/components/controls/GenerateButton'
-import PlayButton from '@/components/controls/PlayButton'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -67,8 +62,7 @@ export default {
     ScoreLine,
     ProgressLine,
     SeedLine,
-    GenerateButton,
-    PlayButton
+    GenerateButton
   },
   data () {
     return {
@@ -111,12 +105,6 @@ export default {
 </script>
 
 <style scoped>
-
-#play-button {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-}
 
 .score {
   flex: 1;

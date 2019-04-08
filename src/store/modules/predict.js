@@ -16,12 +16,13 @@ export const state = {
 export const mutations = {
   updateSongItem (state, item) {
     state.songItem = item
-    // if (state.tutorialStep < 1) {
-    //   state.tutorialStep = 1
-    // }
-    state.tutorialStep = 2 // DEBUG
+    if (state.tutorialStep < 1) {
+      state.tutorialStep = 1
+    }
+    // state.tutorialStep = 2 // DEBUG
   },
   updateTutorialStep (state, step) {
+    console.log('Updating tutorial step')
     if (state.tutorialStep < step) {
       state.tutorialStep = step
     }

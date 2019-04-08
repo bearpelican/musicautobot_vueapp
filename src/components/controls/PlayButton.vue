@@ -7,6 +7,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
+const { mapMutations: predMapMutations } = createNamespacedHelpers('predict')
 
 export default {
   computed: {
@@ -17,7 +18,9 @@ export default {
   },
   methods: {
     ...mapActions(['play', 'stop']),
+    ...predMapMutations(['updateTutorialStep']),
     toggle () {
+      this.updateTutorialStep(2)
       if (this.appState === 'editing') {
         this.play()
       } else {

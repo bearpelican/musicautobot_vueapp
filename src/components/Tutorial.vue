@@ -12,7 +12,6 @@
       <!-- <p>Some search hints... Bach, EDM, La Bamba, etc.</p> -->
       <p class='tutorial-header'>Choose a song to start.</p>
       <p class='tutorial-p'>We'll use this to generate new music in the same style!</p>
-      <p class='tutorial-p'>Some search hints: Chopin, La Bamba</p>
     </div>
   </div>
 </template>

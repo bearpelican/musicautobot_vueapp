@@ -5,6 +5,7 @@
       keyboard
       score
       button-container
+    play-button(id="play-button")
 </template>
 
 <script>
@@ -13,10 +14,7 @@ import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/controls/ButtonContainer'
 import SequenceTitle from '@/components/vueseq/SequenceTitle'
-
-import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState } = createNamespacedHelpers('sequence')
-// import "./style.css";
+import PlayButton from '@/components/controls/PlayButton'
 
 export default {
   name: 'sequencer',
@@ -24,7 +22,8 @@ export default {
     Keyboard,
     Score,
     ButtonContainer,
-    SequenceTitle
+    SequenceTitle,
+    PlayButton
   }
 }
 </script>
@@ -45,6 +44,12 @@ section {
   /* width: 80%;
   height: 50%; */
   margin: 0px 100px;
+}
+
+#play-button {
+  position: absolute;
+  bottom: 130px;
+  left: 215px;
 }
 
 </style>
