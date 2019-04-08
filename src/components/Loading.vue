@@ -1,14 +1,9 @@
 
 <template>
   <div>
-    <!-- <b-spinner type="grow" label="Spinning"></b-spinner> -->
-    <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
-    <b-spinner type="grow" label="Spinning"></b-spinner>
-    <b-spinner type="grow" variant="primary" label="Spinning"></b-spinner>
+    <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
     <label>{{ value }}</label>
-    <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
-    <b-spinner type="grow" label="Spinning"></b-spinner>
-    <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+    <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
   </div>
 </template>
 
@@ -37,7 +32,12 @@ export default {
 div {
   label {
     font-size: 2em;
-    margin: 0px 10px;
+    height: 100%;
+    margin: 10px 20px;
+  }
+
+  .v-progress-circular {
+    margin-bottom: 10px;
   }
 
   opacity: 0;
