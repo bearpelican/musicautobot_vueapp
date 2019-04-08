@@ -52,7 +52,7 @@ export default {
   // position: relative;
   float: left;
   text-align: center;
-  text-shadow: 1px 1px 8px #868686;
+  text-shadow: 1px 1px 12px #a7a7a7;
   margin-right: 0px;
   // pointer-events: none;
   bottom: 0px;

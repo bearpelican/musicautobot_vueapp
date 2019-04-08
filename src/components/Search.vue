@@ -89,7 +89,7 @@ export default {
       console.log('Loaded results')
     },
     async updateSearch (term) {
-      if (this.fuse === null || this._.isEmpty(term)) return this.results
+      if (this.fuse === null || this._.isEmpty(term) || this.isLoading) return this.results
       this.isLoading = true
       this.term = term
       console.log(this.term)

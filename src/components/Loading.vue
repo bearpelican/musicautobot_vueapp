@@ -1,9 +1,11 @@
 
 <template>
-  <div>
-    <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
-    <label>{{ value }}</label>
-    <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
+  <div class='loading-outer'>
+    <div class='loading-inner'>
+      <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
+      <label>{{ value }}</label>
+      <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
+    </div>
   </div>
 </template>
 
@@ -29,6 +31,16 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.loading-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+}
+.loading-outer {
+  background-color: #ffffff88;
+}
 div {
   label {
     font-size: 2em;

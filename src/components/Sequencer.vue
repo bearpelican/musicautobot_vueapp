@@ -6,7 +6,7 @@
       score(:gridOpacity="gridOpacity")
     button-container
     play-button(id="play-button")
-    tutorial-two(v-if="tutorialStep === 1" id='tutorial-two')
+    slot
 </template>
 
 <script>
@@ -16,7 +16,6 @@ import Score from '@/components/vueseq/Score'
 import ButtonContainer from '@/components/controls/ButtonContainer'
 import SequenceTitle from '@/components/vueseq/SequenceTitle'
 import PlayButton from '@/components/controls/PlayButton'
-import TutorialTwo from '@/components/TutorialTwo'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('predict')
@@ -28,13 +27,12 @@ export default {
     Score,
     ButtonContainer,
     SequenceTitle,
-    PlayButton,
-    TutorialTwo
+    PlayButton
   },
   computed: {
-    ...mapState(['loadingState', 'tutorialStep']),
+    ...mapState(['tutorialStep']),
     gridOpacity () {
-      return (this.loadingState === null && this.tutorialStep !== 1) ? 1 : 0.5
+      return (this.tutorialStep !== 1) ? 1 : 0.4
     }
   }
 }
@@ -65,10 +63,5 @@ section {
   bottom: 10px;
   left: 215px;
   z-index: 4;
-}
-
-#tutorial-two {
-  position: absolute;
-  z-index: 3;
 }
 </style>
