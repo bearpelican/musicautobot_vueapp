@@ -11,8 +11,6 @@
   "dependencies": {
     "@tonejs/midi": "^1.2.2",
     "axios": "^0.18.0",
-    "bootstrap": "^4.3.1",
-    "bootstrap-vue": "^2.0.0-rc.15",
     "core-js": "2",
     "file-saver": "^2.0.1",
     "fuse.js": "^3.4.4",
