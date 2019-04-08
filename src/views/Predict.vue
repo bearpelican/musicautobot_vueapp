@@ -4,7 +4,6 @@
     <hr style='margin-top: 0px; position: relative; top: -22px' />
     <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
     <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
-    <!-- <tutorial-two id='tutorial-two'></tutorial-two> -->
     <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
     <sequencer :style="sequenceStyle">
     </sequencer>
@@ -31,7 +30,6 @@ export default {
     }
   },
   watch: {
-
     songItem (val) {
       console.log('Song item changed:', val)
       if (!this._.isEmpty(val)) {

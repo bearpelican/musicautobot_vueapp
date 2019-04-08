@@ -6,14 +6,12 @@
 </template>
 
 <script>
-import NoteList from '@/components/controls/NoteList'
 import SequenceControls from '@/components/controls/SequenceControls'
 import FileControls from '@/components/controls/FileControls'
 import PredictControls from '@/components/controls/PredictControls'
 
 export default {
   components: {
-    NoteList,
     SequenceControls,
     FileControls,
     PredictControls
