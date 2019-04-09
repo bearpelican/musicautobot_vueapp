@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       error: '',
-      debug: true
+      debug: false
     }
   },
   watch: {
@@ -35,6 +35,7 @@ export default {
       if (!this._.isEmpty(val)) {
         console.log('Song item updated. Fetching midi now', val)
         this.fetchMidi(val)
+        this.$router.push({ path: `/song/${val.sid}` })
       }
     }
   },
@@ -56,16 +57,14 @@ export default {
   },
   mounted () {
     this.fetchSongs()
-
-    // this.fetchMidi({ display: "Broken Arrows - Avicii - Intro-And-Verse", sid: "b332754ce574b8ce079dbb8ec6148fb6" })
-    // this.loadState('fc9f40e7-85ff-4097-8b0f-eaa463cd5ae3')
-    console.log('sjkfsdklfsdjlf')
+    console.log('Route params:')
     console.log(this.$route.params)
+    // this.loadSong('b332754ce574b8ce079dbb8ec6148fb6')
+    // this.loadState('074c1eab7661f7c8cb34052c915dc0f0')
     if (this._.isString(this.$route.params.pid)) {
-      this.loadSong(this.$route.params.pid)
-    }
-    if (this._.isString(this.$route.params.sid)) {
-      this.loadState(this.$route.params.sid)
+      this.loadState(this.$route.params.pid)
+    } else if (this._.isString(this.$route.params.sid)) {
+      this.loadSong(this.$route.params.sid)
     }
   },
   components: {

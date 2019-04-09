@@ -47,7 +47,8 @@ def predict_midi():
     midi = request.files['midi'].read()
     print('THE ARGS PASSED:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
-
+    temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
+    print('Temp:', temperatures)
     # debugging 1 - send exact midi back
     # with open('/tmp/test.mid', 'wb') as f:
     #     f.write(midi)
@@ -61,7 +62,7 @@ def predict_midi():
     # stream = npenc2stream(seed_np, bpm=bpm)
 
     # Main logic
-    pred, seed, full = predict_from_midi(learn, midi=midi)
+    pred, seed, full = predict_from_midi(learn, midi=midi, temperatures=temperatures)
     stream = npenc2stream(full, bpm=bpm)
 
     midi_out = Path(stream.write("midi"))
@@ -125,6 +126,7 @@ def to_s3(file, args):
     # files automatically and upload parts in parallel.
     s3.upload_file(str(tmp_midi), bucket_name, s3_file)
     s3.upload_file(str(tmp_json), bucket_name, s3_json)
+    print('Saved IDS:', s3_id, s3_id[::-1])
     return s3_id[::-1]
 
 @app.route('/store/save', methods=['POST'])

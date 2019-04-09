@@ -14,11 +14,11 @@
         <div class='control-group-header'>Randomness</div>
         <div>
           <div class='control-group-label'>Note: {{ this.noteTempPCT }}%</div>
-          <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.5" :max="1.5" :step="0.05" hide-details></v-slider>
+          <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.8" :max="1.8" :step="0.02" hide-details></v-slider>
         </div>
         <div>
-          <div class='control-group-label'>Duration: {{ this.durationTempPCT }}%</div>
-          <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.1" :step="0.05" hide-details></v-slider>
+          <div class='control-group-label'>Tempo: {{ this.durationTempPCT }}%</div>
+          <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.5" :max="1.5" :step="0.02" hide-details></v-slider>
         </div>
       </div>
     </v-btn>
@@ -69,10 +69,10 @@ export default {
       get () { return this.durationTemp }
     },
     noteTempPCT () {
-      return parseInt((this.noteTemp - 0.5) / 1 * 100)
+      return parseInt((this.noteTemp - 0.8) / 1.0 * 100)
     },
     durationTempPCT () {
-      return parseInt((this.durationTemp - 0.3) / 0.8 * 100)
+      return parseInt((this.durationTemp - 0.5) / 1.0 * 100)
     }
   },
   methods: {

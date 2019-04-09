@@ -7,6 +7,7 @@ import Sheet from './views/Sheet.vue'
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/about',
@@ -18,12 +19,12 @@ export default new Router({
       component: Predict
     },
     {
-      path: '/song/:id',
+      path: '/song/:sid',
       name: 'song',
       component: Predict
     },
     {
-      path: '/predict/:id',
+      path: '/predict/:pid',
       name: 'predict',
       component: Predict
     },

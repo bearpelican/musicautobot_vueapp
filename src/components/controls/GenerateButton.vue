@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-btn(id="generate-button" :style="{ left }" color="red darken-2" dark fab @click="predictMidi")
+  v-btn(id="generate-button" :style="{ left }" color="red darken-2" dark fab @click="predict")
     v-icon(id="generate-icon") cached
 </template>
 
@@ -22,7 +22,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['predictMidi'])
+    ...mapActions(['predictMidi']),
+    async predict () {
+      const pid = await this.predictMidi()
+      this.$router.push({ path: `/predict/${pid}` })
+    }
   }
 }
 </script>

@@ -50,17 +50,8 @@ export default {
     // const rs = s3id.split('').reverse().join('')
     const r1 = await this.fetchMidi(s3id, path)
     const r2 = await this.fetchJson(s3id, path)
-    return { midiBuffer: r1.data, store: r2.data }
+    return { midiBuffer: r1, store: r2 }
   },
-  // Old backend file serving (switched to s3)
-  // async fetchSongs () {
-  //   const response = await $axios.get('songs/all')
-  //   return response.data.result
-  // },
-  // async fetchMidi ({ midiID, type }) {
-  //   const response = await $axios.get(`midi/${type}/${midiID}`, { responseType: 'arraybuffer' })
-  //   return response.data
-  // },
 
   // Predict
   async predictFile (file, nSteps, seedLen) {

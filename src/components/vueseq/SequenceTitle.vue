@@ -9,6 +9,8 @@
     //     v-list-tile(v-for="(item, index) in history" :key="index" @click="")
     //       v-list-tile-title {{ versionString(item.version) }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
+
+    label#sequence-type {{ sequenceType }}
 </template>
 
 <script>
@@ -36,6 +38,12 @@ export default {
       },
       get () { return this.version }
       // get () { return `(v${this.version}) ` }
+    },
+    sequenceType () {
+      console.log(this.$route.name)
+      if (this.$route.name === 'predict') return '(Generated)'
+      if (this.$route.name === 'song') return '(Original)'
+      return ''
     }
   },
   methods: {
@@ -77,6 +85,12 @@ export default {
 
 #version2::after {
   display: none;
+}
+
+#sequence-type {
+  font-size: 1.6em;
+  color: #489e77;
+  margin-left: 15px;
 }
 
 #version {
