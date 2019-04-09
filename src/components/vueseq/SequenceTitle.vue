@@ -11,10 +11,15 @@
       //   :storeLength="note.length"
       // )
 
-    md-field#version2
-      md-select(v-model="selectedVersion")
-        md-option(:value="version") {{ versionString(version) }}
-        md-option(v-for="(snapshot, index) in history" :value="snapshot.version") {{ versionString(snapshot.version) }}
+    v-menu#version2
+      template(v-slot:activator="{ on }")
+        v-btn(color="clear" v-on="on") {{ versionString(version)}}
+      v-list
+        v-list-tile(v-for="(item, index) in history" :key="index" @click="")
+          v-list-tile-title {{ versionString(item.version) }}
+      // md-select(v-model="selectedVersion")
+      //   md-option(:value="version") {{ versionString(version) }}
+      //   md-option(v-for="(snapshot, index) in history" :value="snapshot.version") {{ versionString(snapshot.version) }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
 </template>
 
