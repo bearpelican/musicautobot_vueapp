@@ -7,6 +7,7 @@
     :search-input.sync="searchResults"
     :label="'Choose a song...'"
     no-filter
+    clearable
     persistent-hint
     return-object
   >
@@ -23,6 +24,7 @@
 
 import Fuse from 'fuse.js'
 import { createNamespacedHelpers } from 'vuex'
+import { setTimeout } from 'timers'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 
 export default {
@@ -30,9 +32,9 @@ export default {
   data () {
     return {
       results: [],
-      term: null,
       fuse: null,
-      isLoading: false,
+      term: null,
+      debounce: null,
       error: ''
     }
   },
@@ -46,17 +48,25 @@ export default {
     },
     selectSong: {
       set (songItem) {
-        this.updateSongItem(songItem)
+        if (this.songItem !== songItem) {
+          this.updateSongItem(songItem)
+        }
+        return this.songItem
       },
       get () {
-        return this.songItem
+        return null // Return null otherwise we get into infinite loop when we switch to about and come back
+        // return this.songItem
       }
     },
     searchResults: {
-      async set (val) {
-        await this.updateSearch(val)
+      set (val) {
+        if (this.debounce !== null) {
+          this.debounce(val)
+        }
       },
-      get () { return null }
+      get () {
+        return null
+      }
     }
   },
   watch: {
@@ -69,7 +79,7 @@ export default {
     ...mapActions(['fetchSongs', 'fetchMidi']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
-      this.isLoading = true
+      if (this.fuse !== null) return
       const options = {
         shouldSort: true,
         threshold: 0.6,
@@ -83,24 +93,16 @@ export default {
         ]
       }
       this.fuse = new Fuse(this.songs, options)
-
-      this.isLoading = false
-      this.results = this.fuse.search('avicii', { limit: 10 })
-      console.log('Loaded results')
+      console.log('Loaded search')
+      this.debounce = this._.debounce(this.updateSearch, 100)
+      this.searchResults = 'avicii'
     },
-    async updateSearch (term) {
-      if (this.fuse === null || this._.isEmpty(term) || this.isLoading) return this.results
-      this.isLoading = true
-      this.term = term
-      console.log(this.term)
-      this.results = await this.fuse.search(term, { limit: 10 })
-      console.log(this.results)
-      this.isLoading = false
-      return this.results
-    },
-    songSelected (item) {
-      console.log('Song selected:', item)
-      return this.updateSongItem(item)
+    updateSearch (term) {
+      console.log('updating search')
+      if (this.fuse === null || this._.isEmpty(term) || this._.isEmpty(this.songs)) return
+      setTimeout(() => {
+        this.results = this.fuse.search(term, { limit: 10 })
+      }, 0)
     }
   },
   mounted () {

@@ -19,7 +19,6 @@ export const mutations = {
     if (state.tutorialStep < 1) {
       state.tutorialStep = 1
     }
-    // state.tutorialStep = 2 // DEBUG
   },
   updateTutorialStep (state, step) {
     console.log('Updating tutorial step')
@@ -92,9 +91,9 @@ export const actions = {
   async fetchMidi ({ commit, dispatch }, { sid, display: seqName }) {
     console.log('Fetching midi:', sid, seqName)
     // commit('updateLoading', true)
-    commit('updateLoadingState', 'Fetching song...')
+    commit('updateLoadingState', 'Loading song...')
     const midiBuffer = await $backend.fetchMidi(sid)
-    commit('updateLoadingState', 'Loading sequence...')
+    commit('updateLoadingState', 'Building sequence...')
     await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
     // dispatch('sequence/updateName', { name }, { root: true })
