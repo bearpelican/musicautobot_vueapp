@@ -132,6 +132,13 @@ export function generateSimpleActions (mutations) {
       const { midi, seqName } = storeToMidi(state, null)
       $backend.exportMidi({ midi, fileName: `${seqName}.mid` })
     },
+    // saveStore ({ commit, state, rootState, dispatch }) {
+    //   console.log('Save midi called:', state)
+    //   const { version, notes, bpm, seqName } = state
+    //   const { seedLen, durationTemp, noteTemp } = rootState.predict
+    //   const storeData = { version, notes, bpm, seqName, seedLen, durationTemp, noteTemp }
+    //   $backend.saveStore(storeData)
+    // },
     importMidi ({ commit, rootState, dispatch }, midiBuffer) {
       console.log('Importing midi file')
       dispatch('loadMidiBuffer', { midiBuffer, savePrevious: false })

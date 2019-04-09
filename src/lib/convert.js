@@ -125,3 +125,10 @@ export function storeToMidi (state, seedLen = null) {
   })
   return { midi, bpm, seqName }
 }
+
+export function storeToJSON (rootState, isSeed = true) {
+  // create a new midi file
+  const { nSteps, seedLen, durationTemp, noteTemp } = rootState.predict
+  const { midi, bpm, seqName } = storeToMidi(rootState.sequence, (isSeed) ? seedLen : null)
+  return { midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp }
+}

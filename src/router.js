@@ -15,6 +15,15 @@ export default new Router({
     },
     {
       path: '/',
+      component: Predict
+    },
+    {
+      path: '/song/:id',
+      name: 'song',
+      component: Predict
+    },
+    {
+      path: '/predict/:id',
       name: 'predict',
       component: Predict
     },

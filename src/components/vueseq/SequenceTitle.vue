@@ -1,25 +1,13 @@
 <template lang="pug">
   div
-    label#version {{ `(v${version}) ` }}
+    // label#version {{ `(v${version}) ` }}
 
-      // note(
-      //   v-for="(note, index) in notes",
-      //   :key="index + '-note'",
-      //   :index="index",
-      //   :storeKeyNumber="note.key",
-      //   :storeTiming="note.timing",
-      //   :storeLength="note.length"
-      // )
-
-    v-menu#version2
-      template(v-slot:activator="{ on }")
-        v-btn(color="clear" v-on="on") {{ versionString(version)}}
-      v-list
-        v-list-tile(v-for="(item, index) in history" :key="index" @click="")
-          v-list-tile-title {{ versionString(item.version) }}
-      // md-select(v-model="selectedVersion")
-      //   md-option(:value="version") {{ versionString(version) }}
-      //   md-option(v-for="(snapshot, index) in history" :value="snapshot.version") {{ versionString(snapshot.version) }}
+    // v-menu#version2
+    //   template(v-slot:activator="{ on }")
+    //     v-btn(color="clear" v-on="on") {{ versionString(version)}}
+    //   v-list
+    //     v-list-tile(v-for="(item, index) in history" :key="index" @click="")
+    //       v-list-tile-title {{ versionString(item.version) }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
 </template>
 
@@ -44,7 +32,7 @@ export default {
     ...mapState(['seqName', 'version', 'history']),
     selectedVersion: {
       set (version) {
-        this.updateVersion(noteTemp)
+        this.updateVersion(version)
       },
       get () { return this.version }
       // get () { return `(v${this.version}) ` }
@@ -86,11 +74,6 @@ export default {
     }
   }
 }
-
-// #version2 * {
-//   -webkit-text-fill-color: unset;
-//   font-size: 1.6em;
-// }
 
 #version2::after {
   display: none;

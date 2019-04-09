@@ -45,6 +45,7 @@ learn = load_learner(data, config, path/'model.pth')
 def predict_midi():
     args = request.form.to_dict()
     midi = request.files['midi'].read()
+    print('THE ARGS PASSED:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
 
     # debugging 1 - send exact midi back
@@ -63,9 +64,16 @@ def predict_midi():
     pred, seed, full = predict_from_midi(learn, midi=midi)
     stream = npenc2stream(full, bpm=bpm)
 
-    mid_out = Path(stream.write("midi"))
-    print('Wrote to temporary file:', mid_out)
-    return send_from_directory(mid_out.parent, mid_out.name, mimetype='audio/midi')
+    midi_out = Path(stream.write("midi"))
+    print('Wrote to temporary file:', midi_out)
+
+    s3_id = to_s3(midi_out, args)
+    result = {
+        'result': s3_id
+    }
+    return jsonify(result)
+
+    # return send_from_directory(midi_out.parent, midi_out.name, mimetype='audio/midi')
 
 # @app.route('/midi/song/<path:sid>')
 # def get_song_midi(sid):
@@ -85,3 +93,47 @@ def convert_midi():
     stream.show('musicxml')
     stream_out = Path(stream.write('musicxml'))
     return send_from_directory(stream_out.parent, stream_out.name, mimetype='xml')
+
+
+import uuid
+import boto3
+import json
+
+s3 = boto3.client('s3')
+bucket_name = 'ashaw-midi-web-server'
+
+def to_s3(file, args):
+    s3_id = str(uuid.uuid4()).replace('-', '')
+    base_dir = 'generated/'
+    s3_file = base_dir + s3_id + '.mid'
+    s3_json = base_dir + s3_id + '.json'
+    
+    if not isinstance(file, (str, Path)):
+        tmp_midi = '/tmp/' + s3_id + '.mid'
+        with open(tmp_midi, 'wb') as f:
+            f.write(file)
+    else: 
+        tmp_midi = file
+
+    if not isinstance(args, (str, Path)):
+        tmp_json = '/tmp/' + s3_id + '.json'
+        with open(tmp_json, 'w') as f:
+            json.dump(args, f)
+    else: tmp_json = args
+    
+    # Uploads the given file using a managed uploader, which will split up large
+    # files automatically and upload parts in parallel.
+    s3.upload_file(str(tmp_midi), bucket_name, s3_file)
+    s3.upload_file(str(tmp_json), bucket_name, s3_json)
+    return s3_id[::-1]
+
+@app.route('/store/save', methods=['POST'])
+def save_store():
+    args = request.form.to_dict()
+    midi = request.files['midi'].read()
+    print('Saving store:', args)
+    s3_id = to_s3(midi, args)
+    result = {
+        'result': s3_id
+    }
+    return jsonify(result)

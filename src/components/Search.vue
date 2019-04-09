@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSongItem']),
-    ...mapActions(['fetchSongs', 'fetchMidi']),
+    ...mapActions(['fetchSongs']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
       if (this.fuse !== null) return

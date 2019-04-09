@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { saveAs } from 'file-saver'
+import _ from 'lodash'
 
 let $axios = axios.create({
   baseURL: '/api/',
@@ -34,11 +35,22 @@ export default {
     // console.log(response)
     return response.data
   },
-  async fetchMidi (midiID) {
-    const rs = midiID.split('').reverse().join('')
-    const response = await $axios.get(S3BUCKET + `seed/${rs}.mid`, { responseType: 'arraybuffer' })
+  async fetchMidi (s3id, path = 'cmajor/seed') {
+    const rs = s3id.split('').reverse().join('')
+    const response = await $axios.get(S3BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
     // console.log(response)
     return response.data
+  },
+  async fetchJson (s3id, path = 'cmajor/seed') {
+    const rs = s3id.split('').reverse().join('')
+    const response = await $axios.get(S3BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
+    return response.data
+  },
+  async loadState (s3id, path) {
+    // const rs = s3id.split('').reverse().join('')
+    const r1 = await this.fetchMidi(s3id, path)
+    const r2 = await this.fetchJson(s3id, path)
+    return { midiBuffer: r1.data, store: r2.data }
   },
   // Old backend file serving (switched to s3)
   // async fetchSongs () {
@@ -51,26 +63,44 @@ export default {
   // },
 
   // Predict
-  async predictFile (file, nWords, seedLen) {
-    const response = await $axios.post('predict/file', { np_file: file, n_words: nWords, seed_len: seedLen })
-    return response.data.result
+  async predictFile (file, nSteps, seedLen) {
+    const response = await $axios.post('predict/file', { np_file: file, n_steps: nSteps, seed_len: seedLen })
+    return this.fetchMidi(response.data.result, 'generated')
   },
-  async predictMidi ({ midi, nWords, bpm = 120 }) {
+  // async predictMidi ({ midi, ...args }) {
+  //   const formData = new FormData()
+  //   formData.append('midi', this.midiToBlob(midi))
+  //   _.forOwn(args, (value, key) => {
+  //     formData.append(key, value)
+  //   })
+  //   const config = {
+  //     headers: {
+  //       'content-type': 'multipart/form-data'
+  //     },
+  //     responseType: 'arraybuffer'
+  //   }
+  //   const response = await $axios.post('predict/midi', formData, config)
+  //   // const response = await $axios.post('store/save', formData, config)
+  //   console.log('Response:', response)
+  //   return response.data
+  // },
+
+  async predictMidi ({ midi, ...args }) {
     const formData = new FormData()
     formData.append('midi', this.midiToBlob(midi))
-    formData.append('n_words', nWords)
-    formData.append('bpm', bpm)
+    _.forOwn(args, (value, key) => {
+      formData.append(key, value)
+    })
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
-      },
-      responseType: 'arraybuffer'
+      }
     }
     const response = await $axios.post('predict/midi', formData, config)
+    // const response = await $axios.post('store/save', formData, config)
     console.log('Response:', response)
-    return response.data
+    return response.data.result
   },
-
   // Score viewing - perhaps create a separate server
   async convertToXML ({ midi }) {
     const formData = new FormData()
@@ -91,4 +121,20 @@ export default {
   exportMidi ({ midi, fileName }) {
     saveAs(this.midiToBlob(midi), fileName)
   }
+  // async saveStore ({ midi, ...args }) {
+  //   const formData = new FormData()
+  //   formData.append('midi', this.midiToBlob(midi))
+  //   _.forOwn(args, (value, key) => {
+  //     formData.append(key, value)
+  //   })
+  //   const config = {
+  //     headers: {
+  //       'content-type': 'multipart/form-data'
+  //     }
+  //   }
+  //   // const response = await $axios.post('predict/midi', formData, config)
+  //   const response = await $axios.post('store/save', formData, config)
+  //   console.log('Response:', response)
+  //   return response.data
+  // }
 }
