@@ -19,7 +19,7 @@ import Loading from '@/components/Loading'
 import Tutorial from '@/components/Tutorial'
 import TutorialTwo from '@/components/TutorialTwo'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState } = createNamespacedHelpers('predict')
+const { mapActions, mapMutations, mapState } = createNamespacedHelpers('predict')
 
 export default {
   name: 'predict',
@@ -53,14 +53,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchSongs', 'fetchMidi', 'loadSong', 'loadState'])
+    ...mapActions(['fetchSongs', 'fetchMidi', 'loadSong', 'loadState']),
+    ...mapMutations(['updateTutorialStep'])
   },
   mounted () {
     this.fetchSongs()
     console.log('Route params:')
     console.log(this.$route.params)
+    console.log(this.$route.query)
     // this.loadSong('b332754ce574b8ce079dbb8ec6148fb6')
     // this.loadState('074c1eab7661f7c8cb34052c915dc0f0')
+    if (!this._.isEmpty(this.$route.query.skip)) {
+      this.updateTutorialStep(2)
+    }
     if (this._.isString(this.$route.params.pid)) {
       this.loadState(this.$route.params.pid)
     } else if (this._.isString(this.$route.params.sid)) {

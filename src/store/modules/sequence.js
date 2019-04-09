@@ -26,7 +26,7 @@ export const state = {
   // Metadata
   version: 0,
   bpm: 120,
-  seqName: 'Placeholder',
+  seqName: 'Untitled',
   duration: 0,
   synthType: 'piano'
 }
