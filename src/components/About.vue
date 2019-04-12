@@ -5,7 +5,7 @@
       <span class="about-subtext">Using AI to generate pop music. Give it a few notes, and it'll continue the idea!</span>
     </div>
     <div class="about-content">
-      <h2>Generated Examples</h2>
+      <h2>Examples</h2>
       <ul class='variation-list'>
         La Bamba - Richie Valen
         <li><router-link to="/predict/f00bd0f1289b5f5afd74229569fa74ef">Variation 1</router-link></li>
@@ -37,75 +37,76 @@
 
       <div class='about-instructions'>
         <h2>Instructions</h2>
+        <div class="content-body">
         <ol>
           <li>Search and select a pop song you like. This will give the model a good idea of what style to play in.</li>
           <li>Press the <v-btn color="red darken-2" dark small fab><v-icon>cached</v-icon></v-btn> generate button. This will create a new variation on the song you selected.</li>
           <li>Press <v-btn color="blue darken-2" dark small fab><v-icon>play_arrow</v-icon></v-btn> play and hear the output!</li>
-          <li>Repeat steps 1 or 2 as many times as you want.</li>
+          <li>Repeat steps 1 or 2 as many times as you want. You'll get a different variation each time.</li>
         </ol>
-        <br>
-        <p>You should get a slightly different variation each time. Happy generating!</p>
+        </div>
       </div>
 
     <h2>Advanced Controls</h2>
-      <h4><v-btn color="grey lighten-5" small fab><v-icon>shuffle</v-icon></v-btn>Prediction controls</h4>
+      <div class="content-body">
+        <h4>Seed length</h4>
+            <ul>
+              <li>Choose how much of the original song gets sent to the model for prediction</li>
+              <li>Longer snippets give the model a better idea of the style to play in. It'll generate something more coherent, but less creative</li>
+            </ul>
+        <div id="about-seed">
+            &larr; Drag the brown dotted vertical line to change the seed length.
+            <br>Seed notes are in blue <div class="note seed"></div>. The model uses these to predict the next sequence.
+            <br>The red notes <div class="note generated"></div> are the generated notes - they get replaced on every new prediction.
+        </div>
+        <h4>Grid editor
+        </h4>
+          The blue grid with notes is actually a basic MIDI sequencer. You can add and remove notes and predict off of that!
+          <br><br>
+          <ul>
+            <li>Add a note by clicking any spot in the grid</li>
+            <li>Change the note key by draging it up or down</li>
+            <li>Change the note duration by draging the ends of the note longer or shorter</li>
+            <li>Remove a note by collapsing the note ends.</li>
+          </ul>
+        <h4>Prediction Randomness <v-btn color="grey lighten-5" small fab><v-icon>shuffle</v-icon></v-btn></h4>
+        Alter how wild you want the generated music should be. These settings in top right of the grid
         <ul>
-          <li>Seed length
-            <ul>
-              <li>Seed is the snippet of the song sent to the model for prediction. It's all the notes in blue.</li>
-              <li>The red notes are the generated notes - they get replaced on every new prediction.</li>
-              <li>Longer seed lengths give the model a better idea of the style to play in, however, it becomes less creative.</li>
-            </ul>
-            Drag the brown dotted vertical line (behind the red generate button) to change the seed length.
-            <ul>
-              <li>You'll see notes change from blue to red.</li>
-              <li>The blue notes are what we send to the model to start predicting.</li>
-              <li>The red notes are not sent and get replaced by the new variation.</li>
-            </ul>
-          </li>
-          <br>
-          <li>2. Choose randomness - You can alter how conservative you want the predictions should be.
-            <ul>
-              <li>In the shuffle settings on the top right, you'll see "Note" and "Tempo" sliders.</li>
-              <li>Note randomness generates more variation in the note key</li>
-              <li>Tempo randomness causes variation in note durations</li>
-            </ul>
-          </li>
+          <li>Note randomness: amount of variation in note keys</li>
+          <li>Tempo randomness: amount of variation in note durations (sixteenth, quarter, half notes)</li>
         </ul>
-      <h4>Grid controls
-      </h4>
-        The blue grid with notes is actually a basic MIDI sequencer. You can add and remove notes and predict off of that!
-        <br><br>
-        To edit notes:
-        <ol>
-          <li>1. Add a note by clicking any spot in the grid</li>
-          <li>2. Change the note key by draging it up or down</li>
-          <li>3. Change the note duration by draging the ends of the note longer or shorter</li>
-          <li>4. Remove a note by collapsing the note ends.</li>
-        </ol>
-      <h4>
-        File controls<v-btn color="grey lighten-5" small fab><v-icon>folder_open</v-icon></v-btn>
-      </h4>
-        Blank canvas:
-        <p>If you don't want to choose a seed song, start with a blank canvas <router-link to="/?skip=1">here</router-link></p>
-        Saving:
-        <p>If you like your new creation, you can save your song in midi format</p>
-        Load MIDI:
-        <p>You can also load midi from your computer and generate predictions from there.</p>
-      <h4><v-btn color="grey lighten-5" small fab><v-icon>settings</v-icon></v-btn>
-        Playback controls:
-      </h4>
-        Change the BPM to play your creation faster/slower.
-        <p>Instrument: can choose the type of sound to play back - piano, alien synth. More coming soon!</p>
-    <h2>How does it work</h2>
-      We've trained a deep learning model on a bunch of music taken from the internet.
+        <h4>
+          File controls<v-btn color="grey lighten-5" small fab><v-icon>folder_open</v-icon></v-btn>
+        </h4>
+          <ul>
+            <li>
+              <v-btn fab dark small color="green lighten-1"><v-icon>save</v-icon></v-btn>
+              Save and export your creation to MIDI. Open it up in your favorite DAW
+            </li>
+            <li><v-btn fab dark small color="green lighten-1"><v-icon>cloud_upload</v-icon></v-btn>
+              Import an existing song from your computer to play around with
+            </li>
+            <li>
+              <v-btn fab dark small color="green lighten-1" @click="clear"><v-icon>clear</v-icon></v-btn>
+              Start from scratch with a <router-link to="/?skip=1">blank grid</router-link>
+            </li>
+          </ul>
+        <h4>Playback controls <v-btn color="grey lighten-5" small fab><v-icon>settings</v-icon></v-btn></h4>
+          <ul>
+            <li>Change the BPM to play your creation faster/slower.</li>
+            <li>Playback instrument - piano or alien synth. More coming soon!</li>
+          </ul>
+      </div>
+    <h2>How does it work?</h2>
+      We've trained a deep learning model on a bunch of MIDI music found on the internet.
 
-      <h4>Model</h4>
-        Recent advances in NLP has produced amazing <a href="https://openai.com/blog/better-language-models/">results</a> in generating text.
-        <p>We apply those same principles to music generation. Our model is based on the <a href="https://arxiv.org/abs/1901.02860" target="_blank">Transformer-XL</a> and trained using the <a href="https://www.fast.ai/">fast.ai</a> library</p>
-      <h4>Data</h4>
-        MIDI files gathered from the internet to train the model. Sources include - classical, jazz, pop and edm.
-
+      <div class="content-body">
+        <h4>Model</h4>
+          Recent advances in NLP has produced amazing <a href="https://openai.com/blog/better-language-models/">results</a> in generating text.
+          <p>We apply those same principles to music generation. Our model is based on the <a href="https://arxiv.org/abs/1901.02860" target="_blank">Transformer-XL</a> and trained using the <a href="https://www.fast.ai/">fast.ai</a> library</p>
+        <h4>Data</h4>
+          MIDI files gathered from the internet to train the model. Sources include - classical, jazz, pop and edm.
+      </div>
     <!-- <ol>
       <li>Search for a song on our archives to seed the model</li>
       <li>Edit the sequence if you'd like</li>
@@ -117,7 +118,7 @@
       <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Training</a></li>
     </ul> -->
     <h2>Source Code</h2>
-    <ul>
+    <ul class="variation-list">
       <li><a href="https://github.com/bearpelican/vue_midi_generator" target="_blank">Web App</a></li>
       <li><a href="https://github.com/bearpelican/midi_generator" target="_blank">Training</a></li>
     </ul>
@@ -175,22 +176,47 @@ export default {
   }
 }
 
+#about-seed {
+  border-left-width: 6px;
+  border-left-style: dotted;
+  border-left-color: #4e2319be;
+  margin-left: 20px;
+  margin: 10px 20px;
+  padding-left: 20px;
+}
+
+.note {
+  width: 40px;
+  height: 15px;
+  display: inline-block;
+
+  &.seed {
+    background-color: #64b5f6;
+  }
+  &.generated {
+    background-color: #FF5252;
+  }
+}
 .about-content {
   text-align: left;
   width: 800px;
   font-size: 1.2em;
   margin: auto;
 }
+.content-body {
+  margin-left: 20px;
+  margin-right: 20px;
+}
 
 h2 {
-  margin: 30px 0 0 0;
+  margin: 30px 0 10px 0;
 }
 h4 {
   margin: 10px 0 0 0;
 }
 .variation-list {
   list-style-type: none;
-  margin: 0 10px 10px 10px;
+  margin: 10px 20px;
   padding: 0;
   li {
     display: inline-block;

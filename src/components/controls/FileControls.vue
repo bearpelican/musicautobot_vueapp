@@ -12,6 +12,9 @@
       <v-icon>cloud_upload</v-icon>
       <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
     </v-btn>
+    <v-btn fab dark small color="green lighten-1" @click="clear">
+      <v-icon>clear</v-icon>
+    </v-btn>
   </v-speed-dial>
 </template>
 
@@ -26,13 +29,10 @@ export default {
     return { }
   },
   computed: {
-    ...mapState(['appState']),
-    icon () {
-      return 'folder_open'
-    }
+    ...mapState(['appState'])
   },
   methods: {
-    ...mapActions(['importMidi', 'exportMidi']),
+    ...mapActions(['importMidi', 'exportMidi', 'clear']),
     loadLocalFile (event) {
       const file = this._.get(event, 'target.files[0]')
       if (this._.get(file, 'name', '').split('.').pop() !== 'mid') {

@@ -127,6 +127,9 @@ export function generateSimpleActions (mutations) {
     loadMidiBuffer ({ commit, dispatch }, { midiBuffer, seqName, savePrevious = true }) {
       dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
     },
+    clear ({ commit }) {
+      commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
+    },
     exportMidi ({ commit, state, dispatch }) {
       console.log('Save midi called:', state)
       const { midi, seqName } = storeToMidi(state, null)
