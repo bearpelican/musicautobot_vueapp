@@ -1,8 +1,8 @@
 <template lang="pug">
   .container
     file-controls
-    predict-controls
     sequence-controls
+    predict-controls
 </template>
 
 <script>
