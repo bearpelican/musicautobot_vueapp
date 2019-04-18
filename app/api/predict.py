@@ -7,7 +7,8 @@ from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
 path = Path(__file__).parent/'data_serve'
-config = get_config(vocab_path=path)
+# config = get_config(vocab_path=path)
+config = v10_single_config(vocab_path=path)
 data = load_data(path=path, cache_name='tmp', **config)
 learn = load_learner(data, config, path/'model.pth')
 # htlist = get_htlist(path, source_dir)
