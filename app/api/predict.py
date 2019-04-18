@@ -9,6 +9,8 @@ from . import api_bp as app
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
 config = v10_single_config(vocab_path=path)
+config['mem_len'] = 1024
+config['bptt'] = 512
 data = load_data(path=path, cache_name='tmp', **config)
 learn = load_learner(data, config, path/'model.pth')
 # htlist = get_htlist(path, source_dir)
