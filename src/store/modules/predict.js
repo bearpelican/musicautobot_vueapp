@@ -4,7 +4,7 @@ import { storeToMidi } from '@/lib/convert'
 export const state = {
   songs: [],
   songItem: {},
-  nSteps: 300,
+  nSteps: 400,
   seedLen: 10,
   durationTemp: 0.9,
   noteTemp: 1.5,
@@ -64,22 +64,37 @@ export const actions = {
   async predictMidi ({ commit, rootState, dispatch }) {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
+
+    const { nSteps, seedLen, durationTemp, noteTemp } = rootState.predict
+    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
+
+    // Progress
     let counter = -10
-    const progress = setInterval(() => {
+    let progress = setInterval(() => {
       // console.log('Seconds:', time)
       if (counter > 0) {
         commit('updateLoadingState', `Generating steps (${counter} / ${nSteps})...`)
       }
       counter += 1
-    }, 1000 * 0.5)
+    }, 1000 * 0.25)
 
-    const { nSteps, seedLen, durationTemp, noteTemp } = rootState.predict
-    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
+    setTimeout(() => {
+      if (progress != null) {
+        this.clearInterval(progress)
+        commit('updateLoadingState', `Error: Timeout trying to generate sequence...`)
+        setTimeout(() => {
+          commit('updateLoadingState', null)
+        }, 1000 * 2)
+      }
+    }, 1000 * 0.25 * nSteps)
+
+    // Predictions
     const s3id = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp })
     console.log('Predicted id:', s3id)
     const midiBuffer = await $backend.fetchMidi(s3id, 'generated')
 
     clearInterval(progress)
+    progress = null
 
     console.log('Result returned from predict:', midiBuffer)
     commit('updateLoadingState', 'Loading sequence...')

@@ -6,12 +6,15 @@ from .src.serve import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
+import torch
+torch.set_num_threads(1)
+
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
 config = v10_single_config(vocab_path=path)
 config['mem_len'] = 1024
 config['bptt'] = 512
-data = load_data(path=path, cache_name='tmp', **config)
+data = load_data(path=path, cache_name='tmp', num_workers=1, **config)
 learn = load_learner(data, config, path/'model.pth')
 # htlist = get_htlist(path, source_dir)
 
@@ -51,7 +54,7 @@ def predict_midi():
     print('THE ARGS PASSED:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
-    print('Temp:', temperatures)
+    n_words = int(args.get('nSteps', 400))
     # debugging 1 - send exact midi back
     # with open('/tmp/test.mid', 'wb') as f:
     #     f.write(midi)
@@ -65,7 +68,7 @@ def predict_midi():
     # stream = npenc2stream(seed_np, bpm=bpm)
 
     # Main logic
-    pred, seed, full = predict_from_midi(learn, midi=midi, temperatures=temperatures)
+    pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
     stream = npenc2stream(full, bpm=bpm)
 
     midi_out = Path(stream.write("midi"))
