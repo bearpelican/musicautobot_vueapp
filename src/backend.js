@@ -35,13 +35,13 @@ export default {
     // console.log(response)
     return response.data
   },
-  async fetchMidi (s3id, path = 'cmajor/seed') {
+  async fetchMidi (s3id, path = 'seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
     // console.log(response)
     return response.data
   },
-  async fetchJson (s3id, path = 'cmajor/seed') {
+  async fetchJson (s3id, path = 'seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
     return response.data
@@ -54,10 +54,10 @@ export default {
   },
 
   // Predict
-  async predictFile (file, nSteps, seedLen) {
-    const response = await $axios.post('predict/file', { np_file: file, n_steps: nSteps, seed_len: seedLen })
-    return this.fetchMidi(response.data.result, 'generated')
-  },
+  // async predictFile (file, nSteps, seedLen) {
+  //   const response = await $axios.post('predict/file', { np_file: file, n_steps: nSteps, seed_len: seedLen })
+  //   return this.fetchMidi(response.data.result, 'generated')
+  // },
   // async predictMidi ({ midi, ...args }) {
   //   const formData = new FormData()
   //   formData.append('midi', this.midiToBlob(midi))

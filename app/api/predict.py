@@ -11,11 +11,12 @@ torch.set_num_threads(1)
 
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
-config = v10_single_config(vocab_path=path)
+config = v10_s3_config(vocab_path=path)
 config['mem_len'] = 1024
 config['bptt'] = 512
 data = load_data(path=path, cache_name='tmp', num_workers=1, **config)
-learn = load_learner(data, config, path/'model.pth')
+learn = load_learner(data, config, path/'models/v11.pth')
+learn.to_fp16(loss_scale=512)
 # htlist = get_htlist(path, source_dir)
 
 # @app.route('/songs/all', methods=['GET', 'POST'])
@@ -68,7 +69,7 @@ def predict_midi():
     # stream = npenc2stream(seed_np, bpm=bpm)
 
     # Main logic
-    pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
+    pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, midi_source='hooktheory_c')
     stream = npenc2stream(full, bpm=bpm)
 
     midi_out = Path(stream.write("midi"))

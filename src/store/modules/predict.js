@@ -125,7 +125,7 @@ export const actions = {
     console.log('Loading song:', s3id)
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
-    const { midiBuffer, store } = await $backend.loadState(s3id, 'cmajor/seed')
+    const { midiBuffer, store } = await $backend.loadState(s3id)
     const { display: seqName } = store
     await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
@@ -133,7 +133,7 @@ export const actions = {
   async fetchMidi ({ commit, dispatch }, { sid, display: seqName }) {
     console.log('Fetching midi:', sid, seqName)
     commit('updateLoadingState', 'Loading song...')
-    const midiBuffer = await $backend.fetchMidi(sid, 'cmajor/seed')
+    const midiBuffer = await $backend.fetchMidi(sid)
     commit('updateLoadingState', 'Building sequence...')
     await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
