@@ -33,7 +33,7 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.play(state.sequence.notes, state.sequence.bpm, state.sequence.progressTime)
+          this.play(state.sequence.notes, state.sequence.bpm, state.sequence.playOffset)
           break
         }
         case 'stop': {

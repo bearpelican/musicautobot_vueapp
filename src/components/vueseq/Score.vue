@@ -32,7 +32,8 @@
         )
       .grid-controls
         progress-line(
-          key="progress-line"
+          key="progress-line",
+          :scoreLeftOffset="scoreLeftOffset"
         )
         seed-line(
           key="seed-line",

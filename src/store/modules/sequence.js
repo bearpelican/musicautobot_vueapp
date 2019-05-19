@@ -10,6 +10,7 @@ import _ from 'lodash'
 export const state = {
   // UI state
   progressTime: 0,
+  playOffset: 0,
   currentLength: defaultLength,
   selectedNote: null,
   isEditingScore: false,
@@ -80,6 +81,7 @@ export const mutations = {
   },
   stop (state) {
     state.appState = 'editing'
+    state.progressTime = state.playOffset
   },
   finishMusic () {
     state.appState = 'editing'
@@ -95,6 +97,9 @@ export const mutations = {
   },
   updateProgressTime (state, progressTime) {
     state.progressTime = progressTime
+  },
+  updatePlayOffset (state, playOffset) {
+    state.playOffset = playOffset
   },
   updateHistory (state) {
     const { version, notes, bpm, seqName } = state
