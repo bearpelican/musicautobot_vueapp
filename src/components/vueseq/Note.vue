@@ -6,7 +6,7 @@
 
 <script>
 import { timingToPosition, positionToTiming, keyNumberToOffset } from '@/lib/positioning'
-import { keyWidth } from '@/lib/config'
+import { keyWidth, editingLength } from '@/lib/config'
 import validateNoteDetails from '@/lib/validateNoteDetails'
 // import { emptyStatement } from 'babel-types'
 import { createNamespacedHelpers } from 'vuex'
@@ -19,7 +19,7 @@ export default {
     storeKeyNumber: Number,
     storeTiming: Number,
     storeLength: Number,
-    scoreOffset: Number
+    scoreLeftOffset: Number
   },
   mounted () {
     if (this.isEditingScore) {
@@ -119,15 +119,15 @@ export default {
       switch (this.state) {
         case 'editing-end-time': {
           nextLength = positionToTiming(
-            event.clientX - this.scoreOffset + this.getScrollLeft(),
-            this.minimumUnit
+            event.clientX + this.scoreLeftOffset,
+            editingLength.value
           ) - this.timing
           break
         }
         case 'moving': {
           nextTiming = positionToTiming(
-            event.clientX - this.scoreOffset - this.movingOffsetX + this.getScrollLeft(),
-            this.minimumUnit
+            event.clientX + this.scoreLeftOffset - this.movingOffsetX,
+            editingLength.value
           )
           nextKeyNumber = this.storeKeyNumber +
             Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
@@ -138,7 +138,7 @@ export default {
           break
         }
         case 'editing-start-time': {
-          nextTiming = positionToTiming(event.clientX - this.scoreOffset, this.minimumUnit)
+          nextTiming = positionToTiming(event.clientX + this.scoreLeftOffset, editingLength.value)
           nextLength = this.storeLength + this.storeTiming - this.timing
           break
         }

@@ -10,7 +10,7 @@ const { mapState, mapMutations } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    scoreOffset: Number
+    scoreLeftOffset: Number
   },
   data () {
     return { }
@@ -28,7 +28,7 @@ export default {
     ...mapMutations(['updateSeedLen']),
     moveLine (event) {
       const quarterLength = 1
-      const newSeedLen = positionToTiming((event.clientX - this.scoreOffset), quarterLength)
+      const newSeedLen = positionToTiming((event.clientX + this.scoreLeftOffset), quarterLength)
       this.updateSeedLen(newSeedLen)
     },
     beginEditing (event) {

@@ -15,7 +15,7 @@
           :storeKeyNumber="note.key",
           :storeTiming="note.timing",
           :storeLength="note.length",
-          :scoreOffset="scoreOffset"
+          :scoreLeftOffset="scoreLeftOffset"
         )
         prev-note(
           v-for="(note, index) in prevNotes",
@@ -35,12 +35,13 @@
           key="progress-line"
         )
         seed-line(
-          key="seed-line"
-          :scoreOffset="scoreOffset"
+          key="seed-line",
+          :scoreLeftOffset="scoreLeftOffset"
         )
-        generate-button(
-          :scoreOffset="scoreOffset"
-        )
+    generate-button(
+      :scoreScrollLeft="scoreScrollLeft",
+      :scoreRect="scoreRect"
+    )
 </template>
 
 <script>
@@ -78,7 +79,9 @@ export default {
           number: getKeyNumber(key)
         }
       }).reverse(),
-      scoreOffset: 0
+      scoreScrollTop: 0,
+      scoreScrollLeft: 0,
+      scoreRect: { left: 0, top: 0, right: 0, bottom: 0 }
     }
   },
   computed: {
@@ -96,15 +99,28 @@ export default {
     },
     width () {
       return `${this.beats.length * pixelPerBeat}px`
+    },
+    scoreLeftOffset () {
+      return this.scoreScrollLeft - this.scoreRect.left
+    },
+    scoreTopOffset () {
+      return this.scoreScrollTop - this.scoreRect.top
     }
   },
   mounted () {
-    this.scoreOffset = this.$el.getBoundingClientRect().left
+    this.scoreRect = this.$el.getBoundingClientRect()
+    window.addEventListener('resize', this.onResize)
   },
   methods: {
-    ...mapActions(['scrollTop']),
+    ...mapActions(['scrollTop', 'scrollLeft']),
     onScroll () {
-      this.scrollTop(this.$el.scrollTop)
+      this.scoreScrollLeft = this.$el.scrollLeft
+      this.scoreScrollTop = this.$el.scrollTop
+      this.scrollLeft(this.scoreScrollLeft)
+      this.scrollTop(this.scoreScrollTop)
+    },
+    onResize () {
+      this.scoreRect = this.$el.getBoundingClientRect()
     }
   }
 }

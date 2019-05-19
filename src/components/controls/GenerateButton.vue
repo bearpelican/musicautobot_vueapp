@@ -10,7 +10,8 @@ const { mapState, mapActions } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    scoreOffset: Number
+    scoreScrollLeft: Number,
+    scoreRect: {}
   },
   data () {
     return { }
@@ -18,7 +19,14 @@ export default {
   computed: {
     ...mapState(['seedLen']),
     left () {
-      return `${this.seedLen * pixelPerBeat}px`
+      let leftOffset = this.scoreRect.left - this.scoreScrollLeft + this.seedLen * pixelPerBeat
+      const margin = 50
+      if (leftOffset < this.scoreRect.left + margin) {
+        leftOffset = this.scoreRect.left + margin
+      } else if (leftOffset > this.scoreRect.right - margin) {
+        leftOffset = this.scoreRect.right - margin
+      }
+      return `${leftOffset}px`
     }
   },
   methods: {
@@ -40,7 +48,8 @@ export default {
   margin: auto;
   z-index: 4;
   -webkit-transform: translateX(-50%);
-  transform: translateX(-50%)
+  transform: translateX(-50%);
+  transition: none;
 }
 
 #generate-icon {
