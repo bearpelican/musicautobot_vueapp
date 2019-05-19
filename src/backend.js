@@ -9,7 +9,7 @@ let $axios = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/'
+const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/v13/'
 
 // Request Interceptor
 // $axios.interceptors.request.use(function (config) {

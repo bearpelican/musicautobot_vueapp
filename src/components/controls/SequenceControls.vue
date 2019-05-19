@@ -48,7 +48,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['appState', 'bpm', 'synthType']),
+    ...mapState(['appState', 'bpm', 'synthType', 'progressTime']),
     icon () {
       return this.appState === 'playing' ? 'stop' : 'play_arrow'
     },

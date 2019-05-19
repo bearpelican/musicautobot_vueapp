@@ -60,8 +60,8 @@ export default {
 }
 
 @-webkit-keyframes rotate {
-    from { -webkit-transform: rotate(360deg) }
-    to { -webkit-transform: rotate(0deg) }
+  from { -webkit-transform: rotate(360deg) }
+  to { -webkit-transform: rotate(0deg) }
 }
 
 </style>

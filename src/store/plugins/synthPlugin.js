@@ -1,5 +1,5 @@
 import { notesToToneNotes } from '@/lib/convert'
-import { secondsToTiming } from '@/lib/positioning'
+import { secondsToTiming, timingToSeconds } from '@/lib/positioning'
 import { createPianoSynth } from '@/synth/pianoSynth'
 import { createDefaultPolySynth } from '@/synth/defaultSynths'
 import Tone from 'tone'
@@ -33,7 +33,7 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.play(state.sequence.notes, state.sequence.bpm)
+          this.play(state.sequence.notes, state.sequence.bpm, state.sequence.progressTime)
           break
         }
         case 'stop': {
@@ -96,7 +96,7 @@ export class SynthPlugin {
     })
     return maxTime
   }
-  play (notes, bpm) {
+  play (notes, bpm, offset = 0) {
     // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
     this.reset()
     this.notes = notesToToneNotes(notes, bpm)
@@ -105,24 +105,24 @@ export class SynthPlugin {
 
     // pass in the note events from one of the tracks as the second argument to Tone.Part
     let midiPart = new Tone.Part((time, note) => {
-      // console.log('TIme:', time)
-      this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time)
-      // this.synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+      // console.log('Time:', time)
+      this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time) //, note.velocity)
     }, this.notes)
-    midiPart.start()
+    const offsetSeconds = timingToSeconds(offset, bpm)
+    midiPart.start(`${-offsetSeconds}`)
     // start the transport to hear the events
     Tone.Transport.start()
 
     this.progress = setInterval(() => {
       // const position = tonePositionToTiming(Tone.Transport.position)
-      const time = secondsToTiming(Tone.Transport.seconds, bpm)
+      const time = secondsToTiming(Tone.Transport.seconds + offsetSeconds, bpm)
       // console.log('Seconds:', time)
       this.store.commit('sequence/updateProgressTime', time)
     }, 5)
 
     this.stopTimeout = setTimeout(() => {
       this.stop()
-    }, (this.endTime(this.notes) + 1) * 1000)
+    }, (this.endTime(this.notes) + 1 - offsetSeconds) * 1000)
   }
 }
 

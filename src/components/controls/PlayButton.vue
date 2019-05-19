@@ -17,7 +17,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['play', 'stop']),
+    ...mapActions(['play', 'stop', 'progressTime']),
     ...predMapMutations(['updateTutorialStep']),
     toggle () {
       this.updateTutorialStep(2)
