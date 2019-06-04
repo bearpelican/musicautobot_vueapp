@@ -7,16 +7,19 @@ from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
 import torch
+import traceback
 torch.set_num_threads(1)
 
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
-config = v10_s3_config(vocab_path=path)
+config = v15m_config(vocab=vocab)
 config['mem_len'] = 1024
 config['bptt'] = 512
-data = load_data(path=path, cache_name='tmp', num_workers=1, **config)
-learn = load_learner(data, config, path/'models/v11.pth')
-learn.to_fp16(loss_scale=512)
+data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
+learn = load_music_learner(data, config, path/'models/v15.pth')
+
+# learn.to_fp16(loss_scale=512) # fp16 not supported for cpu - https://github.com/pytorch/pytorch/issues/17699
+
 # htlist = get_htlist(path, source_dir)
 
 # @app.route('/songs/all', methods=['GET', 'POST'])
@@ -69,11 +72,15 @@ def predict_midi():
     # stream = npenc2stream(seed_np, bpm=bpm)
 
     # Main logic
-    pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, midi_source='hooktheory_c')
-    stream = npenc2stream(full, bpm=bpm)
+    try:
+        pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, midi_source='hooktheory_c')
+        stream = npenc2stream(full, bpm=bpm)
 
-    midi_out = Path(stream.write("midi"))
-    print('Wrote to temporary file:', midi_out)
+        midi_out = Path(stream.write("midi"))
+        print('Wrote to temporary file:', midi_out)
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': f'Failed to predict: {e}'})
 
     s3_id = to_s3(midi_out, args)
     result = {

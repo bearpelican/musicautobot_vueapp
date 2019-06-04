@@ -9,7 +9,7 @@ let $axios = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/v13/'
+const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/'
 
 // Request Interceptor
 // $axios.interceptors.request.use(function (config) {
@@ -35,13 +35,13 @@ export default {
     // console.log(response)
     return response.data
   },
-  async fetchMidi (s3id, path = 'seed') {
+  async fetchMidi (s3id, path = 'v13/seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
     // console.log(response)
     return response.data
   },
-  async fetchJson (s3id, path = 'seed') {
+  async fetchJson (s3id, path = 'v13/seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
     return response.data
@@ -90,7 +90,7 @@ export default {
     const response = await $axios.post('predict/midi', formData, config)
     // const response = await $axios.post('store/save', formData, config)
     console.log('Response:', response)
-    return response.data.result
+    return response.data
   },
   // Score viewing - perhaps create a separate server
   async convertToXML ({ midi }) {

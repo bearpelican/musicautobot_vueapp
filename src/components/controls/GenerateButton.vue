@@ -33,7 +33,9 @@ export default {
     ...mapActions(['predictMidi']),
     async predict () {
       const pid = await this.predictMidi()
-      this.$router.push({ path: `/predict/${pid}` })
+      if (pid) {
+        this.$router.push({ path: `/predict/${pid}` })
+      }
     }
   }
 }

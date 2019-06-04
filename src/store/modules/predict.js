@@ -52,6 +52,13 @@ export const mutations = {
   updateLoadingState (state, loadingState) {
     state.loadingState = loadingState
     console.log('Updating loading state:', loadingState)
+  },
+  showError (state, error, timeout = 2000) {
+    state.loadingState = error
+    console.log('Updating with error:', error)
+    setTimeout(() => {
+      state.loadingState = null
+    }, timeout)
   }
 }
 
@@ -81,15 +88,17 @@ export const actions = {
     setTimeout(() => {
       if (progress != null) {
         this.clearInterval(progress)
-        commit('updateLoadingState', `Error: Timeout trying to generate sequence...`)
-        setTimeout(() => {
-          commit('updateLoadingState', null)
-        }, 1000 * 2)
+        commit('showError', `Error: Timeout trying to generate sequence...`)
       }
     }, 1000 * 0.25 * nSteps)
 
     // Predictions
-    const s3id = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp })
+    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp })
+    if (error) {
+      clearInterval(progress)
+      commit('showError', `Error: ${error}`)
+      return null
+    }
     console.log('Predicted id:', s3id)
     const midiBuffer = await $backend.fetchMidi(s3id, 'generated')
 
