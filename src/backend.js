@@ -31,7 +31,7 @@ export default {
 
   // S3 hosting
   async fetchSongs () {
-    const response = await $axios.get(S3BUCKET + 'json/htlist.json')
+    const response = await $axios.get(S3BUCKET + 'v13/json/htlist.json')
     // console.log(response)
     return response.data
   },
