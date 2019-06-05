@@ -7,7 +7,8 @@ sudo apt-get update -y
 sudo apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew upgrade -y
 sudo apt-get install emacs -y
 sudo apt-get install gcc -y
-sudo apt-get install nginx
+sudo apt-get install nginx -y
+sudo apt-get install awscli -y
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -80,7 +81,10 @@ popd
 # sudo service nginx restart
 
 # Add aws credentials for to save predictions:
-# emacs ~/.aws/credentials
-# [default]
-# aws_access_key_id =
-# aws_secret_access_key =
+# `aws configure`
+
+
+
+# to test:
+# yarn build
+# gunicorn --workers 8 run_guni:app -b 127.0.0.1:5000 --timeout 120
