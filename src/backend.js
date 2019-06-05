@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 let $axios = axios.create({
   baseURL: '/api/',
-  timeout: 80000,
+  timeout: 180000,
   // timeout: 5000,
   headers: { 'Content-Type': 'application/json' }
 })
