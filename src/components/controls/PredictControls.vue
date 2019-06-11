@@ -69,10 +69,10 @@ export default {
       get () { return this.durationTemp }
     },
     noteTempPCT () {
-      return parseInt((this.noteTemp - 0.8) / 1.0 * 100)
+      return parseInt((this.noteTemp - 0.7) / 0.9 * 100)
     },
     durationTempPCT () {
-      return parseInt((this.durationTemp - 0.5) / 1.0 * 100)
+      return parseInt((this.durationTemp - 0.3) / 0.7 * 100)
     }
   },
   methods: {

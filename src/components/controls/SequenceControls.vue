@@ -18,7 +18,7 @@
         <div class='control-group-header'>Playback</div>
         <div>
           <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-          <v-slider id="noteTemp" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+          <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
         </div>
 
         <div>
