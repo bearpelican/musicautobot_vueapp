@@ -64,7 +64,8 @@ conda env update -f environment.yml
 yarn install
 
 pushd app/api
-DATA_FILE=data_serve.tar
+rm -rf data_serve
+DATA_FILE=data_serve.tar.gz
 wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/$DATA_FILE
 tar -xf $DATA_FILE
 rm $DATA_FILE
@@ -87,4 +88,4 @@ popd
 
 # to test:
 # yarn build
-# gunicorn --workers 8 run_guni:app -b 127.0.0.1:5000 --timeout 120
+# gunicorn --workers 8 run_guni:app -b 127.0.0.1:5000 --timeout 180

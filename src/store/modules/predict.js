@@ -6,8 +6,8 @@ export const state = {
   songItem: {},
   nSteps: 400,
   seedLen: 10,
-  durationTemp: 0.9,
-  noteTemp: 1.5,
+  durationTemp: 0.7,
+  noteTemp: 1.2,
   midiXML: null,
   tutorialStep: 0,
   loadingState: null

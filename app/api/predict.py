@@ -16,7 +16,7 @@ config = v15m_config(vocab=vocab)
 config['mem_len'] = 1024
 config['bptt'] = 512
 data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
-learn = load_music_learner(data, config, path/'models/v15.pth')
+learn = load_music_learner(data, config, path/'models/v16.pth')
 
 # learn.to_fp16(loss_scale=512) # fp16 not supported for cpu - https://github.com/pytorch/pytorch/issues/17699
 
