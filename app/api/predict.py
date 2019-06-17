@@ -71,12 +71,24 @@ def predict_midi():
     # seed_np = midi2npenc(midi) # music21 can handle bytes directly 
     # stream = npenc2stream(seed_np, bpm=bpm)
 
+    stream = file2stream(midi) # 1.
+    midi_in = Path(stream.write("musicxml"))
+    print('Midi in:', midi_in)
+    stream_sep = separate_melody_chord(stream)
+    midi_out = Path(stream_sep.write("midi"))
+    print('Midi out:', midi_out)
+    s3_id = to_s3(midi_out, args)
+    result = {
+        'result': s3_id
+    }
+    return jsonify(result)
+
     # Main logic
     try:
         pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, midi_source='hooktheory_c')
         stream = npenc2stream(full, bpm=bpm)
-
-        midi_out = Path(stream.write("midi"))
+        stream_sep = separate_melody_chord(stream)
+        midi_out = Path(stream_sep.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:
         traceback.print_exc()
@@ -104,8 +116,6 @@ def convert_midi():
 
     stream = file2stream(midi) # 1.
     # stream = file2stream(midi).chordify() # 1.
-    stream.show('text')
-    stream.show('musicxml')
     stream_out = Path(stream.write('musicxml'))
     return send_from_directory(stream_out.parent, stream_out.name, mimetype='xml')
 

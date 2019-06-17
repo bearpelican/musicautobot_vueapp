@@ -29,7 +29,7 @@ export const state = {
   bpm: 120,
   seqName: 'Untitled',
   duration: 0,
-  synthType: 'piano'
+  instrumentType: 'piano'
 }
 
 export const mutations = {
@@ -86,8 +86,8 @@ export const mutations = {
   finishMusic () {
     state.appState = 'editing'
   },
-  updateSynthType (state, { synthType }) {
-    state.synthType = synthType
+  updateInstrumentType (state, { instrumentType }) {
+    state.instrumentType = instrumentType
   },
   updateBPM (state, bpm) {
     state.bpm = parseInt(bpm)
@@ -176,7 +176,7 @@ export const actions = {
     'finishMusic',
     'updateProgressTime',
     'updateBPM',
-    'updateSynthType',
+    'updateInstrumentType',
     'updateSeqName'
   ])
 }

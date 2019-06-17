@@ -22,8 +22,8 @@
         </div>
 
         <div>
-          <div class='control-group-label'>Synth</div>
-          <v-btn-toggle class="control-group-toggle" v-model="selectSynthType">
+          <div class='control-group-label'>Instrument</div>
+          <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
             <v-btn flat value="piano">
               Piano
             </v-btn>
@@ -48,7 +48,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['appState', 'bpm', 'synthType', 'progressTime']),
+    ...mapState(['appState', 'bpm', 'instrumentType', 'progressTime']),
     icon () {
       return this.appState === 'playing' ? 'stop' : 'play_arrow'
     },
@@ -56,13 +56,13 @@ export default {
       set (bpm) { this.updateBPM(bpm) },
       get () { return this.bpm }
     },
-    selectSynthType: {
-      set (synthType) { this.updateSynthType({ synthType }) },
-      get () { return this.synthType }
+    selectInstrumentType: {
+      set (instrumentType) { this.updateInstrumentType({ instrumentType }) },
+      get () { return this.instrumentType }
     }
   },
   methods: {
-    ...mapActions(['play', 'stop', 'updateBPM', 'updateSynthType']),
+    ...mapActions(['play', 'stop', 'updateBPM', 'updateInstrumentType']),
     toggle () {
       if (this.appState === 'editing') {
         this.play()

@@ -20,8 +20,8 @@ export class SynthPlugin {
 
     store.subscribe((mutation, state) => {
       switch (mutation.type.replace('sequence/', '')) {
-        case 'updateSynthType': {
-          this.updateSynthType(mutation.payload)
+        case 'updateInstrumentType': {
+          this.updateInstrumentType(mutation.payload)
           break
         }
         case 'startPreview': {
@@ -65,9 +65,9 @@ export class SynthPlugin {
     // this.synth.unsync().sync()
     this.notes = []
   }
-  updateSynthType ({ synthType }) {
+  updateInstrumentType ({ instrumentType }) {
     this.synth.unsync()
-    if (synthType === 'alien') {
+    if (instrumentType === 'alien') {
       this.synth = createDefaultPolySynth()
     } else {
       this.synth = createPianoSynth()

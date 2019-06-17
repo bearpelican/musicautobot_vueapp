@@ -13,11 +13,11 @@
       <div class='control-group-content'>
         <div class='control-group-header'>Randomness</div>
         <div>
-          <div class='control-group-label'>Note: {{ this.noteTempPCT }}%</div>
+          <div class='control-group-label'>Tone: {{ this.noteTempPCT }}%</div>
           <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
         </div>
         <div>
-          <div class='control-group-label'>Tempo: {{ this.durationTempPCT }}%</div>
+          <div class='control-group-label'>Rythm: {{ this.durationTempPCT }}%</div>
           <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
         </div>
       </div>
