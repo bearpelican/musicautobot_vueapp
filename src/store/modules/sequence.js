@@ -12,6 +12,7 @@ export const state = {
   progressTime: 0,
   playOffset: 0,
   currentLength: defaultLength,
+  currentTrack: 0,
   selectedNote: null,
   isEditingScore: false,
   scrollTopPosition: 0,
@@ -38,11 +39,12 @@ export const mutations = {
   updateSelectedNote (state, index) {
     state.selectedNote = index
   },
-  addNote (state, { key, timing, length }) {
+  addNote (state, { key, timing, length, track }) {
     state.notes.push({
       key,
       timing,
-      length
+      length,
+      track
     })
   },
   updateNoteLength (state, { index, length }) {

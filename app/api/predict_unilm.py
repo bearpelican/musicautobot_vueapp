@@ -2,7 +2,7 @@
 # sys.path.insert(0, 'src')
 
 from .src.serve import *
-
+from .src.unilm import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
@@ -12,81 +12,74 @@ torch.set_num_threads(1)
 
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
-config = v15m_config(vocab=vocab)
+config = unilm_config(vocab=vocab)
 config['mem_len'] = 1024
-config['bptt'] = 512
+config['bptt'] = 2048
 data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
-learn = load_music_learner(data, config, path/'models/v16.pth')
 
-# learn.to_fp16(loss_scale=512) # fp16 not supported for cpu - https://github.com/pytorch/pytorch/issues/17699
+# Refactor pred_batch so we don't have to do this hack
+def predict_func(parts): return [p if idx == 1 else F.softmax(p, dim=-1) for idx,p in enumerate(parts)]
+loss_func_name = camel2snake(BertLoss.__name__)
+basic_train.loss_func_name2activ[loss_func_name] = predict_func
 
-# htlist = get_htlist(path, source_dir)
+learn = bert_model_learner(data, config.copy(), loss_func=BertLoss())
+learn.callbacks = []
 
-# @app.route('/songs/all', methods=['GET', 'POST'])
-# def song_list():
-#     # get song name and artist from csv
-#     result = {
-#         'result': list(htlist.values())[:100]
-#         # 'result': list(htlist.values())
-#     }
-#     return jsonify(result)
+load_path = path/'models/v16_unilm.pth'
+state = torch.load(load_path, map_location='cpu')
+get_model(learn.model).load_state_dict(state['model'], strict=False)
 
-# # originally for backend searching
-# @app.route('/songs/list')
-# def song_list():
-#     # get song name and artist from csv
-#     limit = int(request.values.get('limit', 10))
-#     res = list(htlist.values())[:10] # stringify paths. need to figure out a better response
-#     result = {
-#         'result': res
-#     }
-#     return jsonify(result)
+def part_enc(chordarr, part):
+    partarr = chordarr[:,part:part+1,:]
+    npenc = chordarr2npenc(partarr)
+    return npenc
+    
+# NOTE: looks like npenc does not include the separator. 
+# This means we don't have to remove the last (separator) step from the seed in order to keep predictions
+def s2s_predict_from_midi(learn, midi=None, n_words=600, 
+                      temperatures=(1.0,1.0), top_k=24, top_p=0.7, pred_melody=True, **kwargs):
 
-# @app.route('/songs/search', methods=['GET', 'POST'])
-# def song_search():
-#     keywords = request.values.get('keywords', '')
-#     res = search_htlist(htlist, config, keywords)
-#     result = {
-#         'result': res
-#     }
-#     return jsonify(result)
+    stream = file2stream(midi) # 1.
+    chordarr = stream2chordarr(stream) # 2.
+    _,num_parts,_ = chordarr.shape
+    melody_np, chord_np = [part_enc(chordarr, i) for i in range(num_parts)]
+    
+
+    melody_np, chord_np = (melody_np, chord_np) if avg_pitch(melody_np) > avg_pitch(chord_np) else (chord_np, melody_np) # Assuming melody has higher pitch
+    pred_melody=True
+    
+    offset = 3
+    original_shape = melody_np.shape[0] * 2 if pred_melody else chord_np.shape[0] * 2 
+#     original_shape = 20
+    bptt = original_shape + n_words + offset
+    bptt = max(bptt, melody_np.shape[0] * 2, chord_np.shape[0] * 2 )
+    mpart = partenc2seq2seq(melody_np, part_type=MSEQ, translate=pred_melody, bptt=bptt)
+    cpart = partenc2seq2seq(chord_np, part_type=CSEQ, translate=not pred_melody, bptt=bptt)
+
+    xb = torch.tensor(cpart)[None]
+    yb = torch.tensor(mpart)[None][:, :original_shape+offset]
+    
+    pred = learn.predict_s2s(xb, yb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
+
+    seed_npenc = to_double_stream(xb.cpu().numpy()) # chord
+    yb_npenc = to_double_stream(pred.cpu().numpy()) # melody
+    npenc_order = [yb_npenc, seed_npenc] if pred_melody else [seed_npenc, yb_npenc]
+    chordarr_comb = combined_npenc2chordarr(*npenc_order)
+
+    return chordarr_comb
 
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
     args = request.form.to_dict()
     midi = request.files['midi'].read()
-    print('THE ARGS PASSED:', args)
+    print('PREDICTING UNILM:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
     n_words = int(args.get('nSteps', 400))
-    # debugging 1 - send exact midi back
-    # with open('/tmp/test.mid', 'wb') as f:
-    #     f.write(midi)
-    # return send_from_directory('/tmp', 'test.mid', mimetype='audio/midi')
-
-    # debugging 2 - test music21 conversion
-    # stream = file2stream(midi) # 1.
-
-    # debugging 3 - test npenc conversion
-    # seed_np = midi2npenc(midi) # music21 can handle bytes directly 
-    # stream = npenc2stream(seed_np, bpm=bpm)
-
-    # debugging 4 - midi in, convert, midi out
-    # stream = file2stream(midi) # 1.
-    # midi_in = Path(stream.write("musicxml"))
-    # print('Midi in:', midi_in)
-    # stream_sep = separate_melody_chord(stream)
-    # midi_out = Path(stream_sep.write("midi"))
-    # print('Midi out:', midi_out)
-    # s3_id = to_s3(midi_out, args)
-    # result = {
-    #     'result': s3_id
-    # }
-    # return jsonify(result)
 
     # Main logic
     try:
-        pred, seed, full = predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
+        full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
         stream = npenc2stream(full, bpm=bpm)
         stream_sep = separate_melody_chord(stream)
         midi_out = Path(stream_sep.write("midi"))
@@ -102,6 +95,7 @@ def predict_midi():
     return jsonify(result)
 
     # return send_from_directory(midi_out.parent, midi_out.name, mimetype='audio/midi')
+
 
 # @app.route('/midi/song/<path:sid>')
 # def get_song_midi(sid):

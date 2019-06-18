@@ -14,7 +14,7 @@ export default {
     keyType: String
   },
   computed: {
-    ...mapState(['currentLength', 'appState']),
+    ...mapState(['currentLength', 'appState', 'currentTrack']),
     classes () {
       return {
         'black-score': this.keyType === 'black',
@@ -32,7 +32,8 @@ export default {
       this.addNote({
         key: this.keyNumber,
         timing: positionToTiming(event.offsetX - beatOffset, this.currentLength.value),
-        length: this.currentLength.value
+        length: this.currentLength.value,
+        track: this.currentTrack
       })
       this.startPreview({ keyNumber: this.keyNumber, timeout: 2 })
     },

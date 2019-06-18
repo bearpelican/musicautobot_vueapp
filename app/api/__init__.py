@@ -18,3 +18,4 @@ from .resources import * # NOQA
 
 # Import prediction api
 from .predict import *
+# from .predict_unilm import *
