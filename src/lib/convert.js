@@ -5,17 +5,14 @@ import _ from 'lodash'
 export function midiToNotes (midi) {
   // the file name decoded from the first track
   const midiName = midi.name
-
   // get the tracks
-  let notes = []
   const bpm = _.get(midi, `header.tempos[0].bpm`, 120)
-  midi.tracks.forEach(track => {
-    // tracks have notes and controlChanges
-
-    // notes are an array
+  let notes = []
+  midi.tracks.forEach((track, trackIndex) => {
     track.notes.forEach(note => {
       notes.push({
         key: note.midi,
+        track: trackIndex,
         timing: secondsToTiming(note.time, bpm),
         length: secondsToTiming(note.duration, bpm)
       })
@@ -33,6 +30,7 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
     .map((note, index) => {
       const toneNote = {
         midi: note.key,
+        track: note.track,
         time: timingToSeconds(note.timing, bpm),
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
@@ -118,10 +116,22 @@ export function storeToMidi (state, seedLen = null) {
   let notes = notesToToneNotes(storeNotes, bpm, false)
   console.log('Store to midi Notes:')
   console.log(notes)
-  const track = midi.addTrack()
-  track.fromJSON(defaultTrackHeader({ seqName }))
+  const numTracks = _.max(notes.map(n => n.track)) + 1
+
+  const tracks = _.range(numTracks).map((val) => {
+    const track = midi.addTrack()
+    track.fromJSON(defaultTrackHeader({ seqName }))
+    return track
+  })
+  console.log('Tracks')
+  console.log(numTracks)
+  console.log(tracks)
+
+  // const track = midi.addTrack()
   notes.forEach(n => {
-    track.addNote(n)
+    console.log(n.track)
+    // tracks[n.track].addNote(_.without(n, ['track']))
+    tracks[n.track].addNote(n)
   })
   return { midi, bpm, seqName }
 }

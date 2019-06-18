@@ -25,7 +25,7 @@ import Search from '@/components/controls/Search'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
-  name: 'header',
+  name: 'header-controls',
   data () {
     return {
     }

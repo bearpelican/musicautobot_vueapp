@@ -22,7 +22,6 @@ export const state = {
   notes: [],
   prevNotes: [],
   history: [{ version: 1 }, { version: 2 }], // (AS) save history so people can revert { metadata, notes }
-  sequenceRange: null,
   sequenceLength: 80,
   // Metadata
   version: 0,

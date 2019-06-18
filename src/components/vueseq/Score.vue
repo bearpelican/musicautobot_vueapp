@@ -12,6 +12,7 @@
           v-for="(note, index) in notes",
           :key="index + '-note'",
           :index="index",
+          :track="note.track",
           :storeKeyNumber="note.key",
           :storeTiming="note.timing",
           :storeLength="note.length",
@@ -21,6 +22,7 @@
           v-for="(note, index) in prevNotes",
           :key="index + '-prev-note'",
           :index="index",
+          :track="note.track",
           :storeKeyNumber="note.key",
           :storeTiming="note.timing",
           :storeLength="note.length"
