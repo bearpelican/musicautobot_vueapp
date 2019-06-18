@@ -1,40 +1,23 @@
 <template>
-  <v-speed-dial bottom right open-on-hover
-    direction="bottom"
-    transition="scale-transition">
-  <!-- <v-speed-dial bottom right
-    direction="top"
-    transition="scale-transition" -->
-  >
-    <template v-slot:activator>
-      <v-btn color="grey lighten-5" small fab>
-      <!-- <v-btn color="blue darken-2" dark fab @click="toggle"> -->
-        <!-- <v-icon>{{ icon }}</v-icon> -->
-        <v-icon>settings</v-icon>
-      </v-btn>
-    </template>
-    <v-btn class='control-group' @click='voidEvent' :ripple="false">
-      <div class='control-group-content'>
-        <div class='control-group-header'>Playback</div>
-        <div>
-          <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-          <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
-        </div>
+  <div class='control-group-content'>
+    <div class='control-group-header'>Playback</div>
+    <div>
+      <div class='control-group-label'>BPM: {{ this.bpm }}</div>
+      <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+    </div>
 
-        <div>
-          <div class='control-group-label'>Instrument</div>
-          <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
-            <v-btn flat value="piano">
-              Piano
-            </v-btn>
-            <v-btn flat value="alien">
-              Alien
-            </v-btn>
-          </v-btn-toggle>
-        </div>
-      </div>
-    </v-btn>
-  </v-speed-dial>
+    <div>
+      <div class='control-group-label'>Instrument</div>
+      <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
+        <v-btn flat value="piano">
+          Piano
+        </v-btn>
+        <v-btn flat value="alien">
+          Alien
+        </v-btn>
+      </v-btn-toggle>
+    </div>
+  </div>
 </template>
 
 <script>

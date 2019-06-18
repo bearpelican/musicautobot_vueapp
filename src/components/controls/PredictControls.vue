@@ -1,41 +1,15 @@
 <template>
-  <v-speed-dial bottom right open-on-hover
-    direction="bottom"
-    transition="scale-transition">
-  >
-    <template v-slot:activator>
-      <!-- <v-btn color="blue darken-2" dark fab  @click="predictMidi"> -->
-      <v-btn color="grey lighten-5" small fab>
-        <v-icon>shuffle</v-icon>
-      </v-btn>
-    </template>
-    <v-btn class='control-group' @click='voidEvent' :ripple="false">
-      <div class='control-group-content'>
-        <div class='control-group-header'>Randomness</div>
-        <div>
-          <div class='control-group-label'>Tone: {{ this.noteTempPCT }}%</div>
-          <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
-        </div>
-        <div>
-          <div class='control-group-label'>Rythm: {{ this.durationTempPCT }}%</div>
-          <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
-        </div>
-      </div>
-    </v-btn>
-    <!-- <v-btn class='control-group' @click='voidEvent' :ripple="false">
-      <div class='control-group-content'>
-        <div class='control-group-header'>Timesteps</div>
-        <div>
-          <div class='control-group-label'>Predict: {{ this.nSteps }}</div>
-          <v-slider id="predLen" class="control-group-slider" type="range" v-model='selectSteps' :min="100" :max="350" :step="1" hide-details></v-slider>
-        </div>
-        <div>
-          <div class='control-group-label'>Seed: {{ this.seedLen }}</div>
-          <v-slider id="seedLen" class="control-group-slider" type="range" v-model='selectSeed' :min="1" :max="50" :step="1" hide-details></v-slider>
-        </div>
-      </div>
-    </v-btn> -->
-  </v-speed-dial>
+  <div class='control-group-content'>
+    <div class='control-group-header'>Randomness</div>
+    <div>
+      <div class='control-group-label'>Tone: {{ this.noteTempPCT }}%</div>
+      <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
+    </div>
+    <div>
+      <div class='control-group-label'>Rythm: {{ this.durationTempPCT }}%</div>
+      <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
+    </div>
+  </div>
 </template>
 
 <script>

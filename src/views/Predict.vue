@@ -1,12 +1,12 @@
 <template>
   <div class="predict">
-    <search id='song-search'></search>
-    <hr style='margin-top: 0px; position: relative; top: -22px' />
+    <header-controls id="header-controls"></header-controls>
     <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
     <sequencer :style="sequenceStyle">
       <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
       <loading v-if="this.loadingState !== null" id='loading-predict' :value=loadingState></loading>
     </sequencer>
+    <footer-controls></footer-controls>
   </div>
 </template>
 
@@ -14,7 +14,8 @@
 
 import SongMeta from '@/components/vueseq/SongMeta'
 import Sequencer from '@/components/Sequencer'
-import Search from '@/components/Search'
+import HeaderControls from '@/components/controls/HeaderControls'
+import FooterControls from '@/components/controls/FooterControls'
 import Loading from '@/components/Loading'
 import Tutorial from '@/components/Tutorial'
 import TutorialTwo from '@/components/TutorialTwo'
@@ -75,7 +76,8 @@ export default {
   components: {
     SongMeta,
     Sequencer,
-    Search,
+    HeaderControls,
+    FooterControls,
     Loading,
     Tutorial,
     TutorialTwo
@@ -95,8 +97,9 @@ export default {
   z-index: 5;
 }
 
-#song-search {
-  margin: 0px 210px;
+#header-controls {
+  margin: 0px 100px 0px 210px;
+  display: flex;
 }
 
 #tutorial-one {

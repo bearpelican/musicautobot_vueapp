@@ -4,7 +4,6 @@
     section
       keyboard
       score(:gridOpacity="gridOpacity")
-    button-container
     play-button(id="play-button")
     slot
 </template>
@@ -13,7 +12,6 @@
 
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
-import ButtonContainer from '@/components/controls/ButtonContainer'
 import SequenceTitle from '@/components/vueseq/SequenceTitle'
 import PlayButton from '@/components/controls/PlayButton'
 
@@ -25,7 +23,6 @@ export default {
   components: {
     Keyboard,
     Score,
-    ButtonContainer,
     SequenceTitle,
     PlayButton
   },

@@ -1,19 +1,16 @@
 <template lang="pug">
   .container
-    file-controls
     sequence-controls
     predict-controls
 </template>
 
 <script>
 import SequenceControls from '@/components/controls/SequenceControls'
-import FileControls from '@/components/controls/FileControls'
 import PredictControls from '@/components/controls/PredictControls'
 
 export default {
   components: {
     SequenceControls,
-    FileControls,
     PredictControls
   }
 }
@@ -25,8 +22,8 @@ export default {
   /* background-color: #ffa07a; */
 
   .control-group {
-    height: 140px;
-    width: 160px;
+    // height: 140px;
+    // width: 160px;
     border-radius: 16px;
     background-color: #ffffff;
     transition: none;
@@ -69,18 +66,19 @@ img {
 }
 
 .container {
-  position: absolute;
-  top: 50px;
-  right: 90px;
+  // position: absolute;
+  // top: 50px;
+  // right: 90px;
   display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-end;
-  pointer-events: none;
-  z-index: 3;
+  margin: 0;
+  // flex-direction: row-reverse;
+  // align-items: flex-end;
+  // pointer-events: none;
+  // z-index: 3;
 }
 
-.container > * {
-  pointer-events: all;
-}
+// .container > * {
+//   pointer-events: all;
+// }
 
 </style>
