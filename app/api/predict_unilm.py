@@ -81,9 +81,10 @@ def nw_predict_from_midi(learn, midi=None, n_words=600,
                       temperatures=(1.0,1.0), top_k=24, top_p=0.7, **kwargs):
     seed_np = midi2npenc(midi, skip_last_rest=True) # music21 can handle bytes directly
     xb = torch.tensor(to_single_stream(seed_np))[None]
+    if torch.cuda.is_available(): xb = xb.cuda()
     pred, seed = learn.predict_nw(xb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
-    # seed = to_double_stream(seed)
-    # pred = to_double_stream(pred)
+    seed = to_double_stream(seed)
+    pred = to_double_stream(pred)
     full = np.concatenate((seed,pred), axis=0)
     return full
 
