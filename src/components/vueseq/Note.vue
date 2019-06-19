@@ -57,7 +57,8 @@ export default {
       if (this.length === 0) {
         return '#d32c2c'
       }
-      if (this.timing >= this.seedLen && this.track === this.currentTrack) {
+      const keepTrackNote = (this.currentTrack !== -1) && (this.track !== this.currentTrack)
+      if (this.timing >= this.seedLen && !keepTrackNote) {
         return '#B71C1C'
       }
       return '#3287ce'
@@ -66,7 +67,8 @@ export default {
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
         return '#666666'
       }
-      if (this.timing >= this.seedLen && this.track === this.currentTrack) {
+      const keepTrackNote = (this.currentTrack !== -1) && (this.track !== this.currentTrack)
+      if (this.timing >= this.seedLen && !keepTrackNote) {
         return '#FF5252'
       }
       return '#64b5f6'

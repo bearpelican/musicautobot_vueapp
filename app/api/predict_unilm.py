@@ -62,7 +62,7 @@ def s2s_predict_from_midi(learn, midi=None, n_words=200,
 
     if torch.cuda.is_available(): xb, yb = xb.cuda(), yb.cuda()
     
-    pred = learn.predict_s2s(xb, yb, n_words=200, temperatures=temperatures, top_k=top_k, top_p=top_p)
+    pred = learn.predict_s2s(xb, yb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
     # pred = yb
 
     seed_npenc = to_double_stream(xb.cpu().numpy()) # chord

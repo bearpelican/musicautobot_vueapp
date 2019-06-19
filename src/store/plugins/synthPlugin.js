@@ -67,7 +67,7 @@ export class SynthPlugin {
   }
   updateInstrumentType ({ instrumentType }) {
     this.synth.unsync()
-    if (instrumentType === 'alien') {
+    if (instrumentType === 'synth') {
       this.synth = createDefaultPolySynth()
     } else {
       this.synth = createPianoSynth()

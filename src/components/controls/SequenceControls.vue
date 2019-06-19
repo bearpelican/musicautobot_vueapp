@@ -12,7 +12,7 @@
         <v-btn flat value="piano">
           Piano
         </v-btn>
-        <v-btn flat value="alien">
+        <v-btn flat value="synth">
           Alien
         </v-btn>
       </v-btn-toggle>
@@ -26,9 +26,7 @@ const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
   data () {
-    return {
-      synthOptions: [{ text: 'piano', value: 'piano' }, { text: 'alien', value: 'alien' }]
-    }
+    return { }
   },
   computed: {
     ...mapState(['appState', 'bpm', 'instrumentType', 'progressTime']),

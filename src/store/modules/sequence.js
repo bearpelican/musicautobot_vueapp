@@ -90,6 +90,9 @@ export const mutations = {
   updateInstrumentType (state, { instrumentType }) {
     state.instrumentType = instrumentType
   },
+  updateTrack (state, { track }) {
+    state.currentTrack = track
+  },
   updateBPM (state, bpm) {
     state.bpm = parseInt(bpm)
   },
@@ -178,6 +181,7 @@ export const actions = {
     'updateProgressTime',
     'updateBPM',
     'updateInstrumentType',
+    'updateTrack',
     'updateSeqName'
   ])
 }

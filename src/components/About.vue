@@ -94,7 +94,7 @@
         <h4>Playback controls <v-btn color="grey lighten-5" small fab><v-icon>settings</v-icon></v-btn></h4>
           <ul>
             <li>Change the BPM to play your creation faster/slower.</li>
-            <li>Playback instrument - piano or alien synth. More coming soon!</li>
+            <li>Playback instrument - piano or synth. More coming soon!</li>
           </ul>
       </div>
     <h2>How does it work?</h2>

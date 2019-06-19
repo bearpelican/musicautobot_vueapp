@@ -103,13 +103,13 @@ function defaultTrackHeader ({ name = '' }) {
   }
 }
 
-export function storeToMidi (state, seedLen = null, track = null) {
+export function storeToMidi (state, seedLen = null, track = -1) {
   // create a new midi file
   const { seqName, bpm } = state
   let storeNotes = state.notes
   if (seedLen != null) {
     storeNotes = storeNotes.filter(n => {
-      const keepTrackNote = (track !== null) && (n.track !== track)
+      const keepTrackNote = (track !== -1) && (n.track !== track)
       const isSeed = n.timing <= seedLen
       return isSeed || keepTrackNote
     })
