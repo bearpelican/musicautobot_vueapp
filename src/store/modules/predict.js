@@ -73,7 +73,8 @@ export const actions = {
     commit('updateTutorialStep', 2)
 
     const { nSteps, seedLen, durationTemp, noteTemp } = rootState.predict
-    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen)
+    const { currentTrack } = rootState.sequence
+    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen, currentTrack)
 
     // Progress
     let counter = -10

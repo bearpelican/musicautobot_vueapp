@@ -103,12 +103,16 @@ function defaultTrackHeader ({ name = '' }) {
   }
 }
 
-export function storeToMidi (state, seedLen = null) {
+export function storeToMidi (state, seedLen = null, track = null) {
   // create a new midi file
   const { seqName, bpm } = state
   let storeNotes = state.notes
   if (seedLen != null) {
-    storeNotes = storeNotes.filter(n => n.timing <= seedLen)
+    storeNotes = storeNotes.filter(n => {
+      const keepTrackNote = (track !== null) && (n.track !== track)
+      const isSeed = n.timing <= seedLen
+      return isSeed || keepTrackNote
+    })
   }
   var midi = new Midi()
   midi.header.fromJSON(defaultMidiHeader({ bpm, seqName }))
@@ -123,14 +127,9 @@ export function storeToMidi (state, seedLen = null) {
     track.fromJSON(defaultTrackHeader({ seqName }))
     return track
   })
-  console.log('Tracks')
-  console.log(numTracks)
-  console.log(tracks)
 
   // const track = midi.addTrack()
   notes.forEach(n => {
-    console.log(n.track)
-    // tracks[n.track].addNote(_.without(n, ['track']))
     tracks[n.track].addNote(n)
   })
   return { midi, bpm, seqName }

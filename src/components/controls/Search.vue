@@ -98,7 +98,6 @@ export default {
       this.searchResults = 'avicii'
     },
     updateSearch (term) {
-      console.log('updating search')
       if (this.fuse === null || this._.isEmpty(term) || this._.isEmpty(this.songs)) return
       setTimeout(() => {
         this.results = this.fuse.search(term, { limit: 10 })

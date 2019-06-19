@@ -17,5 +17,5 @@ def add_header(response):
 from .resources import * # NOQA
 
 # Import prediction api
-from .predict import *
-# from .predict_unilm import *
+# from .predict import *
+from .predict_unilm import *

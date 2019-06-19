@@ -16,6 +16,7 @@ const { mapState: predMapState } = createNamespacedHelpers('predict')
 export default {
   props: {
     index: Number,
+    track: Number,
     storeKeyNumber: Number,
     storeTiming: Number,
     storeLength: Number,
@@ -41,7 +42,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentLength.value
     }),
-    ...mapState(['isEditingScore', 'progressTime', 'version']),
+    ...mapState(['isEditingScore', 'progressTime', 'version', 'currentTrack']),
     ...predMapState(['seedLen']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
@@ -56,7 +57,7 @@ export default {
       if (this.length === 0) {
         return '#d32c2c'
       }
-      if (this.timing >= this.seedLen) {
+      if (this.timing >= this.seedLen && this.track === this.currentTrack) {
         return '#B71C1C'
       }
       return '#3287ce'
@@ -65,7 +66,7 @@ export default {
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
         return '#666666'
       }
-      if (this.timing >= this.seedLen) {
+      if (this.timing >= this.seedLen && this.track === this.currentTrack) {
         return '#FF5252'
       }
       return '#64b5f6'
@@ -194,6 +195,7 @@ div {
   /* border: 0.5px solid #42a5f5; */
   cursor: move;
   z-index: 1;
+  opacity: 0.8;
 }
 .note {
   background-color: #64b5f6;

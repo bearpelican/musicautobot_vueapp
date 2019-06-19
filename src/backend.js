@@ -54,28 +54,6 @@ export default {
   },
 
   // Predict
-  // async predictFile (file, nSteps, seedLen) {
-  //   const response = await $axios.post('predict/file', { np_file: file, n_steps: nSteps, seed_len: seedLen })
-  //   return this.fetchMidi(response.data.result, 'generated')
-  // },
-  // async predictMidi ({ midi, ...args }) {
-  //   const formData = new FormData()
-  //   formData.append('midi', this.midiToBlob(midi))
-  //   _.forOwn(args, (value, key) => {
-  //     formData.append(key, value)
-  //   })
-  //   const config = {
-  //     headers: {
-  //       'content-type': 'multipart/form-data'
-  //     },
-  //     responseType: 'arraybuffer'
-  //   }
-  //   const response = await $axios.post('predict/midi', formData, config)
-  //   // const response = await $axios.post('store/save', formData, config)
-  //   console.log('Response:', response)
-  //   return response.data
-  // },
-
   async predictMidi ({ midi, ...args }) {
     const formData = new FormData()
     formData.append('midi', this.midiToBlob(midi))

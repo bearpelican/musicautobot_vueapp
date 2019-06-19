@@ -29,6 +29,8 @@ load_path = path/'models/v16_unilm.pth'
 state = torch.load(load_path, map_location='cpu')
 get_model(learn.model).load_state_dict(state['model'], strict=False)
 
+if torch.cuda.is_available(): learn.model.cuda()
+
 def part_enc(chordarr, part):
     partarr = chordarr[:,part:part+1,:]
     npenc = chordarr2npenc(partarr)
@@ -36,7 +38,7 @@ def part_enc(chordarr, part):
     
 # NOTE: looks like npenc does not include the separator. 
 # This means we don't have to remove the last (separator) step from the seed in order to keep predictions
-def s2s_predict_from_midi(learn, midi=None, n_words=600, 
+def s2s_predict_from_midi(learn, midi=None, n_words=200, 
                       temperatures=(1.0,1.0), top_k=24, top_p=0.7, pred_melody=True, **kwargs):
 
     stream = file2stream(midi) # 1.
@@ -50,7 +52,6 @@ def s2s_predict_from_midi(learn, midi=None, n_words=600,
     
     offset = 3
     original_shape = melody_np.shape[0] * 2 if pred_melody else chord_np.shape[0] * 2 
-#     original_shape = 20
     bptt = original_shape + n_words + offset
     bptt = max(bptt, melody_np.shape[0] * 2, chord_np.shape[0] * 2 )
     mpart = partenc2seq2seq(melody_np, part_type=MSEQ, translate=pred_melody, bptt=bptt)
@@ -58,8 +59,11 @@ def s2s_predict_from_midi(learn, midi=None, n_words=600,
 
     xb = torch.tensor(cpart)[None]
     yb = torch.tensor(mpart)[None][:, :original_shape+offset]
+
+    if torch.cuda.is_available(): xb, yb = xb.cuda(), yb.cuda()
     
-    pred = learn.predict_s2s(xb, yb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
+    pred = learn.predict_s2s(xb, yb, n_words=200, temperatures=temperatures, top_k=top_k, top_p=top_p)
+    # pred = yb
 
     seed_npenc = to_double_stream(xb.cpu().numpy()) # chord
     yb_npenc = to_double_stream(pred.cpu().numpy()) # melody
@@ -80,9 +84,8 @@ def predict_midi():
     # Main logic
     try:
         full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
-        stream = npenc2stream(full, bpm=bpm)
-        stream_sep = separate_melody_chord(stream)
-        midi_out = Path(stream_sep.write("midi"))
+        stream = chordarr2stream(full, bpm=bpm)
+        midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:
         traceback.print_exc()
@@ -93,7 +96,6 @@ def predict_midi():
         'result': s3_id
     }
     return jsonify(result)
-
     # return send_from_directory(midi_out.parent, midi_out.name, mimetype='audio/midi')
 
 
