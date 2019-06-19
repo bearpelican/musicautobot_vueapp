@@ -75,20 +75,37 @@ def s2s_predict_from_midi(learn, midi=None, n_words=200,
 
     return chordarr_comb
 
+# NOTE: looks like npenc does not include the separator. 
+# This means we don't have to remove the last (separator) step from the seed in order to keep predictions
+def nw_predict_from_midi(learn, midi=None, n_words=600, 
+                      temperatures=(1.0,1.0), top_k=24, top_p=0.7, **kwargs):
+    seed_np = midi2npenc(midi, skip_last_rest=True) # music21 can handle bytes directly
+    xb = torch.tensor(to_single_stream(seed_np))[None]
+    pred, seed = learn.predict_nw(xb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
+    # seed = to_double_stream(seed)
+    # pred = to_double_stream(pred)
+    full = np.concatenate((seed,pred), axis=0)
+    return full
+
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
     args = request.form.to_dict()
     midi = request.files['midi'].read()
     print('PREDICTING UNILM:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
-    pred_melody = int(args['currentTrack']) == 0 # (AS) TODO: get bpm from midi file instead
+    currentTrack = int(args['currentTrack']) # (AS) TODO: get bpm from midi file instead
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
     n_words = int(args.get('nSteps', 400))
 
     # Main logic
     try:
-        full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=pred_melody)
-        stream = chordarr2stream(full, bpm=bpm)
+        if currentTrack == -1:
+            full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
+            stream = npenc2stream(full, bpm=bpm)
+            stream = separate_melody_chord(stream)
+        else:
+            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=currentTrack == 0)
+            stream = chordarr2stream(full, bpm=bpm)
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:
