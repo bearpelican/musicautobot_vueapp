@@ -48,7 +48,6 @@ def s2s_predict_from_midi(learn, midi=None, n_words=200,
     
 
     melody_np, chord_np = (melody_np, chord_np) if avg_pitch(melody_np) > avg_pitch(chord_np) else (chord_np, melody_np) # Assuming melody has higher pitch
-    pred_melody=True
     
     offset = 3
     original_shape = melody_np.shape[0] * 2 if pred_melody else chord_np.shape[0] * 2 
@@ -56,9 +55,13 @@ def s2s_predict_from_midi(learn, midi=None, n_words=200,
     bptt = max(bptt, melody_np.shape[0] * 2, chord_np.shape[0] * 2 )
     mpart = partenc2seq2seq(melody_np, part_type=MSEQ, translate=pred_melody, bptt=bptt)
     cpart = partenc2seq2seq(chord_np, part_type=CSEQ, translate=not pred_melody, bptt=bptt)
+    if pred_melody:
+        xb = torch.tensor(cpart)[None]
+        yb = torch.tensor(mpart)[None][:, :original_shape+offset]
+    else:
+        xb = torch.tensor(mpart)[None]
+        yb = torch.tensor(cpart)[None][:, :original_shape+offset]
 
-    xb = torch.tensor(cpart)[None]
-    yb = torch.tensor(mpart)[None][:, :original_shape+offset]
 
     if torch.cuda.is_available(): xb, yb = xb.cuda(), yb.cuda()
     
@@ -78,12 +81,13 @@ def predict_midi():
     midi = request.files['midi'].read()
     print('PREDICTING UNILM:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
+    pred_melody = int(args['currentTrack']) == 0 # (AS) TODO: get bpm from midi file instead
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
     n_words = int(args.get('nSteps', 400))
 
     # Main logic
     try:
-        full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
+        full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=pred_melody)
         stream = chordarr2stream(full, bpm=bpm)
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)

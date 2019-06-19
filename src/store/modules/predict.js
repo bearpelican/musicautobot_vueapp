@@ -94,7 +94,7 @@ export const actions = {
     }, 1000 * 0.25 * nSteps)
 
     // Predictions
-    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp })
+    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, currentTrack })
     if (error) {
       clearInterval(progress)
       commit('showError', `Error: ${error}`)
