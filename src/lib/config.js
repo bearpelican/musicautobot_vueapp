@@ -3,7 +3,7 @@ import { getLengthFromValue } from '@/lib/getNotes'
 export const defaultLength = getLengthFromValue(1)
 export const editingLength = getLengthFromValue(0.5)
 export const pixelPerBeat = 50
-export const keyWidth = 14
+export const keyHeight = 14
 export const defaultBeats = 40
 export const startOctave = 2
 export const endOctave = 6

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:style="{ bottom, left, width }")
+  div(class="note-previous" :style="{ bottom, left, width }")
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-div {
+.previous {
   position: absolute;
   height: 10px;
   /* background-color: #94ffbd; */

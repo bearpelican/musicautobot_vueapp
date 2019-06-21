@@ -1,7 +1,7 @@
 <template lang="pug">
   button(
     :class="classes",
-    :style="{ top: index * 14 + 'px' }",
+    :style="{ top, height }",
     @mousedown="mousedown"
   )
     | {{ caption }}
@@ -10,6 +10,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import { getKeyNumber } from '@/lib/getOctaves'
+import { keyHeight } from '@/lib/config'
 const { mapActions } = createNamespacedHelpers('sequence')
 
 export default {
@@ -27,6 +28,14 @@ export default {
     },
     caption () {
       return /C[0-9]/.test(this.pitch) ? this.pitch : ''
+    },
+    top () {
+      return this.index * keyHeight + 'px'
+    },
+    height () {
+      // 12 keys per octave, 7 white keys
+      if (this.keyType === 'white') return (keyHeight * 12 / 7) + 'px'
+      return keyHeight + 'px'
     }
   },
   methods: {
@@ -44,8 +53,7 @@ export default {
 </script>
 
 <style scoped>
-/* key-width: 16px */
-/* white-key: key-width + 8px */
+
 button {
   border: 1px solid black;
   display: block;
@@ -54,7 +62,6 @@ button {
 
 .black-key {
   width: 70px;
-  height: 14px;
   background-color: black;
   position: absolute;
 }
@@ -62,6 +69,5 @@ button {
 .white-key {
   background-color: white;
   width: 100px;
-  height: 24px;
 }
 </style>

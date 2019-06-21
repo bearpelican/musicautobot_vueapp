@@ -1,4 +1,4 @@
-import { keyWidth, pixelPerBeat, startOctave } from '@/lib/config'
+import { keyHeight, pixelPerBeat, startOctave } from '@/lib/config'
 
 // These are 3 units : timing, seconds, position
 // Timing : the main units. It's the number of beats.
@@ -35,5 +35,5 @@ export function timingToMS (timing, bpm) {
 export function keyNumberToOffset (keyNumber) {
   const octaveOffset = (startOctave + 1) * 12
   const keyOffset = (keyNumber)
-  return (keyOffset - octaveOffset) * keyWidth
+  return (keyOffset - octaveOffset) * keyHeight
 }

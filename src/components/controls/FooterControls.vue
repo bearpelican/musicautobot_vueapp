@@ -1,16 +1,19 @@
 <template lang="pug">
   .container
     sequence-controls
+    regen-controls
     predict-controls
 </template>
 
 <script>
 import SequenceControls from '@/components/controls/SequenceControls'
+import RegenControls from '@/components/controls/RegenControls'
 import PredictControls from '@/components/controls/PredictControls'
 
 export default {
   components: {
     SequenceControls,
+    RegenControls,
     PredictControls
   }
 }

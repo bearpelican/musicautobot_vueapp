@@ -1,10 +1,10 @@
 <template lang="pug">
-  div(:class="classes", @mousedown="add")
+  .score-row(:class="classes", :style="{ height: height}", @mousedown="add")
 </template>
 
 <script>
 import { positionToTiming } from '@/lib/positioning'
-import { pixelPerBeat } from '@/lib/config'
+import { keyHeight, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
@@ -12,6 +12,11 @@ export default {
   props: {
     keyNumber: Number,
     keyType: String
+  },
+  data () {
+    return {
+      height: `${keyHeight}px`
+    }
   },
   computed: {
     ...mapState(['currentLength', 'appState', 'currentTrack']),
@@ -46,8 +51,7 @@ export default {
 </script>
 
 <style scoped>
-div {
-  height: 14px;
+.score-row {
   width: 100%;
   border: 1px solid #bbdefb;
   box-sizing: border-box;

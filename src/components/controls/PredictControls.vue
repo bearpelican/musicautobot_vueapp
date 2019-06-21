@@ -2,11 +2,11 @@
   <div class='control-group-content'>
     <div class='control-group-header'>Randomness</div>
     <div>
-      <div class='control-group-label'>Tone: {{ this.noteTempPCT }}%</div>
+      <div class='control-group-label'>Tone: {{ noteTempPCT }}%</div>
       <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
     </div>
     <div>
-      <div class='control-group-label'>Rythm: {{ this.durationTempPCT }}%</div>
+      <div class='control-group-label'>Rythm: {{ durationTempPCT }}%</div>
       <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
     </div>
 
@@ -28,7 +28,7 @@ import { PredictionType } from '@/lib/config'
 const { mapActions, mapMutations, mapState } = createNamespacedHelpers('predict')
 
 export default {
-  name: 'song-meta',
+  name: 'predict-controls',
   data () {
     return {
       error: '',
@@ -37,14 +37,14 @@ export default {
   },
   computed: {
     ...mapState(['nSteps', 'seedLen', 'durationTemp', 'noteTemp']),
-    selectSteps: {
-      set (steps) { this.updateSteps(steps) },
-      get () { return this.nSteps }
-    },
-    selectSeed: {
-      set (seedLen) { this.updateSeedLen(seedLen) },
-      get () { return this.seedLen }
-    },
+    // selectSteps: {
+    //   set (steps) { this.updateSteps(steps) },
+    //   get () { return this.nSteps }
+    // },
+    // selectSeed: {
+    //   set (seedLen) { this.updateSeedLen(seedLen) },
+    //   get () { return this.seedLen }
+    // },
     selectNoteTemp: {
       set (noteTemp) { this.updateNoteTemp(noteTemp) },
       get () { return this.noteTemp }
@@ -66,11 +66,11 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSteps', 'updateSeedLen', 'updateNoteTemp', 'updateDurationTemp', 'updatePredictionType']),
-    ...mapActions(['predictMidi']),
-    voidEvent (event) {
-      event.handled = true
-      event.stopPropagation()
-    }
+    ...mapActions(['predictMidi'])
+    // voidEvent (event) {
+    //   event.handled = true
+    //   event.stopPropagation()
+    // }
   },
   mounted () {
   },

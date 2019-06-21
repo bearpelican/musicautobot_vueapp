@@ -1,12 +1,14 @@
 <template lang="pug">
-  div.note(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
-    .selection.begin(@mousedown.stop="startEditingStartTime" :style="{ 'border-color': selectionColor }")
-    .selection.end(@mousedown.stop="startEditingEndTime" :style="{ 'border-color': selectionColor }")
+  //- div.note(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
+  .note(:style="{ bottom, left, width, height }", @mousedown="startMoving")
+    .note-color(:class="noteColor")
+    .selection.begin(@mousedown.stop="startEditingStartTime" :class="noteColor")
+    .selection.end(@mousedown.stop="startEditingEndTime" :class="noteColor")
 </template>
 
 <script>
 import { timingToPosition, positionToTiming, keyNumberToOffset } from '@/lib/positioning'
-import { keyWidth, editingLength } from '@/lib/config'
+import { keyHeight, editingLength } from '@/lib/config'
 import validateNoteDetails from '@/lib/validateNoteDetails'
 // import { emptyStatement } from 'babel-types'
 import { createNamespacedHelpers } from 'vuex'
@@ -31,6 +33,7 @@ export default {
   data () {
     return {
       state: 'normal',
+      height: `${keyHeight}px`,
       length: this.storeLength,
       timing: this.storeTiming,
       keyNumber: this.storeKeyNumber,
@@ -72,6 +75,28 @@ export default {
         return '#FF5252'
       }
       return '#64b5f6'
+    },
+    noteColor () {
+      if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
+        return 'note-playing'
+      }
+      if (this.length === 0) {
+        return 'note-delete'
+      }
+      if (this.predictionType.name === 'rhythm') {
+        return 'note-rhythm'
+      }
+      if (this.predictionType.name === 'notes') {
+        return 'note-notes'
+      }
+      if (['melody', 'chords'].includes(this.predictionType.name) && (this.track !== this.predictionType.track)) {
+        // Do not erase chords when predicting melody and visa versa
+        return 'note-default'
+      }
+      if (this.timing >= this.seedLen) {
+        return 'note-regen'
+      }
+      return 'note-default'
     }
   },
   watch: {
@@ -133,7 +158,7 @@ export default {
             editingLength.value
           )
           nextKeyNumber = this.storeKeyNumber +
-            Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyWidth)
+            Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyHeight)
           // console.log('Next key number:', nextKeyNumber)
           if (this.keyNumber !== nextKeyNumber) {
             this.startPreview({ keyNumber: nextKeyNumber, timeout: 2 })
@@ -191,38 +216,68 @@ export default {
 </script>
 
 <style scoped>
-div {
+.note {
   position: absolute;
-  height: 14px;
   /* border: 0.5px solid #42a5f5; */
   cursor: move;
   z-index: 1;
-  opacity: 0.8;
-}
-.note {
-  background-color: #64b5f6;
 }
 .selection {
   position: absolute;
   width: 5px;
   height: 100%;
-
+  filter: brightness(70%);
+  /* Background clip to have a larger selection area, but smaller visual area */
+  background-clip: padding-box;
 }
 .begin {
   cursor: w-resize;
   top: 0;
   left: 0;
-
-  border-right-width: 3px;
-  border-right-style: solid;
-  /* border-right-color: #64b5f6; */
+  border: none;
+  border-right: 3px solid transparent;
 }
 .end {
   cursor: e-resize;
   top: 0;
   right: 0;
-
-  border-left-width: 3px;
-  border-left-style: solid;
+  border: none;
+  border-left: 3px solid transparent;
 }
+.note-color {
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+.note-playing {
+  background-color: #666666;
+}
+.note-regen {
+  background-color: #FF5252;
+}
+.note-delete {
+  background-color: #d32c2c;
+}
+.note-default {
+  background-color: #64b5f6;
+}
+.note-notes {
+  background-color: #64b5f6;
+}
+.note-color.note-notes {
+  border-width: 4px 0px 4px 0px;
+  border-style: solid;
+  border-color: #FF5252;
+}
+
+.note-rhythm {
+  background-color: #64b5f6;
+}
+
+.note-color.note-rhythm {
+  border-width: 0 8px 0 8px;
+  border-style: solid;
+  border-color: #FF5252;
+}
+
 </style>

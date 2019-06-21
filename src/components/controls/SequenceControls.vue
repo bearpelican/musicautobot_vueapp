@@ -50,11 +50,11 @@ export default {
       } else {
         this.stop()
       }
-    },
-    voidEvent (event) {
-      event.handled = true
-      event.stopPropagation()
     }
+    // voidEvent (event) {
+    //   event.handled = true
+    //   event.stopPropagation()
+    // }
   },
   mounted () {
   }
