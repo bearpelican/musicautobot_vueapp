@@ -224,7 +224,8 @@ export default {
 }
 .selection {
   position: absolute;
-  width: 5px;
+  width: 4px;
+  top: 0;
   height: 100%;
   filter: brightness(70%);
   /* Background clip to have a larger selection area, but smaller visual area */
@@ -232,17 +233,13 @@ export default {
 }
 .begin {
   cursor: w-resize;
-  top: 0;
-  left: 0;
-  border: none;
-  border-right: 3px solid transparent;
+  left: 0px;
+  border-right: 2px solid transparent;
 }
 .end {
   cursor: e-resize;
-  top: 0;
-  right: 0;
-  border: none;
-  border-left: 3px solid transparent;
+  right: -1px;
+  border-left: 2px solid transparent;
 }
 .note-color {
   width: 100%;

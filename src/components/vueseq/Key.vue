@@ -61,7 +61,7 @@ button {
 }
 
 .black-key {
-  width: 70px;
+  width: 50px;
   background-color: black;
   position: absolute;
 }

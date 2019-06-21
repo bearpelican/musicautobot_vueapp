@@ -1,11 +1,16 @@
 <template>
   <div>
-    <div class='control-group-label'>Regenerate:</div>
-    <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
-      <v-btn flat v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
-        {{ptype.displayName}}
-      </v-btn>
-    </v-btn-toggle>
+    <div class='control-group'>
+      <div class='control-group-header'>Regenerate</div>
+      <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
+        <v-btn flat v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
+          {{ptype.displayName}}
+        </v-btn>
+      </v-btn-toggle>
+      <!-- <label>
+      Forward will generate a new song past the brown line. Red notes will be deleted
+      </label> -->
+    </div>
   </div>
 </template>
 

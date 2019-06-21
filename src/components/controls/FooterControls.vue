@@ -1,8 +1,8 @@
 <template lang="pug">
-  .container
-    sequence-controls
-    regen-controls
-    predict-controls
+  .footer-controls
+    sequence-controls#sequence-controls
+    regen-controls#regen-controls
+    predict-controls#predict-controls
 </template>
 
 <script>
@@ -21,67 +21,36 @@ export default {
 
 <style lang='scss'>
 
-.container {
-  /* background-color: #ffa07a; */
+.footer-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0px 100px;
 
-  .control-group {
-    // height: 140px;
-    // width: 160px;
-    border-radius: 16px;
-    background-color: #ffffff;
-    transition: none;
-
-    &.v-btn--active:before,
-    &.v-btn:focus:before,
-    &.v-btn:hover:before {
-      background-color: white;
-    }
-    &.v-btn:focus {
-      outline: none;
-    }
+  .control-group-content {
+    display: flex;
   }
 
   .control-group-slider {
     width: 120px;
     margin: auto;
-    padding: 0px;
+    // padding: 0px;
+  }
+
+  .control-group-control {
+    margin: 0px 10px;
   }
 
   .control-group-label {
     font-size: 0.8rem;
     color: #222222;
     margin-bottom: 0px;
+    margin-top: 0px;
   }
 
   .control-group-header {
-    font-size: 0.8rem;
-    // color: #42b983;
     margin: 5px 0px;
-    /* background-color: #ff743d80; */
   }
 }
-
-</style>
-
-<style scoped lang='scss'>
-img {
-  max-height: 30px;
-}
-
-.container {
-  // position: absolute;
-  // top: 50px;
-  // right: 90px;
-  display: flex;
-  margin: 0;
-  // flex-direction: row-reverse;
-  // align-items: flex-end;
-  // pointer-events: none;
-  // z-index: 3;
-}
-
-// .container > * {
-//   pointer-events: all;
-// }
 
 </style>

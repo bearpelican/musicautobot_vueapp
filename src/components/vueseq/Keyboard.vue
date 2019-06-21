@@ -7,7 +7,7 @@
       :keyType="key.type",
       :pitch="key.name"
     )
-    .space
+    //- .space
 </template>
 
 <script>
@@ -41,13 +41,10 @@ export default {
 
 <style scoped>
 .keyboard {
-  width: 100px;
+  width: 70px;
   height: 100%;
   float: left;
   overflow: hidden;
   position: relative;
-}
-.space {
-  height: 100px;
 }
 </style>

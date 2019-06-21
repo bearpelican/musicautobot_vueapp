@@ -60,51 +60,52 @@ export default {
 
 <style lang='scss'>
 
-#version2 {
+// #version2 {
 
-  /* margin-right: 10px; */
-  width: 40px;
-  display: inline-block;
-  margin: 0;
-  margin-right: 10px;
+//   /* margin-right: 10px; */
+//   width: 40px;
+//   display: inline-block;
+//   margin: 0;
+//   margin-right: 10px;
 
-  .md-input {
-    color: #489e77;
-    -webkit-text-fill-color: unset;
-    font-size: 1.6em;
-  }
-  span .md-item-list-text {
-    font-size: 1.2em;
-  }
-  .md-menu {
-    .md-icon {
-      display: none;
-    }
-  }
-}
+//   .md-input {
+//     color: #489e77;
+//     -webkit-text-fill-color: unset;
+//     font-size: 1.2em;
+//   }
+//   span .md-item-list-text {
+//     font-size: 1.2em;
+//   }
+//   .md-menu {
+//     .md-icon {
+//       display: none;
+//     }
+//   }
+// }
 
-#version2::after {
-  display: none;
-}
+// #version2::after {
+//   display: none;
+// }
+
+// #version {
+//   font-size: 1.6em;
+//   color: #489e77;
+//   margin-right: 10px;
+// }
 
 #sequence-type {
-  font-size: 1.6em;
+  font-size: 1.2em;
   color: #489e77;
   margin-left: 15px;
 }
 
-#version {
-  font-size: 1.6em;
-  color: #489e77;
-  margin-right: 10px;
-}
 #sequence-title-span {
   display: inline-block;
   transition: all 0.3s ease-out;
   text-align: center;
-  font-size: 1.6em;
+  font-size: 1.2em;
   border: none;
-  padding-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 </style>

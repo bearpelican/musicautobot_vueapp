@@ -1,21 +1,24 @@
 <template>
-  <div class='control-group-content'>
+  <div class='control-group'>
     <div class='control-group-header'>Playback</div>
-    <div>
-      <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-      <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
-    </div>
 
-    <div>
-      <div class='control-group-label'>Instrument</div>
-      <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
-        <v-btn flat value="piano">
-          Piano
-        </v-btn>
-        <v-btn flat value="synth">
-          Alien
-        </v-btn>
-      </v-btn-toggle>
+    <div class='control-group-content'>
+      <div class='control-group-control'>
+        <div class='control-group-label'>BPM: {{ this.bpm }}</div>
+        <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+      </div>
+
+      <div class='control-group-control'>
+        <div class='control-group-label'>Instrument</div>
+        <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
+          <v-btn flat value="piano">
+            Piano
+          </v-btn>
+          <v-btn flat value="synth">
+            Alien
+          </v-btn>
+        </v-btn-toggle>
+      </div>
     </div>
   </div>
 </template>
@@ -62,15 +65,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-#control-sequence {
-  align-items: flex-end;
-  margin-right: 10px;
-}
-
-.control-group {
-  margin: 0px 10px;
-}
 
 .control-group-toggle {
   margin-top: 5px;
