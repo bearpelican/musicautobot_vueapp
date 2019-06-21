@@ -2,16 +2,16 @@
   <div header-controls>
     <search id='song-search'></search>
     <!-- <hr style='margin-top: 0px; position: relative; top: -22px' /> -->
-    <v-btn dark small color="green lighten-1" @click="exportMidi">
+    <v-btn outline small color="green lighten-1" @click="exportMidi">
       Shuffle
       <v-icon>shuffle</v-icon>
     </v-btn>
-    <v-btn dark small color="green lighten-1" @click="$refs.fileUpload.click()">
+    <v-btn outline small color="green lighten-1" @click="$refs.fileUpload.click()">
       Import
       <v-icon>folder</v-icon>
       <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
     </v-btn>
-    <v-btn dark small color="green lighten-1" @click="clear">
+    <v-btn outline small color="green lighten-1" @click="clear">
       Blank
       <v-icon>create_new_folder</v-icon>
     </v-btn>

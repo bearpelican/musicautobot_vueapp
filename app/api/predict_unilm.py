@@ -31,62 +31,6 @@ get_model(learn.model).load_state_dict(state['model'], strict=False)
 
 if torch.cuda.is_available(): learn.model.cuda()
 
-def part_enc(chordarr, part):
-    partarr = chordarr[:,part:part+1,:]
-    npenc = chordarr2npenc(partarr)
-    return npenc
-    
-# NOTE: looks like npenc does not include the separator. 
-# This means we don't have to remove the last (separator) step from the seed in order to keep predictions
-def s2s_predict_from_midi(learn, midi=None, n_words=200, 
-                      temperatures=(1.0,1.0), top_k=24, top_p=0.7, pred_melody=True, **kwargs):
-
-    stream = file2stream(midi) # 1.
-    chordarr = stream2chordarr(stream) # 2.
-    _,num_parts,_ = chordarr.shape
-    melody_np, chord_np = [part_enc(chordarr, i) for i in range(num_parts)]
-    
-
-    melody_np, chord_np = (melody_np, chord_np) if avg_pitch(melody_np) > avg_pitch(chord_np) else (chord_np, melody_np) # Assuming melody has higher pitch
-    
-    offset = 3
-    original_shape = melody_np.shape[0] * 2 if pred_melody else chord_np.shape[0] * 2 
-    bptt = original_shape + n_words + offset
-    bptt = max(bptt, melody_np.shape[0] * 2, chord_np.shape[0] * 2 )
-    mpart = partenc2seq2seq(melody_np, part_type=MSEQ, translate=pred_melody, bptt=bptt)
-    cpart = partenc2seq2seq(chord_np, part_type=CSEQ, translate=not pred_melody, bptt=bptt)
-    if pred_melody:
-        xb = torch.tensor(cpart)[None]
-        yb = torch.tensor(mpart)[None][:, :original_shape+offset]
-    else:
-        xb = torch.tensor(mpart)[None]
-        yb = torch.tensor(cpart)[None][:, :original_shape+offset]
-
-
-    if torch.cuda.is_available(): xb, yb = xb.cuda(), yb.cuda()
-    
-    pred = learn.predict_s2s(xb, yb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
-    # pred = yb
-
-    seed_npenc = to_double_stream(xb.cpu().numpy()) # chord
-    yb_npenc = to_double_stream(pred.cpu().numpy()) # melody
-    npenc_order = [yb_npenc, seed_npenc] if pred_melody else [seed_npenc, yb_npenc]
-    chordarr_comb = combined_npenc2chordarr(*npenc_order)
-
-    return chordarr_comb
-
-# NOTE: looks like npenc does not include the separator. 
-# This means we don't have to remove the last (separator) step from the seed in order to keep predictions
-def nw_predict_from_midi(learn, midi=None, n_words=600, 
-                      temperatures=(1.0,1.0), top_k=24, top_p=0.7, **kwargs):
-    seed_np = midi2npenc(midi, skip_last_rest=True) # music21 can handle bytes directly
-    xb = torch.tensor(to_single_stream(seed_np))[None]
-    if torch.cuda.is_available(): xb = xb.cuda()
-    pred, seed = learn.predict_nw(xb, n_words=n_words, temperatures=temperatures, top_k=top_k, top_p=top_p)
-    seed = to_double_stream(seed)
-    pred = to_double_stream(pred)
-    full = np.concatenate((seed,pred), axis=0)
-    return full
 
 @app.route('/predict/midi', methods=['POST'])
 def predict_midi():
@@ -94,19 +38,21 @@ def predict_midi():
     midi = request.files['midi'].read()
     print('PREDICTING UNILM:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
-    currentTrack = int(args['currentTrack']) # (AS) TODO: get bpm from midi file instead
+    prediction_type = args.get('predictionType', 'next') 
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
     n_words = int(args.get('nSteps', 400))
 
     # Main logic
     try:
-        if currentTrack == -1:
+        if prediction_type == 'next':
             full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
             stream = npenc2stream(full, bpm=bpm)
             stream = separate_melody_chord(stream)
-        else:
-            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=currentTrack == 0)
+        elif prediction_type in ['melody', 'chords']:
+            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=(prediction_type == 'melody'))
             stream = chordarr2stream(full, bpm=bpm)
+        elif prediction_type in ['notes', 'rhythm']:
+            full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:

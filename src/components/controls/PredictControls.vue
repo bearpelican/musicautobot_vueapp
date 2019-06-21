@@ -12,15 +12,9 @@
 
     <div>
       <div class='control-group-label'>Regenerate:</div>
-      <v-btn-toggle class="control-group-toggle" v-model="selectTrackType" mandatory>
-        <v-btn flat :value="0">
-          Melody
-        </v-btn>
-        <v-btn flat :value="1">
-          Chords
-        </v-btn>
-        <v-btn flat :value="-1">
-          Everything
+      <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
+        <v-btn flat v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
+          {{ptype.displayName}}
         </v-btn>
       </v-btn-toggle>
     </div>
@@ -30,19 +24,19 @@
 <script>
 
 import { createNamespacedHelpers } from 'vuex'
+import { PredictionType } from '@/lib/config'
 const { mapActions, mapMutations, mapState } = createNamespacedHelpers('predict')
-const { mapMutations: seqMapMutations, mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'song-meta',
   data () {
     return {
-      error: ''
+      error: '',
+      predictionTypes: PredictionType
     }
   },
   computed: {
     ...mapState(['nSteps', 'seedLen', 'durationTemp', 'noteTemp']),
-    ...seqMapState(['currentTrack']),
     selectSteps: {
       set (steps) { this.updateSteps(steps) },
       get () { return this.nSteps }
@@ -65,14 +59,13 @@ export default {
     durationTempPCT () {
       return parseInt((this.durationTemp - 0.3) / 0.7 * 100)
     },
-    selectTrackType: {
-      set (track) { this.updateTrack({ track }) },
-      get () { return this.currentTrack }
+    selectPredictionType: {
+      set (predictionType) { this.updatePredictionType(predictionType) },
+      get () { return this.predictionType }
     }
   },
   methods: {
-    ...seqMapMutations(['updateTrack']),
-    ...mapMutations(['updateSteps', 'updateSeedLen', 'updateNoteTemp', 'updateDurationTemp']),
+    ...mapMutations(['updateSteps', 'updateSeedLen', 'updateNoteTemp', 'updateDurationTemp', 'updatePredictionType']),
     ...mapActions(['predictMidi']),
     voidEvent (event) {
       event.handled = true

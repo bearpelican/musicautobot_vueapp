@@ -1,5 +1,6 @@
 import $backend from '@/backend'
 import { storeToMidi } from '@/lib/convert'
+import { PredictionType } from '../../lib/config'
 
 export const state = {
   songs: [],
@@ -10,7 +11,8 @@ export const state = {
   noteTemp: 1.2,
   midiXML: null,
   tutorialStep: 0,
-  loadingState: null
+  loadingState: null,
+  predictionType: PredictionType.next
 }
 
 export const mutations = {
@@ -34,6 +36,9 @@ export const mutations = {
   },
   updateSeedLen (state, seedLen) {
     state.seedLen = seedLen
+  },
+  updatePredictionType (state, predictionType) {
+    state.predictionType = predictionType
   },
   updateNoteTemp (state, noteTemp) {
     state.noteTemp = noteTemp
@@ -72,9 +77,9 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    const { nSteps, seedLen, durationTemp, noteTemp } = rootState.predict
-    const { currentTrack } = rootState.sequence
-    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen, currentTrack)
+    const { nSteps, seedLen, durationTemp, noteTemp, predictionType } = rootState.predict
+    const track = predictionType.track
+    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen, track)
 
     // Progress
     let counter = -10
@@ -94,7 +99,7 @@ export const actions = {
     }, 1000 * 0.25 * nSteps)
 
     // Predictions
-    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, currentTrack })
+    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name })
     if (error) {
       clearInterval(progress)
       commit('showError', `Error: ${error}`)

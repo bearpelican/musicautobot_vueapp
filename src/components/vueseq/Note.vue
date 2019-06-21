@@ -43,7 +43,7 @@ export default {
       minimumUnit: state => state.currentLength.value
     }),
     ...mapState(['isEditingScore', 'progressTime', 'version', 'currentTrack']),
-    ...predMapState(['seedLen']),
+    ...predMapState(['seedLen', 'predictionType']),
     bottom () {
       return `${keyNumberToOffset(this.keyNumber)}px`
     },
@@ -57,7 +57,7 @@ export default {
       if (this.length === 0) {
         return '#d32c2c'
       }
-      const keepTrackNote = (this.currentTrack !== -1) && (this.track !== this.currentTrack)
+      const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
       if (this.timing >= this.seedLen && !keepTrackNote) {
         return '#B71C1C'
       }
@@ -67,7 +67,7 @@ export default {
       if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
         return '#666666'
       }
-      const keepTrackNote = (this.currentTrack !== -1) && (this.track !== this.currentTrack)
+      const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
       if (this.timing >= this.seedLen && !keepTrackNote) {
         return '#FF5252'
       }
