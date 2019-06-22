@@ -5,7 +5,7 @@
     :items="results"
     item-text="display"
     :search-input.sync="searchResults"
-    :label="'Choose a song...'"
+    :label="searchLabel"
     no-filter
     clearable
     persistent-hint
@@ -29,6 +29,12 @@ const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict'
 
 export default {
   name: 'search',
+  props: {
+    searchLabel: {
+      type: String,
+      default: 'Choose a song...'
+    }
+  },
   data () {
     return {
       results: [],

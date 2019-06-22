@@ -1,6 +1,5 @@
 <template lang="pug">
   #sequencer
-    sequence-title
     section
       keyboard
       score(:gridOpacity="gridOpacity")
@@ -12,7 +11,6 @@
 
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
-import SequenceTitle from '@/components/vueseq/SequenceTitle'
 import PlayButton from '@/components/controls/PlayButton'
 
 import { createNamespacedHelpers } from 'vuex'
@@ -23,7 +21,6 @@ export default {
   components: {
     Keyboard,
     Score,
-    SequenceTitle,
     PlayButton
   },
   computed: {

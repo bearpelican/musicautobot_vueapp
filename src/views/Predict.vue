@@ -98,8 +98,7 @@ export default {
 }
 
 #header-controls {
-  margin: 0px 100px 0px 210px;
-  display: flex;
+  margin: 0px 100px 0px 100px;
 }
 
 #tutorial-one {
