@@ -76,8 +76,11 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    const { nSteps, seedLen, durationTemp, noteTemp, predictionType } = rootState.predict
+    let { nSteps, seedLen, durationTemp, noteTemp, predictionType } = rootState.predict
     const track = predictionType.track
+    if (['notes', 'rhythm'].includes(predictionType.name)) {
+      seedLen = null
+    }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen, track)
 
     // Progress

@@ -25,7 +25,7 @@ basic_train.loss_func_name2activ[loss_func_name] = predict_func
 learn = bert_model_learner(data, config.copy(), loss_func=BertLoss())
 learn.callbacks = []
 
-load_path = path/'models/v16_unilm.pth'
+load_path = path/'models/v17_unilm.pth'
 state = torch.load(load_path, map_location='cpu')
 get_model(learn.model).load_state_dict(state['model'], strict=False)
 
@@ -53,6 +53,8 @@ def predict_midi():
             stream = chordarr2stream(full, bpm=bpm)
         elif prediction_type in ['notes', 'rhythm']:
             full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))
+            stream = npenc2stream(full, bpm=bpm)
+            stream = separate_melody_chord(stream)
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:
