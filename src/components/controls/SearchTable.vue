@@ -37,8 +37,8 @@
             <tr @click="selectSong(props.item)">
               <td class="text-xs-left">{{ props.item.title }}</td>
               <td class="text-xs-left">{{ props.item.artist }}</td>
-              <!-- <td class="text-xs-right">{{ props.item.section }}</td> -->
-              <td class="text-xs-right">{{ props.item.genres }}</td>
+              <td class="text-xs-right">{{ props.item.section }}</td>
+              <!-- <td class="text-xs-right">{{ props.item.genres }}</td> -->
             </tr>
           </template>
           <template v-slot:no-results>
@@ -83,8 +83,8 @@ export default {
           width: '50%'
         },
         { text: 'Artist', width: '30%', align: 'left', value: 'artist' },
-        // { text: 'Section', value: 'section' },
-        { text: 'Genre', width: '20%', align: 'right', value: 'genres' }
+        { text: 'Section', width: '20%', align: 'right', value: 'section' }
+        // { text: 'Genre', width: '20%', align: 'right', value: 'genres' }
       ]
     }
   },

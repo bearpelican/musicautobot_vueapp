@@ -6,7 +6,23 @@
       <search-table></search-table>
       <sequence-title></sequence-title>
       <div>
-        <v-btn outline small color="green lighten-1">
+        <!-- <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn outline small color="green lighten-1" v-on="on">
+              Save
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-tile
+              v-for="(item, index) in saveItems"
+              :key="index"
+              @click="saveFormat(item)"
+            >
+              <v-list-tile-title>{{ item }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu> -->
+        <v-btn outline small color="green lighten-1" @click="exportMidi">
           Save
         </v-btn>
         <v-btn outline small color="green lighten-1" @click="share">
@@ -14,48 +30,6 @@
         </v-btn>
       </div>
     </div>
-
-    <!-- <v-dialog v-model="isChoosing" max-width="1000px">
-      <v-card class="dialog-controls">
-        <div>
-          <v-btn outline small color="green lighten-1" @click="exportMidi">
-            Shuffle
-            <v-icon>shuffle</v-icon>
-          </v-btn>
-          <v-btn outline small color="green lighten-1" @click="$refs.fileUpload.click()">
-            Import
-            <v-icon>folder</v-icon>
-            <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
-          </v-btn>
-          <v-btn outline small color="green lighten-1" @click="clear">
-            Blank
-            <v-icon>create_new_folder</v-icon>
-          </v-btn>
-        </div>
-        <search id='song-search'></search>
-      </v-card>
-    </v-dialog> -->
-
-    <!-- <v-expansion-panel v-model="expansion" expand>
-      <v-expansion-panel-content>
-        <v-card class="song-controls">
-          <v-btn outline small color="green lighten-1" @click="exportMidi">
-            Shuffle
-            <v-icon>shuffle</v-icon>
-          </v-btn>
-          <v-btn outline small color="green lighten-1" @click="$refs.fileUpload.click()">
-            Import
-            <v-icon>folder</v-icon>
-            <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
-          </v-btn>
-          <v-btn outline small color="green lighten-1" @click="clear">
-            Blank
-            <v-icon>create_new_folder</v-icon>
-          </v-btn>
-          <search id='song-search' v-bind:searchLabel="'Search...'"></search>
-        </v-card>
-      </v-expansion-panel-content>
-    </v-expansion-panel> -->
   </div>
 </template>
 
@@ -71,40 +45,33 @@ export default {
   name: 'header-controls',
   data () {
     return {
-      isChoosing: false
+      showSave: false,
+      saveItems: ['Midi', 'Piano Score', 'Wav']
     }
   },
   computed: {
-    ...mapState(['appState']),
-    expansion  () {
-      return this.isChoosing ? [true] : []
-    }
-    // toggleSelection: {
-    //   set (bpm) { this.updateBPM(bpm) },
-    //   get () { return this.bpm }
-    // },
+    ...mapState(['appState'])
   },
   watch: {
   },
   methods: {
-    ...mapActions(['importMidi', 'exportMidi', 'clear']),
-    loadLocalFile (event) {
-      const file = this._.get(event, 'target.files[0]')
-      if (this._.get(file, 'name', '').split('.').pop() !== 'mid') {
-        console.log('Error loading file', file)
-        // (AS) todo: show error UI
-        return
-      }
-
-      const reader = new FileReader()
-      reader.onload = e => this.importMidi(e.target.result)
-      reader.readAsArrayBuffer(file)
-    },
+    ...mapActions(['exportMidi', 'clear']),
     share () {
       const url = window.location.href
       const text = `Check out this song I just generated with #musicautobot`
       window.open('http://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0')
     }
+    // saveFormat (format) {
+    //   if (format === 'Midi') {
+    //     this.exportMidi()
+    //   }
+    //   if (format === 'Piano Score') {
+
+    //   }
+    //   if (format === 'Wav') {
+
+    //   }
+    // }
   },
   mounted () {
   },
