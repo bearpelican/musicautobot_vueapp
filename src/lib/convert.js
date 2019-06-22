@@ -110,7 +110,7 @@ export function storeToMidi (state, seedLen = null, track = -1) {
   if (seedLen != null) {
     storeNotes = storeNotes.filter(n => {
       const keepTrackNote = (track !== -1) && (n.track !== track)
-      const isSeed = n.timing <= seedLen
+      const isSeed = _.round(n.timing, 3) < seedLen
       return isSeed || keepTrackNote
     })
   }

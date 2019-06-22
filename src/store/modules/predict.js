@@ -23,7 +23,6 @@ export const mutations = {
     }
   },
   updateTutorialStep (state, step) {
-    console.log('Updating tutorial step')
     if (state.tutorialStep < step) {
       state.tutorialStep = step
     }

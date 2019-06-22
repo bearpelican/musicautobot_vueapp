@@ -99,7 +99,6 @@ export default {
         ]
       }
       this.fuse = new Fuse(this.songs, options)
-      console.log('Loaded search')
       this.debounce = this._.debounce(this.updateSearch, 100)
       this.searchResults = 'avicii'
     },

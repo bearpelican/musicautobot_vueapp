@@ -40,7 +40,6 @@ export default {
       // get () { return `(v${this.version}) ` }
     },
     sequenceType () {
-      console.log(this.$route.name)
       if (this.$route.name === 'predict') return '(Generated)'
       if (this.$route.name === 'song') return '(Original)'
       return ''

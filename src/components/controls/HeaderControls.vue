@@ -1,15 +1,15 @@
 <template>
   <div class="header-controls">
+
     <div class="title-controls">
-      <v-btn outline small color="green lighten-1" @click="isChoosing = true">
-        Choose New Song...
-      </v-btn>
+
+      <search-table></search-table>
       <sequence-title></sequence-title>
       <div>
-        <v-btn outline small color="green lighten-1" @click="clear">
+        <v-btn outline small color="green lighten-1">
           Save
         </v-btn>
-        <v-btn outline small color="green lighten-1" @click="clear">
+        <v-btn outline small color="green lighten-1" @click="share">
           Share
         </v-btn>
       </div>
@@ -36,11 +36,7 @@
       </v-card>
     </v-dialog> -->
 
-    <v-dialog v-model="isChoosing" max-width="1000px">
-      <search-table></search-table>
-    </v-dialog>
-
-    <v-expansion-panel v-model="expansion" expand>
+    <!-- <v-expansion-panel v-model="expansion" expand>
       <v-expansion-panel-content>
         <v-card class="song-controls">
           <v-btn outline small color="green lighten-1" @click="exportMidi">
@@ -59,7 +55,7 @@
           <search id='song-search' v-bind:searchLabel="'Search...'"></search>
         </v-card>
       </v-expansion-panel-content>
-    </v-expansion-panel>
+    </v-expansion-panel> -->
   </div>
 </template>
 
@@ -103,6 +99,11 @@ export default {
       const reader = new FileReader()
       reader.onload = e => this.importMidi(e.target.result)
       reader.readAsArrayBuffer(file)
+    },
+    share () {
+      const url = window.location.href
+      const text = `Check out this song I just generated with #musicautobot`
+      window.open('http://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0')
     }
   },
   mounted () {

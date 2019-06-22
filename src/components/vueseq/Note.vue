@@ -93,7 +93,7 @@ export default {
         // Do not erase chords when predicting melody and visa versa
         return 'note-default'
       }
-      if (this.timing >= this.seedLen) {
+      if (this._.round(this.timing, 3) >= this.seedLen) {
         return 'note-regen'
       }
       return 'note-default'
