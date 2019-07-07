@@ -19,14 +19,16 @@ export default {
   computed: {
     ...mapState(['seedLen']),
     left () {
-      let leftOffset = this.scoreRect.left - this.scoreScrollLeft + this.seedLen * pixelPerBeat
+      let leftScoreOffset = this.seedLen * pixelPerBeat
       const margin = 50
-      if (leftOffset < this.scoreRect.left + margin) {
-        leftOffset = this.scoreRect.left + margin
-      } else if (leftOffset > this.scoreRect.right - margin) {
-        leftOffset = this.scoreRect.right - margin
+      const relativeOffset = leftScoreOffset - this.scoreScrollLeft
+      const scoreWidth = this.scoreRect.right - this.scoreRect.left
+      if (relativeOffset < margin) {
+        leftScoreOffset = this.scoreScrollLeft + margin
+      } else if (relativeOffset > scoreWidth + margin) {
+        leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
       }
-      return `${leftOffset}px`
+      return `${leftScoreOffset}px`
     }
   },
   methods: {

@@ -3,8 +3,16 @@
     section
       keyboard
       score(:gridOpacity="gridOpacity")
+        template(v-slot:scroll-content="contentProps")
+          seed-line(
+            key="seed-line",
+            :scoreLeftOffset="contentProps.scoreLeftOffset"
+          )
+          generate-button(
+            :scoreScrollLeft="contentProps.scoreScrollLeft",
+            :scoreRect="contentProps.scoreRect"
+          )
     play-button(id="play-button")
-    slot
 </template>
 
 <script>
@@ -12,6 +20,8 @@
 import Keyboard from '@/components/vueseq/Keyboard'
 import Score from '@/components/vueseq/Score'
 import PlayButton from '@/components/controls/PlayButton'
+import SeedLine from '@/components/vueseq/SeedLine'
+import GenerateButton from '@/components/controls/GenerateButton'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('predict')
@@ -21,7 +31,9 @@ export default {
   components: {
     Keyboard,
     Score,
-    PlayButton
+    PlayButton,
+    SeedLine,
+    GenerateButton
   },
   computed: {
     ...mapState(['tutorialStep']),

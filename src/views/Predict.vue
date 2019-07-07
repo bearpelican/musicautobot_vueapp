@@ -12,7 +12,6 @@
 
 <script>
 
-import SongMeta from '@/components/vueseq/SongMeta'
 import Sequencer from '@/components/Sequencer'
 import HeaderControls from '@/components/controls/HeaderControls'
 import FooterControls from '@/components/controls/FooterControls'
@@ -74,7 +73,6 @@ export default {
     }
   },
   components: {
-    SongMeta,
     Sequencer,
     HeaderControls,
     FooterControls,
