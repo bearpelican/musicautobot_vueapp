@@ -2,7 +2,7 @@
 # sys.path.insert(0, 'src')
 
 from .src.serve import *
-from .src.unilm import *
+from .src.msklm import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
@@ -18,14 +18,14 @@ config['bptt'] = 2048
 data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
 
 # Refactor pred_batch so we don't have to do this hack
-def predict_func(parts): return [p if idx == 1 else F.softmax(p, dim=-1) for idx,p in enumerate(parts)]
-loss_func_name = camel2snake(BertLoss.__name__)
-basic_train.loss_func_name2activ[loss_func_name] = predict_func
+#def predict_func(parts): return [p if idx == 1 else F.softmax(p, dim=-1) for idx,p in enumerate(parts)]
+#loss_func_name = camel2snake(MLMLoss.__name__)
+#basic_train.loss_func_name2activ[loss_func_name] = predict_func
 
-learn = bert_model_learner(data, config.copy(), loss_func=BertLoss())
+learn = mlm_model_learner(data, config.copy(), loss_func=MLMLoss())
 learn.callbacks = []
 
-load_path = path/'models/v17_unilm.pth'
+load_path = path/'models/v18_mlm.pth'
 state = torch.load(load_path, map_location='cpu')
 get_model(learn.model).load_state_dict(state['model'], strict=False)
 
