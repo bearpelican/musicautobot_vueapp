@@ -1,6 +1,5 @@
 <template lang="pug">
-  //- div.note(:style="{ bottom, left, width, 'background-color': color }", @mousedown="startMoving")
-  .note(:style="{ bottom, left, width, height }", @mousedown="startMoving")
+  .note(:style="{ bottom, left, width, height }", @mousedown="startMoving", @dblclick="remove")
     .note-color(:class="noteColor")
     .selection.begin(@mousedown.stop="startEditingStartTime" :class="noteColor")
     .selection.end(@mousedown.stop="startEditingEndTime" :class="noteColor")
@@ -21,22 +20,15 @@ export default {
     track: Number,
     storeKeyNumber: Number,
     storeTiming: Number,
-    storeLength: Number,
-    scoreLeftOffset: Number
-  },
-  mounted () {
-    if (this.isEditingScore) {
-      this.length = this.minimumUnit
-      this.startEditingEndTime()
-    }
+    storeLength: Number
   },
   data () {
     return {
       state: 'normal',
       height: `${keyHeight}px`,
-      length: this.storeLength,
-      timing: this.storeTiming,
-      keyNumber: this.storeKeyNumber,
+      editLength: this.storeLength,
+      editTiming: this.storeTiming,
+      editKeyNumber: this.storeKeyNumber,
       movingOffsetX: 0,
       movingFirstY: 0
     }
@@ -45,42 +37,45 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentLength.value
     }),
-    ...mapState(['isEditingScore', 'progressTime', 'version', 'currentTrack']),
+    ...mapState(['progressTime', 'version', 'currentTrack']),
     ...predMapState(['seedLen', 'predictionType']),
     bottom () {
-      return `${keyNumberToOffset(this.keyNumber)}px`
+      if (this.state === 'normal') return `${keyNumberToOffset(this.storeKeyNumber)}px`
+      return `${keyNumberToOffset(this.editKeyNumber)}px`
     },
     left () {
-      return `${timingToPosition(this.timing)}px`
+      if (this.state === 'normal') return `${timingToPosition(this.storeTiming)}px`
+      return `${timingToPosition(this.editTiming)}px`
     },
     width () {
-      return `${timingToPosition(this.length)}px`
+      if (this.state === 'normal') return `${timingToPosition(this.storeLength)}px`
+      return `${timingToPosition(this.editLength)}px`
     },
-    selectionColor () {
-      if (this.length === 0) {
-        return '#d32c2c'
-      }
-      const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
-      if (this.timing >= this.seedLen && !keepTrackNote) {
-        return '#B71C1C'
-      }
-      return '#3287ce'
-    },
-    color () {
-      if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
-        return '#666666'
-      }
-      const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
-      if (this.timing >= this.seedLen && !keepTrackNote) {
-        return '#FF5252'
-      }
-      return '#64b5f6'
-    },
+    // selectionColor () {
+    //   if (this.editLength === 0) {
+    //     return '#d32c2c'
+    //   }
+    //   const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
+    //   if (this.editTiming >= this.seedLen && !keepTrackNote) {
+    //     return '#B71C1C'
+    //   }
+    //   return '#3287ce'
+    // },
+    // color () {
+    //   if (this.editTiming < this.progressTime && (this.editTiming + this.editLength) > this.progressTime) {
+    //     return '#666666'
+    //   }
+    //   const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
+    //   if (this.editTiming >= this.seedLen && !keepTrackNote) {
+    //     return '#FF5252'
+    //   }
+    //   return '#64b5f6'
+    // },
     noteColor () {
-      if (this.timing < this.progressTime && (this.timing + this.length) > this.progressTime) {
+      if (this.storeTiming < this.progressTime && (this.storeTiming + this.storeLength) > this.progressTime) {
         return 'note-playing'
       }
-      if (this.length === 0) {
+      if (this.storeLength === 0) {
         return 'note-delete'
       }
       if (this.predictionType.name === 'rhythm') {
@@ -93,14 +88,26 @@ export default {
         // Do not erase chords when predicting melody and visa versa
         return 'note-default'
       }
-      if (this._.round(this.timing, 3) >= this.seedLen) {
+      if (this._.round(this.storeTiming, 3) >= this.seedLen) {
         return 'note-regen'
       }
       return 'note-default'
+    },
+    scoreLeftOffset () {
+      return this.$el.parentNode.parentNode.scrollLeft - this.$el.parentNode.parentNode.getBoundingClientRect().left
+    },
+    scrollLeft () {
+      return this.$el.parentNode.parentNode.scrollLeft
+    },
+    scrollTop () {
+      return this.$el.parentNode.parentNode.scrollTop
     }
   },
   watch: {
     version () {
+      this.reload()
+    },
+    state () {
       this.reload()
     }
   },
@@ -113,9 +120,13 @@ export default {
       'startPreview'
     ]),
     reload () {
-      this.length = this.storeLength
-      this.timing = this.storeTiming
-      this.keyNumber = this.storeKeyNumber
+      this.editLength = this.storeLength
+      this.editTiming = this.storeTiming
+      this.editKeyNumber = this.storeKeyNumber
+    },
+    remove () {
+      console.log('Double clicked', this.index)
+      this.removeNote(this.index)
     },
     addListeners () {
       window.addEventListener('mousemove', this.updateEditing)
@@ -129,7 +140,7 @@ export default {
       this.addListeners()
       this.state = 'moving'
       this.movingOffsetX = event.offsetX
-      this.movingFirstY = event.clientY + this.getScrollTop()
+      this.movingFirstY = event.clientY + this.scrollTop
     },
     startEditingEndTime () {
       this.addListeners()
@@ -140,16 +151,16 @@ export default {
       this.state = 'editing-start-time'
     },
     updateEditing (event) {
-      let nextTiming = this.timing
-      let nextLength = this.length
-      let nextKeyNumber = this.keyNumber
+      let nextTiming = this.editTiming
+      let nextLength = this.editLength
+      let nextKeyNumber = this.editKeyNumber
       // console.log('Event:', event)
       switch (this.state) {
         case 'editing-end-time': {
           nextLength = positionToTiming(
             event.clientX + this.scoreLeftOffset,
             editingLength.value
-          ) - this.timing
+          ) - this.editTiming
           break
         }
         case 'moving': {
@@ -158,56 +169,49 @@ export default {
             editingLength.value
           )
           nextKeyNumber = this.storeKeyNumber +
-            Math.round((this.movingFirstY - (event.clientY + this.getScrollTop())) / keyHeight)
-          // console.log('Next key number:', nextKeyNumber)
-          if (this.keyNumber !== nextKeyNumber) {
+            Math.round((this.movingFirstY - (event.clientY + this.scrollTop)) / keyHeight)
+          if (this.editKeyNumber !== nextKeyNumber) {
             this.startPreview({ keyNumber: nextKeyNumber, timeout: 2 })
           }
           break
         }
         case 'editing-start-time': {
           nextTiming = positionToTiming(event.clientX + this.scoreLeftOffset, editingLength.value)
-          nextLength = this.storeLength + this.storeTiming - this.timing
+          nextLength = this.storeLength + this.storeTiming - nextTiming
           break
         }
       }
       if (validateNoteDetails(nextTiming, nextLength, nextKeyNumber)) {
-        this.timing = nextTiming
-        this.length = nextLength
-        this.keyNumber = nextKeyNumber
+        this.editTiming = nextTiming
+        this.editLength = nextLength
+        this.editKeyNumber = nextKeyNumber
       }
-    },
-    getScrollLeft () {
-      return this.$el.parentNode.parentNode.scrollLeft
-    },
-    getScrollTop () {
-      return this.$el.parentNode.parentNode.scrollTop
     },
     finishEditing () {
       this.removeListeners()
-      if (this.length <= 0) {
+      if (this.editLength <= 0) {
         this.removeNote(this.index)
         return
       }
       this.state = 'normal'
       this.movingFirstY = 0
       this.movingOffsetX = 0
-      if (this.storeLength !== this.length) {
+      if (this.storeLength !== this.editLength) {
         this.updateNoteLength({
           index: this.index,
-          length: this.length
+          length: this.editLength
         })
       }
-      if (this.storeTiming !== this.timing) {
+      if (this.storeTiming !== this.editTiming) {
         this.updateNoteTiming({
           index: this.index,
-          timing: this.timing
+          timing: this.editTiming
         })
       }
-      if (this.storeKeyNumber !== this.keyNumber) {
+      if (this.storeKeyNumber !== this.editKeyNumber) {
         this.updateNoteKeyNumber({
           index: this.index,
-          keyNumber: this.keyNumber
+          keyNumber: this.editKeyNumber
         })
       }
     }

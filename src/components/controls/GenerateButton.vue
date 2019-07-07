@@ -19,17 +19,27 @@ export default {
   computed: {
     ...mapState(['seedLen']),
     left () {
-      let leftScoreOffset = this.seedLen * pixelPerBeat
+      let leftOffset = this.scoreRect.left - this.scoreScrollLeft + this.seedLen * pixelPerBeat
       const margin = 50
-      const relativeOffset = leftScoreOffset - this.scoreScrollLeft
-      const scoreWidth = this.scoreRect.right - this.scoreRect.left
-      if (relativeOffset < margin) {
-        leftScoreOffset = this.scoreScrollLeft + margin
-      } else if (relativeOffset > scoreWidth + margin) {
-        leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+      if (leftOffset < this.scoreRect.left + margin) {
+        leftOffset = this.scoreRect.left + margin
+      } else if (leftOffset > this.scoreRect.right - margin) {
+        leftOffset = this.scoreRect.right - margin
       }
-      return `${leftScoreOffset}px`
+      return `${leftOffset}px`
     }
+    // left () {
+    //   let leftScoreOffset = this.seedLen * pixelPerBeat
+    //   const margin = 50
+    //   const relativeOffset = leftScoreOffset - this.scoreScrollLeft
+    //   const scoreWidth = this.scoreRect.right - this.scoreRect.left
+    //   if (relativeOffset < margin) {
+    //     leftScoreOffset = this.scoreScrollLeft + margin
+    //   } else if (relativeOffset > scoreWidth + margin) {
+    //     leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+    //   }
+    //   return `${leftScoreOffset}px`
+    // }
   },
   methods: {
     ...mapActions(['predictMidi']),

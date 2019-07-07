@@ -1,6 +1,6 @@
 <template lang="pug">
-  div(:style="{ left }")
-    div#triangle-right(@mousedown="beginEditing")
+  div#line(:style="{ left }")
+    div#triangle-up(@mousedown="beginEditing")
 </template>
 
 <script>
@@ -10,9 +10,6 @@ import { positionToTiming } from '@/lib/positioning'
 const { mapState, mapMutations } = createNamespacedHelpers('sequence')
 
 export default {
-  props: {
-    scoreLeftOffset: Number
-  },
   computed: {
     ...mapState(['progressTime', 'playOffset', 'appState']),
     left () {
@@ -20,6 +17,12 @@ export default {
         return `${this.playOffset * pixelPerBeat}px`
       }
       return `${this.progressTime * pixelPerBeat}px`
+    },
+    scoreLeftOffset () {
+      return this.$el.parentNode.parentNode.scrollLeft - this.$el.parentNode.parentNode.getBoundingClientRect().left
+    },
+    scrollTopOffset () {
+      return this.$el.parentNode.parentNode.scrollLeft - this.$el.parentNode.parentNode.getBoundingClientRect().left
     }
   },
   methods: {
@@ -51,7 +54,7 @@ export default {
 </script>
 
 <style scoped>
-div {
+#line {
   position: absolute;
   top: 0;
   width: 2px;
@@ -61,13 +64,16 @@ div {
   height: 100%;
 }
 
-#triangle-right {
-  top: 0;
+#triangle-up {
+  position: absolute;
+  bottom: 0;
+  left: -30px;
   width: 0;
   height: 0;
-  border-top: 20px solid transparent;
-  border-left: 30px solid #2986e2;
-  border-bottom: 20px solid transparent;
+
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 30px solid #2986e2;
   cursor: move;
 }
 

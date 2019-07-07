@@ -1,5 +1,5 @@
 <template lang="pug">
-  .score-row(:class="classes", :style="{ height: height}", @mousedown="add")
+  .score-row(:class="classes", :style="{ height: height}", @dblclick="add")
 </template>
 
 <script>
@@ -31,8 +31,6 @@ export default {
     ...mapActions(['addNote', 'startEditingScore', 'finishEditingScore', 'startPreview']),
     add (event) {
       if (this.appState === 'playing') return
-      this.startEditingScore()
-      window.addEventListener('mouseup', this.end)
       const beatOffset = (pixelPerBeat / 2) // round the timing down when adding notes - otherwise it'll be a half step up
       this.addNote({
         key: this.keyNumber,
@@ -41,10 +39,6 @@ export default {
         track: this.currentTrack
       })
       this.startPreview({ keyNumber: this.keyNumber, timeout: 2 })
-    },
-    end () {
-      this.finishEditingScore()
-      window.removeEventListener('mouseup', this.end)
     }
   }
 }

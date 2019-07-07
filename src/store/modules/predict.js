@@ -38,6 +38,8 @@ export const mutations = {
   },
   updatePredictionType (state, predictionType) {
     state.predictionType = predictionType
+    state.noteTemp = predictionType.temp[0]
+    state.durationTemp = predictionType.temp[1]
   },
   updateNoteTemp (state, noteTemp) {
     state.noteTemp = noteTemp

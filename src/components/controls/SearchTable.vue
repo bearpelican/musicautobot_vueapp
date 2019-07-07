@@ -24,7 +24,7 @@
             <v-icon>folder</v-icon>
             <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
           </v-btn>
-          <v-btn outline small color="green lighten-1" @click="clear">
+          <v-btn outline small color="green lighten-1" @click="blankSheet">
             Blank
             <v-icon>create_new_folder</v-icon>
           </v-btn>
@@ -58,6 +58,7 @@ import Fuse from 'fuse.js'
 import { createNamespacedHelpers } from 'vuex'
 import { setTimeout } from 'timers'
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
+const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'search-table',
@@ -108,7 +109,8 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSongItem']),
-    ...mapActions(['fetchSongs', 'importMidi', 'clear']),
+    ...mapActions(['fetchSongs', 'importMidi']),
+    ...seqMapActions(['clear']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
       if (this.fuse !== null) return
@@ -128,6 +130,10 @@ export default {
       console.log('Loaded search')
       this.debounce = this._.debounce(this.updateSearch, 100)
       this.searchResults = 'avicii'
+    },
+    blankSheet () {
+      this.clear()
+      this.showDialog = false
     },
     shuffle () {
       this.showDialog = false

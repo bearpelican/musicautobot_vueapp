@@ -86,6 +86,12 @@ export default {
 
 <style lang="scss">
 
+.predict {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 #loading-predict {
   position: absolute;
   left: 0;

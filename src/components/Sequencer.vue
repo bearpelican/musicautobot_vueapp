@@ -1,6 +1,6 @@
 <template lang="pug">
   #sequencer
-    section
+    #section(ref="scrollSection")
       keyboard
       score(:gridOpacity="gridOpacity")
     play-button(id="play-button")
@@ -27,6 +27,15 @@ export default {
     gridOpacity () {
       return (this.tutorialStep !== 1) ? 1 : 0.4
     }
+  },
+  methods: {
+    scrollBottom () {
+      const scrollSection = this.$refs.scrollSection
+      scrollSection.scrollTop = scrollSection.scrollHeight
+    }
+  },
+  mounted () {
+    this.scrollBottom()
   }
 }
 </script>
@@ -40,14 +49,14 @@ export default {
 
 #sequencer {
   position: relative;
-}
-#sequencer * {
-  user-select: none;
   /* overflow: hidden; */
+  display: flex;
+  overflow: auto;
+  flex: 1;
 }
-section {
-  /* width: 80%;
-  height: 50%; */
+
+#section {
+  overflow-y: scroll;
   margin: 0px 100px;
 }
 

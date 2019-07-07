@@ -15,8 +15,7 @@
           :track="note.track",
           :storeKeyNumber="note.key",
           :storeTiming="note.timing",
-          :storeLength="note.length",
-          :scoreLeftOffset="scoreLeftOffset"
+          :storeLength="note.length"
         )
         prev-note(
           v-for="(note, index) in prevNotes",
@@ -34,18 +33,16 @@
         )
       .grid-controls
         progress-line(
-          key="progress-line",
-          :scoreLeftOffset="scoreLeftOffset"
+          key="progress-line"
         )
         seed-line(
-          key="seed-line",
-          :scoreLeftOffset="scoreLeftOffset"
-        )
-        generate-button(
-          :scoreScrollLeft="scoreScrollLeft",
-          :scoreRect="scoreRect"
+          key="seed-line"
         )
         slot(name="scroll-content" :scoreLeftOffset="scoreLeftOffset" :scoreRect="scoreRect")
+    generate-button(
+      :scoreScrollLeft="scoreScrollLeft",
+      :scoreRect="scoreRect"
+    )
 </template>
 
 <script>
@@ -83,7 +80,6 @@ export default {
           number: getKeyNumber(key)
         }
       }).reverse(),
-      scoreScrollTop: 0,
       scoreScrollLeft: 0,
       scoreRect: { left: 0, top: 0, right: 0, bottom: 0 }
     }
@@ -106,9 +102,6 @@ export default {
     },
     scoreLeftOffset () {
       return this.scoreScrollLeft - this.scoreRect.left
-    },
-    scoreTopOffset () {
-      return this.scoreScrollTop - this.scoreRect.top
     }
   },
   mounted () {
@@ -116,15 +109,15 @@ export default {
     window.addEventListener('resize', this.onResize)
   },
   methods: {
-    ...mapActions(['scrollTop', 'scrollLeft']),
+    ...mapActions(['scrollLeft']),
     onScroll () {
       this.scoreScrollLeft = this.$el.scrollLeft
-      this.scoreScrollTop = this.$el.scrollTop
       this.scrollLeft(this.scoreScrollLeft)
-      this.scrollTop(this.scoreScrollTop)
     },
     onResize () {
       this.scoreRect = this.$el.getBoundingClientRect()
+      console.log('dskfjsldfjk')
+      console.log(this.scoreRect)
     }
   }
 }
@@ -134,8 +127,7 @@ export default {
 
 .score {
   flex: 1;
-  height: 100%;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 /*

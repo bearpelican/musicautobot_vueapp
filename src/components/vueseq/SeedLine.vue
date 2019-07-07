@@ -9,9 +9,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapMutations } = createNamespacedHelpers('predict')
 
 export default {
-  props: {
-    scoreLeftOffset: Number
-  },
+  props: { },
   data () {
     return { }
   },
@@ -25,6 +23,9 @@ export default {
     },
     visibility () {
       return this.hidden ? 'hidden' : 'visible'
+    },
+    scoreLeftOffset () {
+      return this.$el.parentNode.parentNode.scrollLeft - this.$el.parentNode.parentNode.getBoundingClientRect().left
     }
   },
   methods: {

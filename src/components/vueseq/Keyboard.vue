@@ -42,9 +42,8 @@ export default {
 <style scoped>
 .keyboard {
   width: 70px;
-  height: 100%;
   float: left;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
 }
 </style>
