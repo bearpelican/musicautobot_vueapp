@@ -104,7 +104,7 @@ export default {
   text-align: center;
   font-size: 1.2em;
   border: none;
-  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 </style>

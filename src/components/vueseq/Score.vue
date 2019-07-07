@@ -37,6 +37,14 @@
           key="progress-line",
           :scoreLeftOffset="scoreLeftOffset"
         )
+        seed-line(
+          key="seed-line",
+          :scoreLeftOffset="scoreLeftOffset"
+        )
+        generate-button(
+          :scoreScrollLeft="scoreScrollLeft",
+          :scoreRect="scoreRect"
+        )
         slot(name="scroll-content" :scoreLeftOffset="scoreLeftOffset" :scoreRect="scoreRect")
 </template>
 
@@ -46,6 +54,8 @@ import Note from '@/components/vueseq/Note'
 import PrevNote from '@/components/vueseq/PrevNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
+import SeedLine from '@/components/vueseq/SeedLine'
+import GenerateButton from '@/components/controls/GenerateButton'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -57,7 +67,9 @@ export default {
     PrevNote,
     Note,
     ScoreLine,
-    ProgressLine
+    ProgressLine,
+    SeedLine,
+    GenerateButton
   },
 
   props: {

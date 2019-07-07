@@ -95,7 +95,7 @@ export const actions = {
 
     setTimeout(() => {
       if (progress != null) {
-        this.clearInterval(progress)
+        clearInterval(progress)
         commit('showError', `Error: Timeout trying to generate sequence...`)
       }
     }, 1000 * 0.25 * nSteps)

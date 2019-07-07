@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:style="{ left }" @mousedown="beginEditing")
+  div(:style="{ left, visibility }" @mousedown="beginEditing")
 </template>
 
 <script>
@@ -16,12 +16,15 @@ export default {
     return { }
   },
   computed: {
-    ...mapState(['seedLen', 'songItem']),
+    ...mapState(['seedLen', 'predictionType']),
     left () {
       return `${this.seedLen * pixelPerBeat - 5}px`
     },
     hidden () {
-      return this._.isEmpty(this.songItem)
+      return ['notes', 'rhythm'].includes(this.predictionType.name)
+    },
+    visibility () {
+      return this.hidden ? 'hidden' : 'visible'
     }
   },
   methods: {
