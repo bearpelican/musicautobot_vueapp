@@ -3,6 +3,9 @@
   <v-btn outline small color="green lighten-1" @click="showDialog = true">
     Choose New Song...
   </v-btn>
+  <v-btn outline small color="green lighten-1" @click="restart">
+    Restart
+  </v-btn>
 
     <v-dialog v-model="showDialog" max-width="1000px">
       <v-card>

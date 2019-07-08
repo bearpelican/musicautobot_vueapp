@@ -62,7 +62,7 @@ export default {
 
 #play-button {
   position: absolute;
-  bottom: 10px;
+  bottom: 30px;
   left: 215px;
   z-index: 4;
 }

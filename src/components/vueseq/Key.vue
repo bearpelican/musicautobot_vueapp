@@ -58,6 +58,9 @@ button {
   border: 1px solid black;
   display: block;
   text-align: right;
+  font-size: 0.8em;
+  padding-right: 3px;
+  padding-top: 7px;
 }
 
 .black-key {
@@ -68,6 +71,6 @@ button {
 
 .white-key {
   background-color: white;
-  width: 100px;
+  width: 70px;
 }
 </style>

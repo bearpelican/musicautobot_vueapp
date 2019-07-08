@@ -13,30 +13,35 @@ export const PredictionType = {
     name: 'next',
     temp: [1.2, 0.8],
     track: -1,
-    displayName: 'Foward'
+    displayName: 'Generate',
+    description: 'Default - new sequence will be to the right of the brown line. Blue notes are used as a sample. Red notes will be regenerated'
   },
   melody: {
     name: 'melody',
     temp: [1.0, 0.8],
     track: 0,
-    displayName: 'Melody'
+    displayName: 'Melody',
+    description: 'Create a new melody from the same chords (in blue).'
   },
   chords: {
     name: 'chords',
     temp: [0.7, 0.7],
     track: 1,
-    displayName: 'Chords'
+    displayName: 'Chords',
+    description: 'Harmonization - generate new chords from the melody.'
   },
   notes: {
     name: 'notes',
     temp: [1.0, 0.0],
     track: -1,
-    displayName: 'Notes'
+    displayName: 'Notes',
+    description: 'Re-generate the notes of the song. Rhythm stays the same'
   },
   rhythm: {
     name: 'rhythm',
     temp: [0.5, 0.0],
     track: -1,
-    displayName: 'Rhythm'
+    displayName: 'Rhythm',
+    description: 'Change the rhythm (note lengths) of the song. Note pitch statys the same'
   }
 }

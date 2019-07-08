@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class='control-group'>
-      <div class='control-group-header'>Regenerate</div>
+      <div class='control-group-header'>Predict</div>
       <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
         <v-btn flat v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
           {{ptype.displayName}}
         </v-btn>
       </v-btn-toggle>
-      <!-- <label>
-      Forward will generate a new song past the brown line. Red notes will be deleted
-      </label> -->
+      <label id="prediction-type-hint">
+        {{ predictionType.description }}
+      </label>
     </div>
   </div>
 </template>
@@ -56,5 +56,9 @@ export default {
 
 .control-group-header {
   color: #FF5252;
+}
+#prediction-type-hint {
+  display: block;
+  margin-top: 10px;
 }
 </style>

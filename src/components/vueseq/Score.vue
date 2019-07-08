@@ -116,8 +116,6 @@ export default {
     },
     onResize () {
       this.scoreRect = this.$el.getBoundingClientRect()
-      console.log('dskfjsldfjk')
-      console.log(this.scoreRect)
     }
   }
 }
