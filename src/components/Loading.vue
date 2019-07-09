@@ -4,8 +4,6 @@
     <div class='loading-inner'>
       <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
       <label>{{ value }}</label>
-      Switch
-      https://vuetifyjs.com/en/components/dialogs
       <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
     </div>
   </div>

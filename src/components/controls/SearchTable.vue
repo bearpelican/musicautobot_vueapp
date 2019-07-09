@@ -138,6 +138,11 @@ export default {
       this.clear()
       this.showDialog = false
     },
+    restart () {
+      const original = this.songItem
+      this.updateSongItem(null) // clear cache
+      this.updateSongItem(original)
+    },
     shuffle () {
       this.showDialog = false
     },

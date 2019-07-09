@@ -3,8 +3,10 @@
     <header-controls id="header-controls"></header-controls>
     <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
     <sequencer :style="sequenceStyle">
-      <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
-      <loading v-if="this.loadingState !== null" id='loading-predict' :value=loadingState></loading>
+      <template v-slot:overlay>
+        <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
+        <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
+      </template>
     </sequencer>
     <footer-controls></footer-controls>
   </div>

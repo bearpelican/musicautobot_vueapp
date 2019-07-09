@@ -4,6 +4,7 @@
       keyboard
       score(:gridOpacity="gridOpacity")
     play-button(id="play-button")
+    slot(name="overlay")
 </template>
 
 <script>
