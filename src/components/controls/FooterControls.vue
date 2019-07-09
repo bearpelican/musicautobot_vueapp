@@ -27,6 +27,7 @@ export default {
   width: 100%;
   padding: 0px 100px;
   height: 100px;
+  margin-top: 10px;
 
   .control-group-content {
     display: flex;

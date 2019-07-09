@@ -1,6 +1,6 @@
 <template lang="pug">
-  div#line(:style="{ left }")
-    div#triangle-up(@mousedown="beginEditing")
+  div#line(:style="{ left }" @mousedown="beginEditing")
+    //- div#triangle-up()
 </template>
 
 <script>
@@ -62,8 +62,9 @@ export default {
   border-left-style: solid;
   border-left-color: #424242;
   height: 100%;
+  cursor: move;
 }
-
+/*
 #triangle-up {
   position: absolute;
   bottom: 0;
@@ -75,6 +76,6 @@ export default {
   border-right: 30px solid transparent;
   border-bottom: 30px solid #2986e2;
   cursor: move;
-}
+} */
 
 </style>

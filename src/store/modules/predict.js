@@ -1,6 +1,7 @@
 import $backend from '@/backend'
 import { storeToMidi } from '@/lib/convert'
 import { PredictionType } from '../../lib/config'
+import _ from 'lodash'
 
 export const state = {
   songs: [],
@@ -50,10 +51,11 @@ export const mutations = {
   updateMidiXML (state, xml) {
     state.midiXML = xml
   },
-  fromSave (state, { seedLen, durationTemp, noteTemp }) {
+  fromSave (state, { seedLen, durationTemp, noteTemp, predictionType }) {
     state.seedLen = seedLen
     state.durationTemp = durationTemp
     state.noteTemp = noteTemp
+    state.predictionType = _.get(PredictionType, predictionType, PredictionType.next)
   },
   updateLoadingState (state, loadingState) {
     state.loadingState = loadingState
@@ -134,8 +136,8 @@ export const actions = {
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
     const { midiBuffer, store } = await $backend.loadState(s3id, 'generated')
-    const { seqName, seedLen, durationTemp, noteTemp } = store
-    commit('fromSave', { seedLen, durationTemp, noteTemp })
+    const { seqName, seedLen, durationTemp, noteTemp, predictionType } = store
+    commit('fromSave', { seedLen, durationTemp, noteTemp, predictionType })
 
     await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)

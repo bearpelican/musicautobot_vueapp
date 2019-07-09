@@ -45,3 +45,14 @@ export const PredictionType = {
     description: 'Change the rhythm (note lengths) of the song. Note pitch statys the same'
   }
 }
+
+export const PresetSongs = [
+  {
+    s3id: '99c5db9ce936b7a1c5faab57cc3f160c',
+    display: 'Call Me Maybe - Carly Rae Jepsen'
+  },
+  {
+    s3id: '99c5db9ce936b7a1c5faab57cc3f160c',
+    display: 'La Bamba'
+  }
+]

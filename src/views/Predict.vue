@@ -104,7 +104,7 @@ export default {
 }
 
 #header-controls {
-  margin: 0px 100px 0px 100px;
+  margin: 20px 100px 10px 100px;
 }
 
 #tutorial-one {
