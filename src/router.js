@@ -16,16 +16,7 @@ export default new Router({
     },
     {
       path: '/',
-      component: Predict
-    },
-    {
-      path: '/song/:sid',
-      name: 'song',
-      component: Predict
-    },
-    {
-      path: '/predict/:pid',
-      name: 'predict',
+      alias: ['/song/:sid', '/predict/:pid'],
       component: Predict
     },
     {
@@ -33,5 +24,6 @@ export default new Router({
       name: 'sheet',
       component: Sheet
     }
-  ]
+  ],
+  linkActiveClass: 'active' // active class for non-exact links.
 })

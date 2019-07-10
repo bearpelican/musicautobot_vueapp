@@ -1,6 +1,6 @@
 import $backend from '@/backend'
 import { storeToMidi } from '@/lib/convert'
-import { PredictionType } from '../../lib/config'
+import { PredictionType, PresetSongs } from '../../lib/config'
 import _ from 'lodash'
 
 export const state = {
@@ -75,6 +75,14 @@ export const actions = {
     $backend.fetchSongs().then(result => {
       commit('updateSongs', result)
     })
+  },
+  randomSong ({ commit, rootState, dispatch }) {
+    const songItem = PresetSongs[Math.floor(Math.random() * PresetSongs.length)]
+    commit('updateLoadingState', 'Choosing a random song...')
+    commit('updateSongItem', songItem)
+    if (songItem.seedLen !== undefined) {
+      commit('updateSeedLen', songItem.seedLen)
+    }
   },
   async predictMidi ({ commit, rootState, dispatch }) {
     commit('updateLoadingState', 'Making music...')

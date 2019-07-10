@@ -2,12 +2,24 @@
   <v-app id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/">Predict</router-link> |
-      <router-link to="/sheet">Sheet</router-link> |
+      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Predict</router-link> |
+      <!-- <router-link to="/sheet">Sheet</router-link> | -->
       <router-link to="/about">About</router-link>
     </div>
   </v-app>
 </template>
+
+<script>
+
+export default {
+  computed: {
+    isDefaultRoute () {
+      return (['song', 'predict', undefined].includes(this.$route.name))
+    }
+  }
+}
+
+</script>
 
 <style lang="scss">
 
@@ -19,10 +31,14 @@
   color: #2c3e50;
 }
 #nav {
-  padding: 10px;
+  padding-top: 20px;
   a {
+    text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
+    &.router-link-active {
+      color: #42b983;
+    }
     &.router-link-exact-active {
       color: #42b983;
     }

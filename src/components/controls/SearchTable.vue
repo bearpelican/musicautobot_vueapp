@@ -60,6 +60,7 @@
 import Fuse from 'fuse.js'
 import { createNamespacedHelpers } from 'vuex'
 import { setTimeout } from 'timers'
+
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
@@ -112,7 +113,7 @@ export default {
   },
   methods: {
     ...mapMutations(['updateSongItem']),
-    ...mapActions(['fetchSongs', 'importMidi']),
+    ...mapActions(['fetchSongs', 'importMidi', 'randomSong']),
     ...seqMapActions(['clear']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
@@ -145,6 +146,7 @@ export default {
     },
     shuffle () {
       this.showDialog = false
+      this.randomSong()
     },
     updateSearch (term) {
       if (this.fuse === null || this._.isEmpty(term) || this._.isEmpty(this.songs)) return
@@ -170,7 +172,9 @@ export default {
       this.showDialog = false
     }
   },
-  mounted () { }
+  mounted () {
+    this.fetchSongs()
+  }
 }
 
 </script>

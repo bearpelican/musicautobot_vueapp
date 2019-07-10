@@ -55,11 +55,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchSongs', 'fetchMidi', 'loadSong', 'loadState']),
+    ...mapActions(['fetchMidi', 'loadSong', 'loadState', 'randomSong']),
     ...mapMutations(['updateTutorialStep'])
   },
   mounted () {
-    this.fetchSongs()
     console.log('Route params:')
     console.log(this.$route.params)
     console.log(this.$route.query)
@@ -72,6 +71,8 @@ export default {
       this.loadState(this.$route.params.pid)
     } else if (this._.isString(this.$route.params.sid)) {
       this.loadSong(this.$route.params.sid)
+    } else {
+      this.randomSong()
     }
   },
   components: {
