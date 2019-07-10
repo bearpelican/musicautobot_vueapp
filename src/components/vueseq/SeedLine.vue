@@ -23,16 +23,14 @@ export default {
     },
     visibility () {
       return this.hidden ? 'hidden' : 'visible'
-    },
-    scoreLeftOffset () {
-      return this.$el.parentNode.parentNode.scrollLeft - this.$el.parentNode.parentNode.getBoundingClientRect().left
     }
   },
   methods: {
     ...mapMutations(['updateSeedLen']),
     moveLine (event) {
       const quarterLength = 1
-      const newSeedLen = positionToTiming((event.clientX + this.scoreLeftOffset), quarterLength)
+      const parentOffset = this.$el.parentNode.parentNode.getBoundingClientRect().left
+      const newSeedLen = positionToTiming((event.clientX - parentOffset), quarterLength)
       this.updateSeedLen(newSeedLen)
     },
     beginEditing (event) {

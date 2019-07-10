@@ -31,7 +31,7 @@
           :key="index + '-beat'",
           :index="index"
         )
-      .grid-controls
+      .grid-controls(:style="overlayBounds")
         progress-line(
           key="progress-line"
         )
@@ -39,10 +39,10 @@
           key="seed-line"
         )
         slot(name="scroll-content" :scoreLeftOffset="scoreLeftOffset" :scoreRect="scoreRect")
-    generate-button(
-      :scoreScrollLeft="scoreScrollLeft",
-      :scoreRect="scoreRect"
-    )
+        generate-button(
+          :scoreScrollLeft="scoreScrollLeft",
+          :scoreRect="scoreRect"
+        )
 </template>
 
 <script>
@@ -126,6 +126,7 @@ export default {
 .score {
   flex: 1;
   overflow-x: scroll;
+  position: relative; /* Required for generate button absolute positioning */
 }
 
 /*

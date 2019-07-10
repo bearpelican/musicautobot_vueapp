@@ -26,6 +26,7 @@ export const mutations = {
   updateTutorialStep (state, step) {
     if (state.tutorialStep < step) {
       state.tutorialStep = step
+      // state.tutorialStep = 1
     }
   },
   updateSongs (state, songs) {

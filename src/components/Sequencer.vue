@@ -58,7 +58,7 @@ export default {
 
 #section {
   overflow-y: scroll;
-  margin: 0px 100px;
+  /* margin: 0px 100px; */
 }
 
 #play-button {

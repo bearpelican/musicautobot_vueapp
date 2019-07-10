@@ -1,11 +1,19 @@
 <template lang="pug">
-  v-btn(id="generate-button" :style="{ left }" color="red darken-2" dark fab @click="predict")
-    v-icon(id="generate-icon") cached
+  <v-tooltip left>
+    <template v-slot:activator="{ on }">
+      v-btn(id="generate-button" color="red darken-2" :style="{ left }"  dark fab v-on="on" @click="predict")
+        v-icon(id="generate-icon") cached
+    </template>
+    <div>Click to remix!</div>
+  </v-tooltip>
+
 </template>
 
 <script>
 import { pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
+
+import TutorialPredict from '@/components/TutorialPredict'
 const { mapState, mapActions } = createNamespacedHelpers('predict')
 
 export default {
@@ -18,28 +26,28 @@ export default {
   },
   computed: {
     ...mapState(['seedLen']),
-    left () {
-      let leftOffset = this.scoreRect.left - this.scoreScrollLeft + this.seedLen * pixelPerBeat
-      const margin = 50
-      if (leftOffset < this.scoreRect.left + margin) {
-        leftOffset = this.scoreRect.left + margin
-      } else if (leftOffset > this.scoreRect.right - margin) {
-        leftOffset = this.scoreRect.right - margin
-      }
-      return `${leftOffset}px`
-    }
     // left () {
-    //   let leftScoreOffset = this.seedLen * pixelPerBeat
+    //   let leftOffset = this.seedLen * pixelPerBeat - this.scoreScrollLeft
     //   const margin = 50
-    //   const relativeOffset = leftScoreOffset - this.scoreScrollLeft
-    //   const scoreWidth = this.scoreRect.right - this.scoreRect.left
-    //   if (relativeOffset < margin) {
-    //     leftScoreOffset = this.scoreScrollLeft + margin
-    //   } else if (relativeOffset > scoreWidth + margin) {
-    //     leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+    //   if (leftOffset < this.scoreRect.left + margin) {
+    //     leftOffset = this.scoreRect.left + margin
+    //   } else if (leftOffset > this.scoreRect.right - margin) {
+    //     leftOffset = this.scoreRect.right - margin
     //   }
-    //   return `${leftScoreOffset}px`
+    //   return `${leftOffset}px`
     // }
+    left () {
+      let leftScoreOffset = this.seedLen * pixelPerBeat
+      const margin = 50
+      const relativeOffset = leftScoreOffset - this.scoreScrollLeft
+      const scoreWidth = this.scoreRect.right - this.scoreRect.left
+      if (relativeOffset < margin) {
+        leftScoreOffset = this.scoreScrollLeft + margin
+      } else if (relativeOffset > scoreWidth - margin) {
+        leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+      }
+      return `${leftScoreOffset}px`
+    }
   },
   methods: {
     ...mapActions(['predictMidi']),
@@ -49,6 +57,9 @@ export default {
         this.$router.push({ path: `/predict/${pid}` })
       }
     }
+  },
+  components: {
+    TutorialPredict
   }
 }
 </script>

@@ -93,6 +93,7 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  margin: 0px 100px;
 }
 
 #loading-predict {
@@ -105,7 +106,8 @@ export default {
 }
 
 #header-controls {
-  margin: 20px 100px 10px 100px;
+  // margin: 20px 0px 10px 0px;
+  box-shadow: 10px 10px;
 }
 
 #tutorial-one {
