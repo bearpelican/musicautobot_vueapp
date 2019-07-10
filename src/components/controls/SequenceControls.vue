@@ -15,7 +15,7 @@
             Piano
           </v-btn>
           <v-btn flat value="synth">
-            Alien
+            Synth
           </v-btn>
         </v-btn-toggle>
       </div>
@@ -80,11 +80,14 @@ export default {
 
 #synth-radios {
   transform: scale(0.8);
-
+  color: #2196F3;
   /* height: 20px;
   font-size: 0.5rem; */
 }
 
+.v-btn--active {
+  color: #2196F3 !important;
+}
 .control-group-header {
   color: #2196F3;
 }

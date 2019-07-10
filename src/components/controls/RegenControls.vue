@@ -61,4 +61,9 @@ export default {
   display: block;
   margin-top: 10px;
 }
+
+.v-btn--active {
+  color: rgb(255, 147, 147) !important;
+}
+
 </style>

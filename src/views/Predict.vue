@@ -4,6 +4,7 @@
     <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
     <sequencer :style="sequenceStyle">
       <template v-slot:overlay>
+        <generate-button></generate-button>
         <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
         <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
       </template>
@@ -17,6 +18,7 @@
 import Sequencer from '@/components/Sequencer'
 import HeaderControls from '@/components/controls/HeaderControls'
 import FooterControls from '@/components/controls/FooterControls'
+import GenerateButton from '@/components/controls/GenerateButton'
 import Loading from '@/components/Loading'
 import Tutorial from '@/components/Tutorial'
 import TutorialTwo from '@/components/TutorialTwo'
@@ -33,7 +35,6 @@ export default {
   },
   watch: {
     songItem (val) {
-      console.log('Song item changed:', val)
       if (!this._.isEmpty(val)) {
         console.log('Song item updated. Fetching midi now', val)
         this.fetchMidi(val)
@@ -50,6 +51,7 @@ export default {
     },
     loadingStyle () {
       return {
+        // display: 'block'
         display: (this.loadingState !== null) ? 'block' : 'none'
       }
     }
@@ -59,9 +61,6 @@ export default {
     ...mapMutations(['updateTutorialStep'])
   },
   mounted () {
-    console.log('Route params:')
-    console.log(this.$route.params)
-    console.log(this.$route.query)
     // this.loadSong('b332754ce574b8ce079dbb8ec6148fb6')
     // this.loadState('074c1eab7661f7c8cb34052c915dc0f0')
     if (!this._.isEmpty(this.$route.query.skip)) {
@@ -79,6 +78,7 @@ export default {
     Sequencer,
     HeaderControls,
     FooterControls,
+    GenerateButton,
     Loading,
     Tutorial,
     TutorialTwo
@@ -90,7 +90,6 @@ export default {
 <style lang="scss">
 
 .predict {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   margin: 0px 100px;
@@ -106,8 +105,8 @@ export default {
 }
 
 #header-controls {
-  // margin: 20px 0px 10px 0px;
-  box-shadow: 10px 10px;
+  margin: 20px 0px 10px 0px;
+  // box-shadow: 0px 5px 2px;
 }
 
 #tutorial-one {

@@ -1,7 +1,7 @@
 <template>
   <div>
   <v-btn outline small color="green lighten-1" @click="showDialog = true">
-    Choose New Song...
+    New Song...
   </v-btn>
   <v-btn outline small color="green lighten-1" @click="restart">
     Restart
@@ -131,7 +131,6 @@ export default {
         ]
       }
       this.fuse = new Fuse(this.songs, options)
-      console.log('Loaded search')
       this.debounce = this._.debounce(this.updateSearch, 100)
       this.searchResults = 'avicii'
     },

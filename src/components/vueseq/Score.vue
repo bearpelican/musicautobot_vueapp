@@ -31,17 +31,12 @@
           :key="index + '-beat'",
           :index="index"
         )
-      .grid-controls(:style="overlayBounds")
+      .grid-controls
         progress-line(
           key="progress-line"
         )
         seed-line(
           key="seed-line"
-        )
-        slot(name="scroll-content" :scoreLeftOffset="scoreLeftOffset" :scoreRect="scoreRect")
-        generate-button(
-          :scoreScrollLeft="scoreScrollLeft",
-          :scoreRect="scoreRect"
         )
 </template>
 
@@ -52,7 +47,6 @@ import PrevNote from '@/components/vueseq/PrevNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
-import GenerateButton from '@/components/controls/GenerateButton'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -65,8 +59,7 @@ export default {
     Note,
     ScoreLine,
     ProgressLine,
-    SeedLine,
-    GenerateButton
+    SeedLine
   },
 
   props: {

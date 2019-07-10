@@ -11,7 +11,7 @@ export const state = {
   durationTemp: 0.5,
   noteTemp: 1.2,
   midiXML: null,
-  tutorialStep: 0,
+  tutorialStep: 10,
   loadingState: null,
   predictionType: PredictionType.next
 }
@@ -20,13 +20,12 @@ export const mutations = {
   updateSongItem (state, item) {
     state.songItem = item
     if (state.tutorialStep < 1) {
-      state.tutorialStep = 1
+      // state.tutorialStep = 1
     }
   },
   updateTutorialStep (state, step) {
     if (state.tutorialStep < step) {
-      state.tutorialStep = step
-      // state.tutorialStep = 1
+      // state.tutorialStep = step
     }
   },
   updateSongs (state, songs) {
@@ -141,7 +140,6 @@ export const actions = {
     return result
   },
   async loadState ({ commit, dispatch }, s3id) {
-    console.log('Loading state:', s3id)
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
     const { midiBuffer, store } = await $backend.loadState(s3id, 'generated')
@@ -152,7 +150,6 @@ export const actions = {
     commit('updateLoadingState', null)
   },
   async loadSong ({ commit, dispatch }, s3id) {
-    console.log('Loading song:', s3id)
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
     const { midiBuffer, store } = await $backend.loadState(s3id)
@@ -161,7 +158,6 @@ export const actions = {
     commit('updateLoadingState', null)
   },
   async fetchMidi ({ commit, dispatch }, { sid, display: seqName }) {
-    console.log('Fetching midi:', sid, seqName)
     commit('updateLoadingState', 'Loading song...')
     const midiBuffer = await $backend.fetchMidi(sid)
     commit('updateLoadingState', 'Building sequence...')

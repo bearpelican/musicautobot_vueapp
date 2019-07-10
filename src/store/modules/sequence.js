@@ -127,10 +127,8 @@ export const mutations = {
 export function generateSimpleActions (mutations) {
   const actions = {
     loadMidi ({ commit, state, dispatch }, { midi, seqName, savePrevious = true }) {
-      console.log('Load midi called.')
       const { notes, name: midiName, bpm } = midiToNotes(midi)
       if (_.isEmpty(seqName)) seqName = midiName
-      console.log('Loaded bpm, name:', bpm, name)
       commit('updateNotes', { notes, bpm, seqName, savePrevious })
     },
     loadMidiBuffer ({ commit, dispatch }, { midiBuffer, seqName, savePrevious = true }) {
@@ -140,12 +138,10 @@ export function generateSimpleActions (mutations) {
       commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
     },
     exportMidi ({ commit, state, dispatch }) {
-      console.log('Save midi called:', state)
       const { midi, seqName } = storeToMidi(state, null)
       $backend.exportMidi({ midi, fileName: `${seqName}.mid` })
     },
     importMidi ({ commit, rootState, dispatch }, midiBuffer) {
-      console.log('Importing midi file')
       dispatch('loadMidiBuffer', { midiBuffer, savePrevious: false })
     }
   }

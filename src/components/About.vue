@@ -87,7 +87,7 @@
               Import an existing song from your computer to play around with
             </li>
             <li>
-              <v-btn fab dark small color="green lighten-1" @click="clear"><v-icon>clear</v-icon></v-btn>
+              <v-btn fab dark small color="green lighten-1"><v-icon>clear</v-icon></v-btn>
               Start from scratch with a <router-link to="/?skip=1">blank grid</router-link>
             </li>
           </ul>

@@ -4,7 +4,7 @@
       keyboard
       score(:gridOpacity="gridOpacity")
     play-button(id="play-button")
-    slot(name="overlay")
+    <slot name="overlay"></slot>
 </template>
 
 <script>
@@ -64,7 +64,7 @@ export default {
 #play-button {
   position: absolute;
   bottom: 30px;
-  left: 215px;
+  left: 115px;
   z-index: 4;
 }
 </style>

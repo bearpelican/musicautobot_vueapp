@@ -10,15 +10,15 @@
 </template>
 
 <script>
-import { pixelPerBeat } from '@/lib/config'
-import { createNamespacedHelpers } from 'vuex'
 
+import { keyWidth, pixelPerBeat } from '@/lib/config'
+import { createNamespacedHelpers } from 'vuex'
 import TutorialPredict from '@/components/TutorialPredict'
 const { mapState, mapActions } = createNamespacedHelpers('predict')
+const { mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
   props: {
-    scoreScrollLeft: Number,
     scoreRect: {}
   },
   data () {
@@ -26,6 +26,7 @@ export default {
   },
   computed: {
     ...mapState(['seedLen']),
+    ...seqMapState(['scrollLeftPosition']),
     // left () {
     //   let leftOffset = this.seedLen * pixelPerBeat - this.scoreScrollLeft
     //   const margin = 50
@@ -36,17 +37,35 @@ export default {
     //   }
     //   return `${leftOffset}px`
     // }
+    // left () {
+    //   let leftScoreOffset = this.seedLen * pixelPerBeat
+    //   const margin = 50
+    //   const relativeOffset = leftScoreOffset - this.scoreScrollLeft
+    //   const scoreWidth = this.scoreRect.right - this.scoreRect.left
+    //   if (relativeOffset < margin) {
+    //     leftScoreOffset = this.scoreScrollLeft + margin
+    //   } else if (relativeOffset > scoreWidth - margin) {
+    //     leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+    //   }
+    //   return `${leftScoreOffset}px`
+    // }
     left () {
-      let leftScoreOffset = this.seedLen * pixelPerBeat
+      const offset = this.seedLen * pixelPerBeat
       const margin = 50
-      const relativeOffset = leftScoreOffset - this.scoreScrollLeft
-      const scoreWidth = this.scoreRect.right - this.scoreRect.left
-      if (relativeOffset < margin) {
-        leftScoreOffset = this.scoreScrollLeft + margin
-      } else if (relativeOffset > scoreWidth - margin) {
-        leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
+      let relativeOffset = offset - this.scrollLeftPosition + keyWidth
+
+      let scoreWidth = 0
+      if (this.$el !== undefined) {
+        const parentRect = this.$el.parentNode.getBoundingClientRect()
+        scoreWidth = parentRect.right - parentRect.left
       }
-      return `${leftScoreOffset}px`
+
+      if (relativeOffset < margin + keyWidth) {
+        relativeOffset = margin + keyWidth
+      } else if (relativeOffset > scoreWidth - margin) {
+        relativeOffset = scoreWidth - margin
+      }
+      return `${relativeOffset}px`
     }
   },
   methods: {
