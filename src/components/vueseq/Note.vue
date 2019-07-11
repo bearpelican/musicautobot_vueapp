@@ -125,7 +125,6 @@ export default {
       this.editKeyNumber = this.storeKeyNumber
     },
     remove () {
-      console.log('Double clicked', this.index)
       this.removeNote(this.index)
     },
     addListeners () {
@@ -154,7 +153,6 @@ export default {
       let nextTiming = this.editTiming
       let nextLength = this.editLength
       let nextKeyNumber = this.editKeyNumber
-      // console.log('Event:', event)
       switch (this.state) {
         case 'editing-end-time': {
           nextLength = positionToTiming(

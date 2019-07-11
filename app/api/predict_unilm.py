@@ -40,16 +40,17 @@ def predict_midi():
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
     prediction_type = args.get('predictionType', 'next') 
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
-    n_words = int(args.get('nSteps', 400))
+    n_words = int(args.get('nSteps', 200))
+    seed_len = int(args.get('seedLen', 12))
 
     # Main logic
     try:
         if prediction_type == 'next':
-            full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures)
+            full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, seed_len=seed_len, temperatures=temperatures)
             stream = npenc2stream(full, bpm=bpm)
             stream = separate_melody_chord(stream)
         elif prediction_type in ['melody', 'chords']:
-            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, pred_melody=(prediction_type == 'melody'))
+            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, seed_len=seed_len, pred_melody=(prediction_type == 'melody'))
             stream = chordarr2stream(full, bpm=bpm)
         elif prediction_type in ['notes', 'rhythm']:
             full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))

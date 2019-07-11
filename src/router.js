@@ -16,7 +16,14 @@ export default new Router({
     },
     {
       path: '/',
-      alias: ['/song/:sid', '/predict/:pid'],
+      component: Predict
+    },
+    {
+      path: '/song/:sid',
+      component: Predict
+    },
+    {
+      path: '/predict/:pid',
       component: Predict
     },
     {

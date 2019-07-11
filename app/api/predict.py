@@ -58,7 +58,7 @@ def predict_midi():
     print('THE ARGS PASSED:', args)
     bpm = float(args['bpm']) # (AS) TODO: get bpm from midi file instead
     temperatures = (float(args.get('noteTemp', 1.2)), float(args.get('durationTemp', 0.8)))
-    n_words = int(args.get('nSteps', 400))
+    n_words = int(args.get('nSteps', 200))
     # debugging 1 - send exact midi back
     # with open('/tmp/test.mid', 'wb') as f:
     #     f.write(midi)

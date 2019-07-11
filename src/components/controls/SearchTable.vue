@@ -136,6 +136,7 @@ export default {
     },
     blankSheet () {
       this.clear()
+      this.$router.push({ path: '/', query: { blank: 'true' } })
       this.showDialog = false
     },
     restart () {

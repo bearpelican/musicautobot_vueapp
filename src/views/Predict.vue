@@ -70,6 +70,8 @@ export default {
       this.loadState(this.$route.params.pid)
     } else if (this._.isString(this.$route.params.sid)) {
       this.loadSong(this.$route.params.sid)
+    } else if (!this._.isEmpty(this.$route.query.blank)) {
+      // cleared song - do nothing
     } else {
       this.randomSong()
     }

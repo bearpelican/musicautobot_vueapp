@@ -22,7 +22,9 @@ export default {
     scoreRect: {}
   },
   data () {
-    return { }
+    return {
+      parentNode: null
+    }
   },
   computed: {
     ...mapState(['seedLen']),
@@ -55,8 +57,8 @@ export default {
       let relativeOffset = offset - this.scrollLeftPosition + keyWidth
 
       let scoreWidth = 0
-      if (this.$el !== undefined) {
-        const parentRect = this.$el.parentNode.getBoundingClientRect()
+      if (this.parentNode !== null) {
+        const parentRect = this.parentNode.getBoundingClientRect()
         scoreWidth = parentRect.right - parentRect.left
       }
 
@@ -76,6 +78,9 @@ export default {
         this.$router.push({ path: `/predict/${pid}` })
       }
     }
+  },
+  mounted () {
+    this.parentNode = this.$el.parentNode
   },
   components: {
     TutorialPredict

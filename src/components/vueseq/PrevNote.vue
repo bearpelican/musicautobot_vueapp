@@ -1,9 +1,11 @@
 <template lang="pug">
-  div(class="note-previous" :style="{ bottom, left, width }")
+  div(class="note-previous" :style="{ bottom, left, width, display }")
 </template>
 
 <script>
 import { timingToPosition, keyNumberToOffset } from '@/lib/positioning'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState } = createNamespacedHelpers('predict')
 
 export default {
   props: {
@@ -23,6 +25,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['seedLen']),
     bottom () {
       return `${keyNumberToOffset(this.storeKeyNumber) + 2}px`
     },
@@ -31,6 +34,12 @@ export default {
     },
     width () {
       return `${timingToPosition(this.storeLength)}px`
+    },
+    display () {
+      if (this._.round(this.storeTiming, 3) >= this.seedLen) {
+        return 'block'
+      }
+      return 'none'
     }
   },
   methods: {
@@ -39,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.previous {
+.note-previous {
   position: absolute;
   height: 10px;
   /* background-color: #94ffbd; */

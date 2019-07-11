@@ -6,7 +6,7 @@ import _ from 'lodash'
 export const state = {
   songs: [],
   songItem: {},
-  nSteps: 400,
+  nSteps: 200,
   seedLen: 10,
   durationTemp: 0.5,
   noteTemp: 1.2,
@@ -98,7 +98,6 @@ export const actions = {
     // Progress
     let counter = -10
     let progress = setInterval(() => {
-      // console.log('Seconds:', time)
       if (counter > 0) {
         commit('updateLoadingState', `Generating steps (${counter} / ${nSteps})...`)
       }
