@@ -66,7 +66,7 @@ yarn install
 pushd app/api
 rm -rf data_serve
 DATA_FILE=data_serve.tar.gz
-wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/$DATA_FILE
+wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/v18/$DATA_FILE
 tar -xf $DATA_FILE
 rm $DATA_FILE
 popd
