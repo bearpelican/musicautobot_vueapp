@@ -89,11 +89,13 @@ export const actions = {
     commit('updateTutorialStep', 2)
 
     let { nSteps, seedLen, durationTemp, noteTemp, predictionType } = rootState.predict
-    const track = predictionType.track
-    if (['notes', 'rhythm'].includes(predictionType.name)) {
-      seedLen = null
-    }
-    const { midi, bpm, seqName } = storeToMidi(rootState.sequence, seedLen, track)
+
+    // const track = predictionType.track
+    // Filtering seedLen serverside for now.
+    // if (['notes', 'rhythm'].includes(predictionType.name)) {
+    //   seedLen = null
+    // }
+    const { midi, bpm, seqName } = storeToMidi(rootState.sequence)
 
     // Progress
     let counter = -10

@@ -3,7 +3,7 @@
   <v-btn outline small color="green lighten-1" @click="showDialog = true">
     New Song...
   </v-btn>
-  <v-btn outline small color="green lighten-1" @click="restart">
+  <v-btn outline small color="green lighten-1" @click="restart" v-if="songItem">
     Restart
   </v-btn>
 

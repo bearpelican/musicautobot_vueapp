@@ -108,14 +108,13 @@ export function storeToMidi (state, seedLen = null, track = -1) {
   const { seqName, bpm } = state
   let storeNotes = state.notes
 
-  // Previously filtered seedLen client side.
-  // if (seedLen != null) {
-  //   storeNotes = storeNotes.filter(n => {
-  //     const keepTrackNote = (track !== -1) && (n.track !== track)
-  //     const isSeed = _.round(n.timing, 3) < seedLen
-  //     return isSeed || keepTrackNote
-  //   })
-  // }
+  if (seedLen != null) {
+    storeNotes = storeNotes.filter(n => {
+      const keepTrackNote = (track !== -1) && (n.track !== track)
+      const isSeed = _.round(n.timing, 3) < seedLen
+      return isSeed || keepTrackNote
+    })
+  }
   var midi = new Midi()
   midi.header.fromJSON(defaultMidiHeader({ bpm, seqName }))
 
