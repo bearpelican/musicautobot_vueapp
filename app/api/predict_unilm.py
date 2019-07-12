@@ -12,7 +12,7 @@ torch.set_num_threads(1)
 
 path = Path(__file__).parent/'data_serve'
 # config = get_config(vocab_path=path)
-config = unilm_config(vocab=vocab)
+config = mlm_config(vocab=vocab)
 config['mem_len'] = 1024
 config['bptt'] = 2048
 data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
