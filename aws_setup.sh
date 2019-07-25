@@ -10,6 +10,12 @@ sudo apt-get install gcc -y
 sudo apt-get install nginx -y
 sudo apt-get install awscli -y
 
+
+# latest node - requires > 8.12
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install 8
+
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update && sudo apt-get install yarn -y

@@ -18,8 +18,7 @@ config['mem_len'] = 512
 config['bptt'] = 1024
 data = load_data(path, 'musicitem_data_save.pkl', num_workers=1)
 
-# load_path = path/'pretrained/MultitaskTransformer.pth'
-load_path = None
+load_path = path/'pretrained/MultitaskTransformer.pth'
 learn = multitask_model_learner(data, config.copy(), pretrained_path=load_path)
 
 if torch.cuda.is_available(): learn.model.cuda()
@@ -42,7 +41,8 @@ def predict_midi():
             full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, seed_len=seed_len, temperatures=temperatures)
             stream = separate_melody_chord(full.to_stream(bpm=bpm))
         elif prediction_type in ['melody', 'chords']:
-            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, seed_len=seed_len, pred_melody=(prediction_type == 'melody'))
+            full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, seed_len=seed_len, 
+                                         pred_melody=(prediction_type == 'melody'), use_memory=True)
             stream = full.to_stream(bpm=bpm)
         elif prediction_type in ['notes', 'rhythm']:
             full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))
