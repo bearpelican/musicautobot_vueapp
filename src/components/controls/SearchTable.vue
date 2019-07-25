@@ -181,4 +181,7 @@ export default {
 
 <style scoped lang="scss">
 
+.v-btn {
+  margin: 0px 5px;
+}
 </style>

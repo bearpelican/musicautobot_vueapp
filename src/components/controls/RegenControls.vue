@@ -62,6 +62,9 @@ export default {
   margin-top: 10px;
 }
 
+.v-btn-toggle>.v-btn {
+  height: 36px;
+}
 .v-btn--active {
   color: rgb(255, 147, 147) !important;
 }

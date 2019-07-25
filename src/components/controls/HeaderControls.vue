@@ -101,6 +101,7 @@ export default {
 }
 
 .v-btn {
+  margin: 0px 5px;
   float: right;
 }
 
