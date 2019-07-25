@@ -40,13 +40,13 @@ def predict_midi():
     try:
         if prediction_type == 'next':
             full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, seed_len=seed_len, temperatures=temperatures)
-            stream = separate_melody_chord(full.stream(bpm=bpm))
+            stream = separate_melody_chord(full.to_stream(bpm=bpm))
         elif prediction_type in ['melody', 'chords']:
             full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, seed_len=seed_len, pred_melody=(prediction_type == 'melody'))
-            stream = full.stream(bpm=bpm)
+            stream = full.to_stream(bpm=bpm)
         elif prediction_type in ['notes', 'rhythm']:
             full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))
-            stream = separate_melody_chord(full.stream(bpm=bpm))
+            stream = separate_melody_chord(full.to_stream(bpm=bpm))
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:

@@ -766,12 +766,11 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@tonejs/midi@^2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@tonejs/midi/-/midi-2.0.7.tgz#bf51b17d98fcd3b6c43fd01ae60ef9e44ca554da"
-  integrity sha512-Clh22AAhMoAVh5qfRqF4RGxBXzRqFKh0ist5Ppr+L/8dpEwWLJnWMEq3CrwHUI+B/gmFz2/i+TxuEywSUEuqMg==
+"@tonejs/midi@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@tonejs/midi/-/midi-1.2.3.tgz#eb2a01d3238c1f9a36cf95e9fca041af72b3e954"
+  integrity sha512-pTefiZ9ItoJ9ua0zYT9vZRHASgcSoIUg9EBDqUAvCS05FiarAbKSYdOmoJNZKESWCofnzOgQC2MatDU+WRXPbw==
   dependencies:
-    array-flatten "^2.1.2"
     midi-file "^1.1.1"
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
@@ -1512,7 +1511,7 @@ array-flatten@1.1.1:
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
 
-array-flatten@^2.1.0, array-flatten@^2.1.2:
+array-flatten@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.2.tgz#24ef80a28c1a893617e2149b0c6d0d788293b099"
   integrity sha512-hNfzcOV8W4NdualtqBFPyVO+54DSJuZGY9qT4pRroB6S9e3iiido2ISIC5h9R2sPJ8H3FHCIiEnsv1lPXO3KtQ==
