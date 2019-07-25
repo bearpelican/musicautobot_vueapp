@@ -12,11 +12,13 @@ import Vuetify from 'vuetify'
 
 Vue.config.productionTip = false
 
+const vuetifyOptions = { }
 Vue.use(Vuetify)
 Vue.use(VueLodash, {})
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  vuetify: new Vuetify(vuetifyOptions)
 }).$mount('#app')

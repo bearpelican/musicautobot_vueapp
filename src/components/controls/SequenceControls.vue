@@ -11,10 +11,10 @@
       <div class='control-group-control'>
         <div class='control-group-label'>Instrument</div>
         <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
-          <v-btn flat value="piano">
+          <v-btn text value="piano">
             Piano
           </v-btn>
-          <v-btn flat value="synth">
+          <v-btn text value="synth">
             Synth
           </v-btn>
         </v-btn-toggle>

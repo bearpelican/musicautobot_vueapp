@@ -1,9 +1,9 @@
 <template>
   <div>
-  <v-btn outline small color="green lighten-1" @click="showDialog = true">
+  <v-btn outlined small color="green lighten-1" @click="showDialog = true">
     New Song...
   </v-btn>
-  <v-btn outline small color="green lighten-1" @click="restart" v-if="songItem">
+  <v-btn outlined small color="green lighten-1" @click="restart" v-if="songItem">
     Restart
   </v-btn>
 
@@ -18,16 +18,16 @@
             hide-details
           ></v-text-field>
           <v-spacer></v-spacer>
-          <v-btn outline small color="green lighten-1" @click="shuffle">
+          <v-btn outlined small color="green lighten-1" @click="shuffle">
             Shuffle
             <v-icon>shuffle</v-icon>
           </v-btn>
-          <v-btn outline small color="green lighten-1" @click="$refs.fileUpload.click()">
+          <v-btn outlined small color="green lighten-1" @click="$refs.fileUpload.click()">
             Import
             <v-icon>folder</v-icon>
             <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
           </v-btn>
-          <v-btn outline small color="green lighten-1" @click="blankSheet">
+          <v-btn outlined small color="green lighten-1" @click="blankSheet">
             Blank
             <v-icon>create_new_folder</v-icon>
           </v-btn>

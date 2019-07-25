@@ -3,7 +3,7 @@
     <div class='control-group'>
       <div class='control-group-header'>Predict</div>
       <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
-        <v-btn flat v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
+        <v-btn text v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
           {{ptype.displayName}}
         </v-btn>
       </v-btn-toggle>

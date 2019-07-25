@@ -22,10 +22,10 @@
             </v-list-tile>
           </v-list>
         </v-menu> -->
-        <v-btn outline small color="green lighten-1" @click="exportMidi">
+        <v-btn outlined small color="green lighten-1" @click="exportMidi">
           Save
         </v-btn>
-        <v-btn outline small color="green lighten-1" @click="share">
+        <v-btn outlined small color="green lighten-1" @click="share">
           Share
         </v-btn>
       </div>
