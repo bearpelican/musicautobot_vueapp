@@ -1,8 +1,10 @@
-# import sys
+import sys, os
 # sys.path.insert(0, 'src')
+sys.path.append(os.path.dirname(__file__))
 
-from .src.serve import *
-from .src.msklm import *
+from src.multitask_transformer import *
+from src.music_transformer import *
+from src.config import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 
@@ -10,24 +12,15 @@ import torch
 import traceback
 torch.set_num_threads(1)
 
-path = Path(__file__).parent/'data_serve'
-# config = get_config(vocab_path=path)
-config = mlm_config(vocab=vocab)
-config['mem_len'] = 1024
-config['bptt'] = 2048
-data = load_music_data(path=path, cache_name='tmp', vocab=vocab, num_workers=1, **config)
+path = Path(__file__).parent/'data_serve/numpy'
+config = multitask_config()
+config['mem_len'] = 512
+config['bptt'] = 1024
+data = load_data(path, 'musicitem_data_save.pkl', num_workers=1)
 
-# Refactor pred_batch so we don't have to do this hack
-#def predict_func(parts): return [p if idx == 1 else F.softmax(p, dim=-1) for idx,p in enumerate(parts)]
-#loss_func_name = camel2snake(MLMLoss.__name__)
-#basic_train.loss_func_name2activ[loss_func_name] = predict_func
-
-learn = mlm_model_learner(data, config.copy(), loss_func=MLMLoss())
-learn.callbacks = []
-
-load_path = path/'models/v18_mlm.pth'
-state = torch.load(load_path, map_location='cpu')
-get_model(learn.model).load_state_dict(state['model'], strict=False)
+# load_path = path/'pretrained/MultitaskTransformer.pth'
+load_path = None
+learn = multitask_model_learner(data, config.copy(), pretrained_path=load_path)
 
 if torch.cuda.is_available(): learn.model.cuda()
 
@@ -47,15 +40,13 @@ def predict_midi():
     try:
         if prediction_type == 'next':
             full = nw_predict_from_midi(learn, midi=midi, n_words=n_words, seed_len=seed_len, temperatures=temperatures)
-            stream = npenc2stream(full, bpm=bpm)
-            stream = separate_melody_chord(stream)
+            stream = separate_melody_chord(full.stream(bpm=bpm))
         elif prediction_type in ['melody', 'chords']:
             full = s2s_predict_from_midi(learn, midi=midi, n_words=n_words, temperatures=temperatures, seed_len=seed_len, pred_melody=(prediction_type == 'melody'))
-            stream = chordarr2stream(full, bpm=bpm)
+            stream = full.stream(bpm=bpm)
         elif prediction_type in ['notes', 'rhythm']:
             full = mask_predict_from_midi(learn, midi=midi, temperatures=temperatures, predict_notes=(prediction_type == 'notes'))
-            stream = npenc2stream(full, bpm=bpm)
-            stream = separate_melody_chord(stream)
+            stream = separate_melody_chord(full.stream(bpm=bpm))
         midi_out = Path(stream.write("midi"))
         print('Wrote to temporary file:', midi_out)
     except Exception as e:
@@ -68,11 +59,6 @@ def predict_midi():
     }
     return jsonify(result)
     # return send_from_directory(midi_out.parent, midi_out.name, mimetype='audio/midi')
-
-
-# @app.route('/midi/song/<path:sid>')
-# def get_song_midi(sid):
-#     return send_from_directory(file_path/data_dir, htlist[sid]['midi'], mimetype='audio/midi')
 
 @app.route('/midi/convert', methods=['POST'])
 def convert_midi():

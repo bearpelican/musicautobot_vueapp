@@ -15,7 +15,7 @@ export const PredictionType = {
     temp: [1.2, 0.8],
     track: -1,
     displayName: 'Autocomplete',
-    description: 'Uses the blue notes to continue the song. Red notes will be overwritten'
+    description: 'Continue the song using the blue notes as a seed. Red notes are not used and will be overwritten'
   },
   melody: {
     name: 'melody',
@@ -36,14 +36,14 @@ export const PredictionType = {
     temp: [1.0, 0.0],
     track: -1,
     displayName: 'Notes',
-    description: 'Create a new song with the exact same rhythm.'
+    description: 'Create a new song in the exact same rhythm as the original.'
   },
   rhythm: {
     name: 'rhythm',
     temp: [0.5, 0.0],
     track: -1,
     displayName: 'Rhythm',
-    description: 'Keep the notes, but change the rhythm.'
+    description: 'Keep the same tune, but change the rhythm.'
   }
 }
 
