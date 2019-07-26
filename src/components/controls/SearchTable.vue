@@ -35,9 +35,10 @@
         <v-data-table
           :headers="headers"
           :items="results"
+          @click:row="selectSong"
         >
           <template v-slot:items="props">
-            <tr @click="selectSong(props.item)">
+            <tr>
               <td class="text-xs-left">{{ props.item.title }}</td>
               <td class="text-xs-left">{{ props.item.artist }}</td>
               <td class="text-xs-right">{{ props.item.section }}</td>
