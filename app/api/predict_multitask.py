@@ -10,7 +10,7 @@ from . import api_bp as app
 
 import torch
 import traceback
-torch.set_num_threads(1)
+torch.set_num_threads(4)
 
 path = Path(__file__).parent/'data_serve/numpy'
 config = multitask_config()

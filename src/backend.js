@@ -31,17 +31,17 @@ export default {
 
   // S3 hosting
   async fetchSongs () {
-    const response = await $axios.get(S3BUCKET + 'v18_all/json/htlist.json')
+    const response = await $axios.get(S3BUCKET + 'examples/json/htlist.json')
     // console.log(response)
     return response.data
   },
-  async fetchMidi (s3id, path = 'v18_all/seed') {
+  async fetchMidi (s3id, path = 'examples/seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
     // console.log(response)
     return response.data
   },
-  async fetchJson (s3id, path = 'v18_all/seed') {
+  async fetchJson (s3id, path = 'examples/seed') {
     const rs = s3id.split('').reverse().join('')
     const response = await $axios.get(S3BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
     return response.data

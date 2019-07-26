@@ -132,7 +132,8 @@ export default {
       }
       this.fuse = new Fuse(this.songs, options)
       this.debounce = this._.debounce(this.updateSearch, 100)
-      this.searchResults = 'avicii'
+      this.results = this.songs
+      // this.searchResults = 'avicii'
     },
     blankSheet () {
       this.clear()

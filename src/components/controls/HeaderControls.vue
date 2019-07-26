@@ -36,7 +36,6 @@
 <script>
 
 import { createNamespacedHelpers } from 'vuex'
-import Search from '@/components/controls/Search'
 import SearchTable from '@/components/controls/SearchTable'
 import SequenceTitle from '@/components/vueseq/SequenceTitle'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
@@ -76,7 +75,6 @@ export default {
   mounted () {
   },
   components: {
-    Search,
     SearchTable,
     SequenceTitle
   }
