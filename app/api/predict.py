@@ -1,7 +1,7 @@
 # import sys
 # sys.path.insert(0, 'src')
 
-from .src.serve import *
+from musicautobot.config import *
 
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app

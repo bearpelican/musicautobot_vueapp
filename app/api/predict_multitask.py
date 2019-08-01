@@ -2,9 +2,9 @@ import sys, os
 # sys.path.insert(0, 'src')
 sys.path.append(os.path.dirname(__file__))
 
-from src.multitask_transformer import *
-from src.music_transformer import *
-from src.config import *
+from musicautobot.multitask_transformer import *
+from musicautobot.music_transformer import *
+from musicautobot.config import *
 from flask import Response, send_from_directory, send_file, request, jsonify
 from . import api_bp as app
 

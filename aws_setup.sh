@@ -47,14 +47,7 @@ rm $CONDA_SH
 
 
 
-# Create midi environment
-ENV=midi
-ENV_BIN=~/anaconda3/envs/$ENV/bin
-conda create -n $ENV python=3.7 -y
 
-# Hack to activate env from bash shell - https://stackoverflow.com/questions/34534513/calling-conda-source-activate-from-bash-script
-eval "$(conda shell.bash hook)"
-conda activate $ENV
 
 # Install midi_generator
 git clone https://github.com/bearpelican/midi_generator.git
@@ -68,6 +61,17 @@ git clone https://github.com/bearpelican/vue_midi_generator.git
 pushd vue_midi_generator
 conda env update -f environment.yml
 yarn install
+
+
+# Create midi environment
+# ENV=midi
+# ENV_BIN=~/anaconda3/envs/$ENV/bin
+# conda create -n $ENV python=3.7 -y
+
+# Hack to activate env from bash shell - https://stackoverflow.com/questions/34534513/calling-conda-source-activate-from-bash-script
+eval "$(conda shell.bash hook)"
+ENV=midi
+conda activate $ENV
 
 pushd app/api
 rm -rf data_serve
