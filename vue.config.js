@@ -3,6 +3,11 @@
 module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
+
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue_midi_generator/'
+    : '/',
+
   // baseUrl: IS_PRODUCTION
   // ? 'http://cdn123.com'
   // : '/',
@@ -13,8 +18,9 @@ module.exports = {
   devServer: {
     proxy: {
       '/api*': {
-        // Forward frontend dev server request for /api to django dev server
-        target: 'http://localhost:5000/'
+        // // Forward frontend dev server request for /api to django dev server
+        // target: 'http://localhost:5000/'
+        target: 'http://54.200.166.59:8888'
       }
     }
   }
