@@ -3,13 +3,12 @@ import { saveAs } from 'file-saver'
 import _ from 'lodash'
 
 let $axios = axios.create({
-  baseURL: '/api/',
+  baseURL: process.env.VUE_APP_API_PATH,
   timeout: 180000,
-  // timeout: 5000,
   headers: { 'Content-Type': 'application/json' }
 })
 
-const S3BUCKET = 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/'
+const BUCKET = process.env.VUE_APP_S3_BUCKET
 
 // Request Interceptor
 // $axios.interceptors.request.use(function (config) {
@@ -31,23 +30,22 @@ export default {
 
   // S3 hosting
   async fetchSongs () {
-    const response = await $axios.get(S3BUCKET + 'examples/json/htlist.json')
+    const response = await $axios.get(BUCKET + 'examples/json/htlist.json')
     // console.log(response)
     return response.data
   },
   async fetchMidi (s3id, path = 'examples/seed') {
     const rs = s3id.split('').reverse().join('')
-    const response = await $axios.get(S3BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
+    const response = await $axios.get(BUCKET + `${path}/${rs}.mid`, { responseType: 'arraybuffer' })
     // console.log(response)
     return response.data
   },
   async fetchJson (s3id, path = 'examples/seed') {
     const rs = s3id.split('').reverse().join('')
-    const response = await $axios.get(S3BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
+    const response = await $axios.get(BUCKET + `${path}/${rs}.json`, { responseType: 'application/json' })
     return response.data
   },
   async loadState (s3id, path) {
-    // const rs = s3id.split('').reverse().join('')
     const r1 = await this.fetchMidi(s3id, path)
     const r2 = await this.fetchJson(s3id, path)
     return { midiBuffer: r1, store: r2 }

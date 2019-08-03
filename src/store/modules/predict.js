@@ -113,8 +113,14 @@ export const actions = {
       }
     }, 1000 * 0.25 * nSteps)
 
+    let error = null
+    let s3id = null
     // Predictions
-    const { result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name })
+    try {
+      ({ result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name }))
+    } catch (e) {
+      error = e
+    }
     if (error) {
       clearInterval(progress)
       commit('showError', `Error: ${error}`)
