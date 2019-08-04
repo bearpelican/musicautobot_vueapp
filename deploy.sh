@@ -11,7 +11,7 @@ yarn build
 cd dist
 
 # if you are deploying to a custom domain
-# echo 'www.example.com' > CNAME
+echo 'musicautobot.com' > CNAME
 
 git init
 git add -A
@@ -21,6 +21,6 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:bearpelican/vue_midi_generator.git master:gh-pages
+git push -f git@github.com:bearpelican/musicautobot_vueapp.git master:gh-pages
 
 cd -
