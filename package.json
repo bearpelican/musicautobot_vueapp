@@ -19,6 +19,7 @@
     "pug-plain-loader": "^1.0.0",
     "tone": "^13.8.4",
     "vue": "^2.6.10",
+    "vue-analytics": "^5.17.0",
     "vue-lodash": "^2.0.2",
     "vue-router": "^3.0.1",
     "vue-search-select": "^2.8.3",
