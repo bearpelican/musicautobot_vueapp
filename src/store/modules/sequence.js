@@ -1,5 +1,3 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
 import { defaultLength } from '@/lib/config'
 import $backend from '@/backend'
 import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
