@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div#title-container
     // label#version {{ `(v${version}) ` }}
 
     // v-menu#version2
@@ -10,7 +10,7 @@
     //       v-list-tile-title {{ versionString(item.version) }}
     span(contenteditable="true" id="sequence-title-span" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
 
-    label#sequence-type {{ sequenceType }}
+    //- label#sequence-type {{ sequenceType }}
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['seqName', 'version', 'history']),
+    ...mapState(['seqName', 'version']),
     selectedVersion: {
       set (version) {
         this.updateVersion(version)
@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style scoped lang='scss'>
 
 // #version2 {
 
@@ -91,6 +91,9 @@ export default {
 //   color: #489e77;
 //   margin-right: 10px;
 // }
+// #title-container {
+//   display: flex;
+// }
 
 #sequence-type {
   font-size: 1.2em;
@@ -105,5 +108,9 @@ export default {
   font-size: 1.2em;
   border: none;
 }
+
+// .v-btn--active {
+//   color: #2196F3 !important;
+// }
 
 </style>

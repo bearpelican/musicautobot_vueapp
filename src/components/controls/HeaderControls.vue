@@ -1,36 +1,14 @@
-<template>
-  <div class="header-controls">
-
-    <div class="title-controls">
-
-      <search-table></search-table>
-      <sequence-title></sequence-title>
-      <div>
-        <!-- <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn outline small color="green lighten-1" v-on="on">
-              Save
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-tile
-              v-for="(item, index) in saveItems"
-              :key="index"
-              @click="saveFormat(item)"
-            >
-              <v-list-tile-title>{{ item }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu> -->
-        <v-btn outlined small color="green lighten-1" @click="exportMidi">
-          Save
-        </v-btn>
-        <v-btn outlined small color="green lighten-1" @click="share">
-          Share
-        </v-btn>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  .header-controls
+    search-table.header-container
+    sequence-title.header-container
+    .header-container
+      v-btn(outlined small color="green lighten-1" @click="exportMidi") Save
+      v-btn(outlined small color="green lighten-1" @click="share") Share
+    .playback-version
+      v-btn-toggle.control-group-toggle(v-model="selectPlaybackVersion")
+        v-btn(text value="prediction" color="red") Prediction
+        v-btn(text value="original" color="green") Original
 </template>
 
 <script>
@@ -49,28 +27,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(['appState'])
+    ...mapState(['appState', 'playbackVersion']),
+    selectPlaybackVersion: {
+      set (playbackVersion) { this.updatePlaybackVersion({ playbackVersion }) },
+      get () { return this.playbackVersion }
+    }
   },
   watch: {
   },
   methods: {
-    ...mapActions(['exportMidi', 'clear']),
+    ...mapActions(['exportMidi', 'clear', 'updatePlaybackVersion']),
     share () {
       const url = window.location.href
       const text = `Check out this song I just generated with #musicautobot`
       window.open('http://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0')
     }
-    // saveFormat (format) {
-    //   if (format === 'Midi') {
-    //     this.exportMidi()
-    //   }
-    //   if (format === 'Piano Score') {
-
-    //   }
-    //   if (format === 'Wav') {
-
-    //   }
-    // }
   },
   mounted () {
   },
@@ -84,6 +55,15 @@ export default {
 
 <style scoped lang="scss">
 
+.header-container {
+  margin-top: auto;
+  min-width: 250px;
+  .v-btn {
+    margin: 0px 5px;
+    float: right;
+  }
+}
+
 .song-controls {
   display: flex;
 }
@@ -93,14 +73,26 @@ export default {
   height: 200px;
 }
 
-.title-controls {
+.header-controls {
   display: flex;
   justify-content: space-between;
 }
 
-.v-btn {
-  margin: 0px 5px;
-  float: right;
+.control-group-toggle {
+  margin-left: 5px;
+  background: #fafafafa;
+  .v-btn {
+    height: 20px;
+    font-size: .8em;
+  }
+}
+
+.playback-version {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 80px;
+  z-index: 6;
 }
 
 </style>
