@@ -20,14 +20,15 @@ export const state = {
   // Notes
   notes: [],
   prevNotes: [],
-  history: [{ version: 1 }, { version: 2 }], // (AS) save history so people can revert { metadata, notes }
+  origNotes: [],
   sequenceLength: 80,
   // Metadata
   version: 0,
   bpm: 120,
   seqName: 'Untitled',
   duration: 0,
-  instrumentType: 'piano'
+  instrumentType: 'piano',
+  playbackVersion: 'prediction'
 }
 
 export const mutations = {
@@ -88,6 +89,10 @@ export const mutations = {
   updateInstrumentType (state, { instrumentType }) {
     state.instrumentType = instrumentType
   },
+  updatePlaybackVersion (state, { playbackVersion }) {
+    console.log('skjldfdsjk', playbackVersion)
+    state.playbackVersion = playbackVersion
+  },
   updateTrack (state, { track }) {
     state.currentTrack = track
   },
@@ -103,13 +108,8 @@ export const mutations = {
   updatePlayOffset (state, playOffset) {
     state.playOffset = playOffset
   },
-  updateHistory (state) {
-    const { version, notes, bpm, seqName } = state
-    if (!_.isEmpty(notes)) {
-      history.push({
-        version, notes, bpm, seqName
-      })
-    }
+  updateOrig (state, { notes }) {
+    state.origNotes = notes
   },
   updateNotes (state, { notes, bpm, seqName, savePrevious = true }) {
     state.version += 1
@@ -119,6 +119,7 @@ export const mutations = {
     state.notes = notes
     state.bpm = parseInt(bpm)
     state.seqName = seqName
+    state.playbackVersion = 'prediction'
   }
 }
 
@@ -131,6 +132,12 @@ export function generateSimpleActions (mutations) {
     },
     loadMidiBuffer ({ commit, dispatch }, { midiBuffer, seqName, savePrevious = true }) {
       dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
+    },
+    loadOrigBuffer ({ commit, dispatch }, { midiBuffer }) {
+      const midi = bufferToMidi(midiBuffer)
+      const { notes } = midiToNotes(midi)
+      console.log('Orig Notes:', notes)
+      commit('updateOrig', { notes })
     },
     clear ({ commit }) {
       commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
@@ -175,6 +182,7 @@ export const actions = {
     'updateProgressTime',
     'updateBPM',
     'updateInstrumentType',
+    'updatePlaybackVersion',
     'updateTrack',
     'updateSeqName'
   ])

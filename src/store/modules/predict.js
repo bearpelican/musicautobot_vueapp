@@ -88,8 +88,8 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    let { nSteps, seedLen, durationTemp, noteTemp, predictionType } = rootState.predict
-
+    let { nSteps, seedLen, durationTemp, noteTemp, predictionType, songItem } = rootState.predict
+    let { sid } = songItem
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
     // if (['notes', 'rhythm'].includes(predictionType.name)) {
@@ -117,7 +117,7 @@ export const actions = {
     let s3id = null
     // Predictions
     try {
-      ({ result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name }))
+      ({ result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name, sid }))
     } catch (e) {
       error = e
     }
@@ -146,22 +146,32 @@ export const actions = {
     commit('updateMidiXML', result)
     return result
   },
+  async loadOrig ({ commit, dispatch }, sid) {
+    const midiBuffer = await $backend.fetchMidi(sid)
+    await dispatch('sequence/loadOrigBuffer', { midiBuffer }, { root: true })
+  },
   async loadState ({ commit, dispatch }, s3id) {
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
     const { midiBuffer, store } = await $backend.loadState(s3id, 'generated')
-    const { seqName, seedLen, durationTemp, noteTemp, predictionType } = store
-    commit('fromSave', { seedLen, durationTemp, noteTemp, predictionType })
+    // const { seqName, seedLen, durationTemp, noteTemp, predictionType } = store
+    commit('fromSave', store)
 
-    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
+    // Load Original Song
+
+    console.log('Original SID:', store.sid)
+    if (store.sid) {
+      dispatch('loadOrig', store.sid)
+    }
+
+    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName: store.seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
   },
   async loadSong ({ commit, dispatch }, s3id) {
     commit('updateLoadingState', 'Loading saved song...')
     commit('updateTutorialStep', 2)
     const { midiBuffer, store } = await $backend.loadState(s3id)
-    const { display: seqName } = store
-    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
+    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName: store.display, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
   },
   async fetchMidi ({ commit, dispatch }, { sid, display: seqName }) {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .note(:style="{ bottom, left, width, height }", @mousedown="startMoving", @dblclick="remove")
+  .note(:style="{ bottom, left, width, height, opacity }", @mousedown="startMoving", @dblclick="remove")
     .note-color(:class="noteColor")
     .selection.begin(@mousedown.stop="startEditingStartTime" :class="noteColor")
     .selection.end(@mousedown.stop="startEditingEndTime" :class="noteColor")
@@ -37,7 +37,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentLength.value
     }),
-    ...mapState(['progressTime', 'version', 'currentTrack']),
+    ...mapState(['progressTime', 'version', 'playbackVersion']),
     ...predMapState(['seedLen', 'predictionType']),
     bottom () {
       if (this.state === 'normal') return `${keyNumberToOffset(this.storeKeyNumber)}px`
@@ -71,6 +71,9 @@ export default {
     //   }
     //   return '#64b5f6'
     // },
+    opacity () {
+      return this.playbackVersion === 'original' ? 0.2 : 0.8
+    },
     noteColor () {
       if (this.storeTiming < this.progressTime && (this.storeTiming + this.storeLength) > this.progressTime) {
         return 'note-playing'
@@ -246,7 +249,7 @@ export default {
 .note-color {
   width: 100%;
   height: 100%;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 .note-playing {
   background-color: #666666;

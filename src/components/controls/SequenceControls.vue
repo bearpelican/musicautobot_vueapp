@@ -19,6 +19,18 @@
           </v-btn>
         </v-btn-toggle>
       </div>
+
+      <div class='control-group-control'>
+        <div class='control-group-label'>Version</div>
+        <v-btn-toggle class="control-group-toggle" v-model="selectPlaybackVersion">
+          <v-btn text value="prediction">
+            Prediction
+          </v-btn>
+          <v-btn text value="original">
+            Original
+          </v-btn>
+        </v-btn-toggle>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +44,7 @@ export default {
     return { }
   },
   computed: {
-    ...mapState(['appState', 'bpm', 'instrumentType', 'progressTime']),
+    ...mapState(['appState', 'bpm', 'instrumentType', 'progressTime', 'playbackVersion']),
     icon () {
       return this.appState === 'playing' ? 'stop' : 'play_arrow'
     },
@@ -43,10 +55,14 @@ export default {
     selectInstrumentType: {
       set (instrumentType) { this.updateInstrumentType({ instrumentType }) },
       get () { return this.instrumentType }
+    },
+    selectPlaybackVersion: {
+      set (playbackVersion) { this.updatePlaybackVersion({ playbackVersion }) },
+      get () { return this.playbackVersion }
     }
   },
   methods: {
-    ...mapActions(['play', 'stop', 'updateBPM', 'updateInstrumentType']),
+    ...mapActions(['play', 'stop', 'updateBPM', 'updateInstrumentType', 'updatePlaybackVersion']),
     toggle () {
       if (this.appState === 'editing') {
         this.play()

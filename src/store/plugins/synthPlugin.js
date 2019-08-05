@@ -33,7 +33,8 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          this.play(state.sequence.notes, state.sequence.bpm, state.sequence.playOffset)
+          const notes = state.playbackVersion === 'original' ? state.sequence.origNotes : state.sequence.notes
+          this.play(notes, state.sequence.bpm, state.sequence.playOffset)
           break
         }
         case 'stop': {

@@ -17,9 +17,18 @@
           :storeTiming="note.timing",
           :storeLength="note.length"
         )
-        prev-note(
-          v-for="(note, index) in prevNotes",
-          :key="index + '-prev-note'",
+        //- prev-note(
+        //-   v-for="(note, index) in prevNotes",
+        //-   :key="index + '-prev-note'",
+        //-   :index="index",
+        //-   :track="note.track",
+        //-   :storeKeyNumber="note.key",
+        //-   :storeTiming="note.timing",
+        //-   :storeLength="note.length"
+        //- )
+        orig-note(
+          v-for="(note, index) in origNotes",
+          :key="index + '-orig-note'",
           :index="index",
           :track="note.track",
           :storeKeyNumber="note.key",
@@ -44,6 +53,7 @@
 import ScoreRow from '@/components/vueseq/ScoreRow'
 import Note from '@/components/vueseq/Note'
 import PrevNote from '@/components/vueseq/PrevNote'
+import OrigNote from '@/components/vueseq/OrigNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
@@ -56,6 +66,7 @@ export default {
   components: {
     ScoreRow,
     PrevNote,
+    OrigNote,
     Note,
     ScoreLine,
     ProgressLine,
@@ -78,7 +89,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['notes', 'prevNotes']),
+    ...mapState(['notes', 'prevNotes', 'origNotes']),
     beats () {
       /* eslint-disable no-console */
       return new Array(Math.max(
