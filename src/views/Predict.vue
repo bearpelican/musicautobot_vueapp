@@ -24,6 +24,7 @@ import Tutorial from '@/components/Tutorial'
 import TutorialTwo from '@/components/TutorialTwo'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapMutations, mapState } = createNamespacedHelpers('predict')
+const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'predict',
@@ -33,17 +34,8 @@ export default {
       debug: false
     }
   },
-  watch: {
-    songItem (val) {
-      if (!this._.isEmpty(val)) {
-        console.log('Song item updated. Fetching midi now', val)
-        this.fetchMidi(val)
-        this.$router.push({ path: `/song/${val.sid}` })
-      }
-    }
-  },
   computed: {
-    ...mapState(['songItem', 'loadingState', 'tutorialStep']),
+    ...mapState(['loadingState', 'tutorialStep']),
     sequenceStyle () {
       return {
         visibility: (this.tutorialStep !== 0 || this.debug) ? 'visible' : 'hidden'
@@ -56,24 +48,33 @@ export default {
       }
     }
   },
-  methods: {
-    ...mapActions(['fetchMidi', 'loadSong', 'loadState', 'randomSong']),
-    ...mapMutations(['updateTutorialStep'])
+  watch: {
+    // call again the method if the route changes
+    '$route': 'fetchData'
   },
-  mounted () {
-    // this.loadSong('b332754ce574b8ce079dbb8ec6148fb6')
-    // this.loadState('074c1eab7661f7c8cb34052c915dc0f0')
-    if (!this._.isEmpty(this.$route.query.skip)) {
-      this.updateTutorialStep(2)
-    }
-    if (this._.isString(this.$route.params.pid)) {
-      this.loadState(this.$route.params.pid)
-    } else if (this._.isString(this.$route.params.sid)) {
-      this.loadSong(this.$route.params.sid)
-    } else if (!this._.isEmpty(this.$route.query.blank)) {
-      // cleared song - do nothing
-    } else {
-      this.randomSong()
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    ...mapActions(['loadSong', 'loadPrediction']),
+    ...seqMapActions(['clear']),
+    ...mapMutations(['updateTutorialStep', 'updateSeedLen']),
+    fetchData () {
+      const path = this.$route.path
+      console.log('PATHS', path)
+      console.log('params', this.$route.params)
+      // const paths = this.$route.path.split('/')
+      const sid = this.$route.params.sid
+      const pid = this.$route.params.pid
+      if (sid) {
+        if (sid === 'blank') {
+          this.clear()
+        } else {
+          this.loadSong(sid)
+        }
+      } else if (pid) {
+        this.loadPrediction(pid)
+      }
     }
   },
   components: {

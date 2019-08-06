@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Predict from './views/Predict.vue'
-import Sheet from './views/Sheet.vue'
+import Home from '@/views/Home.vue'
+import Predict from '@/views/Predict.vue'
+import Sheet from '@/views/Sheet.vue'
+import { shuffleSong } from '@/lib/songPresets'
 
 Vue.use(Router)
 
@@ -16,6 +17,17 @@ export default new Router({
     },
     {
       path: '/',
+      redirect: '/shuffle'
+    },
+    {
+      path: '/shuffle',
+      redirect: to => {
+        const song = shuffleSong()
+        return `/song/${song.sid}`
+      }
+    },
+    {
+      path: '/song/:sid',
       component: Predict
     },
     {

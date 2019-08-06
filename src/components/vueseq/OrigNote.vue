@@ -44,7 +44,7 @@ export default {
       return 'none'
     },
     opacity () {
-      return this.playbackVersion === 'original' ? 0.4 : 0.3
+      return this.playbackVersion === 'original' ? 0.6 : 0.3
     }
   },
   methods: {
@@ -66,8 +66,8 @@ export default {
     45deg,
     #56c721,
     #54c021 10px,
-    #7a1bb9 10px,
-    #7a1bb9 20px
+    #fffeb0 10px,
+    #fffeb0 20px
   );
 }
 </style>

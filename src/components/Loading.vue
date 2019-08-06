@@ -10,22 +10,13 @@
 </template>
 
 <script>
-import { pixelPerBeat } from '@/lib/config'
-import { createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('predict')
 
 export default {
   props: {
     value: String
   },
   computed: {
-    ...mapState(['seedLen', 'songItem']),
-    left () {
-      return `${this.seedLen * pixelPerBeat}px`
-    },
-    hidden () {
-      return this._.isEmpty(this.songItem)
-    }
+
   }
 }
 </script>

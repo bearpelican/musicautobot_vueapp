@@ -1,11 +1,11 @@
 <template lang="pug">
   .header-controls
     search-table.header-container
-    sequence-title.header-container
+    span#sequence-title.header-container(contenteditable="true" ref='editableTitle' @blur="updateSeqName($event.target.textContent)")
     .header-container
       v-btn(outlined small color="green lighten-1" @click="exportMidi") Save
       v-btn(outlined small color="green lighten-1" @click="share") Share
-    .playback-version
+    .playback-version(v-if="this.origNotes.length > 0")
       v-btn-toggle.control-group-toggle(v-model="selectPlaybackVersion")
         v-btn(text value="prediction" color="red") Prediction
         v-btn(text value="original" color="green") Original
@@ -15,28 +15,28 @@
 
 import { createNamespacedHelpers } from 'vuex'
 import SearchTable from '@/components/controls/SearchTable'
-import SequenceTitle from '@/components/vueseq/SequenceTitle'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'header-controls',
   data () {
-    return {
-      showSave: false,
-      saveItems: ['Midi', 'Piano Score', 'Wav']
-    }
+    return { }
   },
   computed: {
-    ...mapState(['appState', 'playbackVersion']),
+    ...mapState(['playbackVersion', 'seqName', 'origNotes']),
     selectPlaybackVersion: {
       set (playbackVersion) { this.updatePlaybackVersion({ playbackVersion }) },
       get () { return this.playbackVersion }
     }
   },
   watch: {
+    seqName (val) {
+      console.log('Seq name changed:', val)
+      this.$refs.editableTitle.textContent = val
+    }
   },
   methods: {
-    ...mapActions(['exportMidi', 'clear', 'updatePlaybackVersion']),
+    ...mapActions(['exportMidi', 'clear', 'updatePlaybackVersion', 'updateSeqName']),
     share () {
       const url = window.location.href
       const text = `Check out this song I just generated with #musicautobot`
@@ -46,8 +46,7 @@ export default {
   mounted () {
   },
   components: {
-    SearchTable,
-    SequenceTitle
+    SearchTable
   }
 }
 
@@ -93,6 +92,14 @@ export default {
   left: 50%;
   top: 80px;
   z-index: 6;
+}
+
+#sequence-title-span {
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  text-align: center;
+  font-size: 1.2em;
+  border: none;
 }
 
 </style>

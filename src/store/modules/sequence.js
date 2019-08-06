@@ -90,7 +90,6 @@ export const mutations = {
     state.instrumentType = instrumentType
   },
   updatePlaybackVersion (state, { playbackVersion }) {
-    console.log('skjldfdsjk', playbackVersion)
     state.playbackVersion = playbackVersion
   },
   updateTrack (state, { track }) {
@@ -108,7 +107,7 @@ export const mutations = {
   updatePlayOffset (state, playOffset) {
     state.playOffset = playOffset
   },
-  updateOrig (state, { notes }) {
+  updateOrigNotes (state, { notes }) {
     state.origNotes = notes
   },
   updateNotes (state, { notes, bpm, seqName, savePrevious = true }) {
@@ -136,8 +135,7 @@ export function generateSimpleActions (mutations) {
     loadOrigBuffer ({ commit, dispatch }, { midiBuffer }) {
       const midi = bufferToMidi(midiBuffer)
       const { notes } = midiToNotes(midi)
-      console.log('Orig Notes:', notes)
-      commit('updateOrig', { notes })
+      commit('updateOrigNotes', { notes })
     },
     clear ({ commit }) {
       commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
@@ -145,9 +143,6 @@ export function generateSimpleActions (mutations) {
     exportMidi ({ commit, state, dispatch }) {
       const { midi, seqName } = storeToMidi(state, null)
       $backend.exportMidi({ midi, fileName: `${seqName}.mid` })
-    },
-    importMidi ({ commit, rootState, dispatch }, midiBuffer) {
-      dispatch('loadMidiBuffer', { midiBuffer, savePrevious: false })
     }
   }
   mutations.forEach(mutation => {

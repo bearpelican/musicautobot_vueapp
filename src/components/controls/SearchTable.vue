@@ -3,7 +3,7 @@
   <v-btn outlined small color="green lighten-1" @click="showDialog = true">
     New Song...
   </v-btn>
-  <v-btn outlined small color="green lighten-1" @click="restart" v-if="songItem">
+  <v-btn outlined small color="green lighten-1" @click="restart" v-if="!_.isEmpty(sid)">
     Restart
   </v-btn>
 
@@ -62,8 +62,7 @@ import Fuse from 'fuse.js'
 import { createNamespacedHelpers } from 'vuex'
 import { setTimeout } from 'timers'
 
-const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
-const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
+const { mapActions, mapState } = createNamespacedHelpers('predict')
 
 export default {
   name: 'search-table',
@@ -95,7 +94,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['songs', 'songItem']),
+    ...mapState(['songs', 'sid']),
     searchResults: {
       set (val) {
         if (this.debounce !== null) {
@@ -113,9 +112,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateSongItem']),
-    ...mapActions(['fetchSongs', 'importMidi', 'randomSong']),
-    ...seqMapActions(['clear']),
+    ...mapActions(['fetchSongs']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
       if (this.fuse !== null) return
@@ -137,28 +134,25 @@ export default {
       // this.searchResults = 'avicii'
     },
     blankSheet () {
-      this.clear()
-      this.$router.push({ path: '/', query: { blank: 'true' } })
+      this.$router.push({ path: '/song/blank' })
       this.showDialog = false
     },
     restart () {
-      const original = this.songItem
-      this.updateSongItem(null) // clear cache
-      this.updateSongItem(original)
+      this.$router.push({ path: `/song/${this.sid}` })
     },
     shuffle () {
+      this.$router.push({ path: `/shuffle` })
       this.showDialog = false
-      this.randomSong()
+    },
+    selectSong (songItem) {
+      this.$router.push({ path: `/song/${songItem.sid}` })
+      this.showDialog = false
     },
     updateSearch (term) {
       if (this.fuse === null || this._.isEmpty(term) || this._.isEmpty(this.songs)) return
       setTimeout(() => {
         this.results = this.fuse.search(term, { limit: 10 })
       }, 0)
-    },
-    selectSong (songItem) {
-      this.updateSongItem(songItem)
-      this.showDialog = false
     },
     loadLocalFile (event) {
       const file = this._.get(event, 'target.files[0]')
@@ -169,7 +163,8 @@ export default {
       }
 
       const reader = new FileReader()
-      reader.onload = e => this.importMidi(e.target.result)
+      reader.fileName = file.name
+      reader.onload = e => this.loadMidiBuffer({ midiBuffer: e.target.result, seqName: e.target.fileName, savePrevious: false })
       reader.readAsArrayBuffer(file)
       this.showDialog = false
     }
