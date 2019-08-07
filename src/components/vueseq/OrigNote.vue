@@ -38,10 +38,11 @@ export default {
       return `${timingToPosition(this.storeLength)}px`
     },
     display () {
-      if (this._.round(this.storeTiming, 3) >= this.seedLen || this.playbackVersion === 'original') {
-        return 'block'
-      }
-      return 'none'
+      return 'block' // Always showing for now
+      // if (this._.round(this.storeTiming, 3) >= this.seedLen || this.playbackVersion === 'original') {
+      //   return 'block'
+      // }
+      // return 'none'
     },
     opacity () {
       return this.playbackVersion === 'original' ? 0.6 : 0.3
