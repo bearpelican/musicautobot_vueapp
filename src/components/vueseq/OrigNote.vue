@@ -59,7 +59,7 @@ export default {
   /* background-color: #94ffbd; */
   /* border: 2px solid #dbdcdd; */
   /* cursor: move; */
-  z-index: 2;
+  z-index: 0;
   pointer-events: none;
   /* opacity: 0.2; */
   background: repeating-linear-gradient(
