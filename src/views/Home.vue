@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <About msg="Pop Music Generator"/>
+    <About msg="Music Autobot"/>
   </div>
 </template>
 

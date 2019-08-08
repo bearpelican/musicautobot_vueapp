@@ -5,6 +5,69 @@
       <span class="about-subtext">Using AI to generate pop music. Give it a few notes, and it'll continue the idea!</span>
     </div>
     <div class="about-content">
+
+      <div class='about-instructions'>
+        <h2>Instructions</h2>
+        <div class="content-body">
+          <ol>
+            <li>Search and select a pop song you like. This will give the model a good idea of what style to play in.</li>
+            <li>Press the <v-btn color="red darken-2" dark small fab><v-icon>cached</v-icon></v-btn> generate button. This will create a new variation on the song you selected.</li>
+            <li>Press <v-btn color="blue darken-2" dark small fab><v-icon>play_arrow</v-icon></v-btn> play and hear the output!</li>
+            <li>Repeat steps 1 or 2 as many times as you want. You'll get a different variation each time.</li>
+          </ol>
+        </div>
+      </div>
+      <h2>Examples</h2>
+        <h4>Autocomplete</h4>
+          Start with few notes and continue the idea.
+          <ul>
+            <li><router-link to="/predict/e06828d196b2d5182cd459c273d609ac">Cannon in D - Pachelbel</router-link></li>
+            <li><router-link to="/predict/3a68d55f76b2900ac1441ca357b057ab">Wake Me Up - Avicii</router-link></li>
+          </ul>
+        <h4>Harmonization</h4>
+          Add chords to your melody
+          <ul>
+            <li><router-link to="/predict/2b4f5e6613f366bad7b4f39c61be32b9">Where Is The Love - Black Eyed Peas</router-link></li>
+          </ul>
+        <h4>Melody from Chords</h4>
+          Generate a new melody on top of an existing chord progression.
+          <ul>
+            <li><router-link to="/predict/551ca93cda1d2bdaa6e4d87888de893f">The Middle - Zedd</router-link></li>
+            <li><router-link to="/predict/2674406ddc3eed0adaa47355d92a7e8f">Scary Monsters and Nice Sprites - Skrillex</router-link></li>
+          </ul>
+        <h4>Note Remixing</h4>
+          Generate a completely new song in the exact same tempo as the original
+          <ul>
+            <li><router-link to="/predict/1bbfcb942133414a5664a35a7e7b5612">Levels - Avicii</router-link></li>
+          </ul>
+        <h4>Beat Remixing</h4>
+          Same song, but with a different beat
+          <ul>
+            <li><router-link to="/predict/dd79fa52adaaed58a2945c1992ecada6">Fur Elise - Beethoven</router-link></li>
+            <li><router-link to="/predict/71d7ff59f67fffa98614c841101e1b6b">Scary Monsters and Nice Sprites - Skrillex</router-link></li>
+          </ul>
+
+      <h2>How does it work?</h2>
+        We've trained a deep learning model on a bunch of MIDI music found on the internet.
+
+        <div class="content-body">
+          <h4>Model</h4>
+            Recent advances in NLP has produced amazing <a href="https://transformer.huggingface.co/">results</a> in generating text.
+            <p>We apply those same principles to music generation. Our model is based on several different variations of the transformer (<a href="https://ai.googleblog.com/2019/01/transformer-xl-unleashing-potential-of.html">TransformerXL</a>, <a href="http://jalammar.github.io/illustrated-transformer/">SequenceToSequence</a>, and <a href="https://ai.googleblog.com/2018/11/open-sourcing-bert-state-of-art-pre.html">BERT</a>)</p>
+            <p>This allows us to do really cool things like song generation, harmonization, generating melodies, and remixing existing songs.</p>
+          <h4>Data</h4>
+            MIDI files gathered from the internet to train the model. Sources include - classical, jazz, pop and edm.
+          <br><br>
+          <h4>Blog Series</h4>
+            Inner workings are explained in more detail in this 4 part blog post:
+            <ul>
+              <li><a href="https://medium.com/@andrew.t.shaw/5867511b382a">Part I - Music Models</a></li>
+              <li><a href="https://medium.com/@andrew.t.shaw/755c62560ec2">Part II - Deep Dive</a></li>
+              <li><a href="https://medium.com/@andrew.t.shaw/3d80bd2ea08e">Part III - Multitask Models</a></li>
+              <li><a href="https://medium.com/@andrew.t.shaw/6b920359248c">Part IV - Remixing a Drop</a></li>
+            </ul>
+        </div>
+    <!-- <div class="about-content">
       <h2>Examples</h2>
       <ul class='variation-list'>
         La Bamba - Richie Valen
@@ -33,19 +96,7 @@
         Cannon in D - Pachelbel
         <li><router-link to="/predict/e06828d196b2d5182cd459c273d609ac">Variation</router-link></li>
         <li><router-link to="/song/201d91f48dccc9ae55a675cd3d9d5eed">Original</router-link></li>
-      </ul>
-
-      <div class='about-instructions'>
-        <h2>Instructions</h2>
-        <div class="content-body">
-        <ol>
-          <li>Search and select a pop song you like. This will give the model a good idea of what style to play in.</li>
-          <li>Press the <v-btn color="red darken-2" dark small fab><v-icon>cached</v-icon></v-btn> generate button. This will create a new variation on the song you selected.</li>
-          <li>Press <v-btn color="blue darken-2" dark small fab><v-icon>play_arrow</v-icon></v-btn> play and hear the output!</li>
-          <li>Repeat steps 1 or 2 as many times as you want. You'll get a different variation each time.</li>
-        </ol>
-        </div>
-      </div>
+      </ul> -->
 
     <h2>Advanced Controls</h2>
       <div class="content-body">
@@ -96,16 +147,6 @@
             <li>Change the BPM to play your creation faster/slower.</li>
             <li>Playback instrument - piano or synth. More coming soon!</li>
           </ul>
-      </div>
-    <h2>How does it work?</h2>
-      We've trained a deep learning model on a bunch of MIDI music found on the internet.
-
-      <div class="content-body">
-        <h4>Model</h4>
-          Recent advances in NLP has produced amazing <a href="https://openai.com/blog/better-language-models/">results</a> in generating text.
-          <p>We apply those same principles to music generation. Our model is based on the <a href="https://arxiv.org/abs/1901.02860" target="_blank">Transformer-XL</a> and trained using the <a href="https://www.fast.ai/">fast.ai</a> library</p>
-        <h4>Data</h4>
-          MIDI files gathered from the internet to train the model. Sources include - classical, jazz, pop and edm.
       </div>
     <!-- <ol>
       <li>Search for a song on our archives to seed the model</li>
