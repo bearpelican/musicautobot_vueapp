@@ -24,3 +24,5 @@ git commit -m 'deploy'
 git push -f git@github.com:bearpelican/musicautobot_vueapp.git master:gh-pages
 
 cd -
+
+git fetch
