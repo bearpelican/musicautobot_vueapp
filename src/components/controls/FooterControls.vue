@@ -23,9 +23,8 @@ export default {
 
 .footer-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
-  padding: 0px 100px;
   height: 100px;
   margin-top: 10px;
 
