@@ -96,6 +96,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0px 100px;
+  height: 100%;
 }
 
 #loading-predict {
