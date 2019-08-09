@@ -1,6 +1,6 @@
 import $backend from '@/backend'
 import { storeToMidi } from '@/lib/convert'
-import { PredictionType } from '@/lib/config'
+import { PredictionType, predictionTypeForName } from '@/lib/config'
 import _ from 'lodash'
 
 export const state = {
@@ -49,7 +49,7 @@ export const mutations = {
     state.midiXML = xml
   },
   fromSave (state, savedState) {
-    state.predictionType = _.get(PredictionType, savedState.predictionType, state.predictionType)
+    state.predictionType = predictionTypeForName(savedState.predictionType, state.predictionType)
     delete savedState.predictionType
 
     // Left merge values
@@ -88,7 +88,7 @@ export const actions = {
     let { nSteps, seedLen, durationTemp, noteTemp, predictionType, sid: originalSID } = rootState.predict
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
-    // if (['notes', 'rhythm'].includes(predictionType.name)) {
+    // if (['pitch', 'rhythm'].includes(predictionType.name)) {
     //   seedLen = null
     // }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence)

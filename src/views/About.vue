@@ -72,8 +72,8 @@
           <v-window-item :key="4">
             <v-card flat>
               <v-card-text>
-                <!-- <h4>Beat Remixing</h4> -->
-                <div class="title">Same song, but with a remixed beat</div>
+                <!-- <h4>Rhythm Remixing</h4> -->
+                <div class="title">Same song, but with a remixed rhythm</div>
                 <ul>
                   <li><router-link to="/predict/dd79fa52adaaed58a2945c1992ecada6">Fur Elise - Beethoven</router-link></li>
                   <li><router-link to="/predict/71d7ff59f67fffa98614c841101e1b6b">Scary Monsters and Nice Sprites - Skrillex</router-link></li>
@@ -136,11 +136,11 @@
           <li>Change the note length by draging the ends of the note longer or shorter</li>
           <li>Remove a note by collapsing the note ends.</li>
         </ul>
-      <h4 id="header-random">Prediction Randomness</h4>
-      Alter how wild you want the generated music should be.
+      <h4 id="header-random">Creativity</h4>
+      Alter how wild and creative you want the generated music should be.
       <ul>
-        <li>Pitch randomness - amount of variation in note pitch (C2, D2, E2, ..., F6, G6, A6)</li>
-        <li>Tempo randomness - amount of variation in note length (sixteenth, quarter, half notes)</li>
+        <li>Pitch - amount of random variation in note pitch (C2, D2, E2, ..., F6, G6, A6)</li>
+        <li>Rhythm - amount of random variation in note length (sixteenth, quarter, half notes)</li>
       </ul>
       <h4 id="header-playback">Playback controls</h4>
         <ul>

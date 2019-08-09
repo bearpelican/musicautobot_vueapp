@@ -1,13 +1,13 @@
 <template>
   <div class='control-group'>
-    <div class='control-group-header'>Prediction Randomness</div>
+    <div class='control-group-header'>Creativity</div>
     <div class='control-group-content'>
       <div class='control-group-control'>
         <div class='control-group-label'>Pitch: {{ noteTempPCT }}%</div>
         <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
       </div>
       <div class='control-group-control'>
-        <div class='control-group-label'>Rythm: {{ durationTempPCT }}%</div>
+        <div class='control-group-label'>Rhythm: {{ durationTempPCT }}%</div>
         <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
       </div>
     </div>

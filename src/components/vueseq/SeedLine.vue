@@ -19,7 +19,7 @@ export default {
       return `${this.seedLen * pixelPerBeat - 5}px`
     },
     hidden () {
-      return ['notes', 'rhythm'].includes(this.predictionType.name)
+      return ['pitch', 'beat'].includes(this.predictionType.name)
     },
     visibility () {
       return this.hidden ? 'hidden' : 'visible'

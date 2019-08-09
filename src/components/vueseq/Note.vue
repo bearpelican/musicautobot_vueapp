@@ -84,15 +84,15 @@ export default {
       if (this.predictionType.name === 'rhythm') {
         return 'note-rhythm'
       }
-      if (this.predictionType.name === 'notes') {
-        return 'note-notes'
+      if (this.predictionType.name === 'pitch') {
+        return 'note-pitch'
       }
       if (['melody', 'chords'].includes(this.predictionType.name) && (this.track !== this.predictionType.track)) {
         // Do not erase chords when predicting melody and visa versa
         return 'note-default'
       }
       if (this._.round(this.storeTiming, 3) >= this.seedLen) {
-        return 'note-regen'
+        return 'note-predict'
       }
       return 'note-default'
     },
@@ -254,7 +254,7 @@ export default {
 .note-playing {
   background-color: #666666;
 }
-.note-regen {
+.note-predict {
   background-color: #FF5252;
 }
 .note-delete {
@@ -263,10 +263,10 @@ export default {
 .note-default {
   background-color: #64b5f6;
 }
-.note-notes {
+.note-pitch {
   background-color: #64b5f6;
 }
-.note-color.note-notes {
+.note-color.note-pitch {
   border-width: 4px 0px 4px 0px;
   border-style: solid;
   border-color: #FF5252;
