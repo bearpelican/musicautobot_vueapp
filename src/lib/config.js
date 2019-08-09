@@ -15,7 +15,7 @@ export const PredictionType = {
     temp: [1.2, 0.8],
     track: -1,
     displayName: 'Autocomplete',
-    description: 'Continue the song using the blue notes as a seed. Red notes are not used and will be overwritten'
+    description: 'Builds a song using the blue notes. Red notes are overwritten'
   },
   melody: {
     name: 'melody',

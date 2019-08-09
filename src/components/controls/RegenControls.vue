@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class='control-group'>
-      <div class='control-group-header'>Predict</div>
       <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
-        <v-btn text v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype">
+        <v-btn text v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype" color="red">
           {{ptype.displayName}}
         </v-btn>
       </v-btn-toggle>
@@ -54,8 +53,8 @@ export default {
 
 <style scoped>
 
-.control-group-header {
-  color: #FF5252;
+.control-group {
+  margin-top: 10px;
 }
 #prediction-type-hint {
   display: block;
@@ -65,8 +64,8 @@ export default {
 .v-btn-toggle>.v-btn {
   height: 36px;
 }
-.v-btn--active {
+/* .v-btn--active {
   color: rgb(255, 147, 147) !important;
-}
+} */
 
 </style>

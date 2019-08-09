@@ -2,7 +2,7 @@
   <v-app id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Predict</router-link> |
+      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Home</router-link> |
       <!-- <router-link to="/sheet">Sheet</router-link> | -->
       <router-link to="/about">About</router-link>
     </div>

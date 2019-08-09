@@ -1,6 +1,6 @@
 <template>
   <div class='control-group'>
-    <div class='control-group-header'>Playback</div>
+    <div class='control-group-header'>Playback Controls</div>
 
     <div class='control-group-content'>
       <div class='control-group-control'>

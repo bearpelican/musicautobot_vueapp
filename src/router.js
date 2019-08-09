@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home.vue'
+import About from '@/views/About.vue'
 import Predict from '@/views/Predict.vue'
 import Sheet from '@/views/Sheet.vue'
 import { shuffleSong } from '@/lib/songPresets'
@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: Home
+      component: About
     },
     {
       path: '/',
