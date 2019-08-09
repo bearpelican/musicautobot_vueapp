@@ -2,7 +2,7 @@
   <v-app id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Home</router-link> |
+      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Playground</router-link> |
       <!-- <router-link to="/sheet">Sheet</router-link> | -->
       <router-link to="/about">About</router-link>
     </div>
@@ -33,11 +33,13 @@ export default {
   background-color: #ffffff;
 }
 #nav {
-  padding-top: 20px;
+  padding-top: 10px, 0px;
   a {
     text-decoration: none;
     font-weight: bold;
-    color: #2c3e50;
+    font-size: 1.1em;
+    color: #858f97;
+    margin: 0px 10px;
     &.router-link-active {
       color: #42b983;
     }

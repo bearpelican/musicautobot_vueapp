@@ -94,7 +94,7 @@ export default {
   z-index: 6;
 }
 
-#sequence-title-span {
+#sequence-title {
   display: inline-block;
   transition: all 0.3s ease-out;
   text-align: center;
