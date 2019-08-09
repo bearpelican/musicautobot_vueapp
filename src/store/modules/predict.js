@@ -8,6 +8,8 @@ export const state = {
   sid: null,
   nSteps: 200,
   seedLen: 10,
+  maskStart: null,
+  maskEnd: null,
   durationTemp: 0.5,
   noteTemp: 1.2,
   midiXML: null,
@@ -33,6 +35,12 @@ export const mutations = {
   },
   updateSeedLen (state, seedLen) {
     state.seedLen = seedLen
+  },
+  updateMaskStart (state, maskStart) {
+    state.maskStart = maskStart
+  },
+  updateMaskEnd (state, maskEnd) {
+    state.maskEnd = maskEnd
   },
   updatePredictionType (state, predictionType) {
     state.predictionType = predictionType

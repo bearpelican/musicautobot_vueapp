@@ -14,12 +14,13 @@ export default {
     return { }
   },
   computed: {
-    ...mapState(['seedLen', 'predictionType']),
+    ...mapState(['maskEnd', 'predictionType']),
     left () {
-      const offset = (this.seedLen <= 0) ? 2 : -4
-      return `${this.seedLen * pixelPerBeat + offset}px`
+      if (this.maskEnd === null) return '0px'
+      return `${this.maskEnd * pixelPerBeat - 5}px`
     },
     hidden () {
+      if (this.maskEnd === null) return true
       return ['pitch', 'beat'].includes(this.predictionType.name)
     },
     visibility () {
@@ -27,15 +28,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateSeedLen']),
+    ...mapMutations(['updateMaskEnd']),
     moveLine (event) {
       const quarterLength = 1
       const parentOffset = this.$el.parentNode.parentNode.getBoundingClientRect().left
-      let newSeedLen = positionToTiming((event.clientX - parentOffset), quarterLength)
-      if (newSeedLen < 0) {
-        newSeedLen = 0
-      }
-      this.updateSeedLen(newSeedLen)
+      const newMaskEnd = positionToTiming((event.clientX - parentOffset), quarterLength)
+      this.updateMaskEnd(newMaskEnd)
     },
     beginEditing (event) {
       this.addListeners()
@@ -61,9 +59,9 @@ div {
   position: absolute;
   top: 0;
   width: 8px;
-  border-right-width: 6px;
-  border-right-style: dashed;
-  border-right-color: #a35340;
+  border-left-width: 6px;
+  border-left-style: dotted;
+  border-left-color: #1d1449be;
   height: 100%;
   cursor: move;
 }

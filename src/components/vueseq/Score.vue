@@ -57,6 +57,7 @@ import OrigNote from '@/components/vueseq/OrigNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/ProgressLine'
 import SeedLine from '@/components/vueseq/SeedLine'
+import MaskEndLine from '@/components/vueseq/MaskEndLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { defaultBeats, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -70,7 +71,8 @@ export default {
     Note,
     ScoreLine,
     ProgressLine,
-    SeedLine
+    SeedLine,
+    MaskEndLine
   },
 
   props: {
