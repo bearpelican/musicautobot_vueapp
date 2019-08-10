@@ -124,14 +124,16 @@ export function generateSimpleActions (mutations) {
       const { notes, name: midiName, bpm } = midiToNotes(midi)
       if (_.isEmpty(seqName)) seqName = midiName
       commit('updateNotes', { notes, bpm, seqName, savePrevious })
+      return { notes, bpm }
     },
     loadMidiBuffer ({ dispatch }, { midiBuffer, seqName, savePrevious = true }) {
-      dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
+      return dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
     },
     loadOrigBuffer ({ commit }, { midiBuffer }) {
       const midi = bufferToMidi(midiBuffer)
       const { notes } = midiToNotes(midi)
       commit('updateOrigNotes', { notes })
+      return notes
     },
     clear ({ commit }) {
       commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
@@ -180,10 +182,10 @@ export const actions = {
 
 export const getters = {
   scoreLength: (state, getters) => {
-    return Math.max(defaultBeats, getters.sequenceLength)
+    return Math.max(defaultBeats, getters.sequenceLength + 8)
   },
   sequenceLength: state => {
-    return Math.max(...state.notes.map(n => n.timing + n.length))
+    return _.round(Math.max(...state.notes.map(n => n.timing + n.length)), 3)
   }
 
 }

@@ -38,7 +38,7 @@ export default {
       minimumUnit: state => state.currentLength.value
     }),
     ...mapState(['progressTime', 'version', 'playbackVersion']),
-    ...predMapState(['seedLen', 'predictionType']),
+    ...predMapState(['seedLen', 'maskStart', 'maskEnd', 'predictionType']),
     bottom () {
       if (this.state === 'normal') return `${keyNumberToOffset(this.storeKeyNumber)}px`
       return `${keyNumberToOffset(this.editKeyNumber)}px`
@@ -75,23 +75,25 @@ export default {
       return this.playbackVersion === 'original' ? 0.2 : 0.8
     },
     noteColor () {
-      if (this.storeTiming < this.progressTime && (this.storeTiming + this.storeLength) > this.progressTime) {
+      const timing = this._.round(this.storeTiming, 3)
+      const { name: pName, track: pTrack } = this.predictionType
+      if (timing < this.progressTime && (timing + this.storeLength) > this.progressTime) {
         return 'note-playing'
       }
       if (this.storeLength === 0) {
         return 'note-delete'
       }
-      if (this.predictionType.name === 'rhythm') {
-        return 'note-rhythm'
+      if (['rhythm', 'pitch'].includes(pName)) {
+        if (timing >= this.maskStart && timing < this.maskEnd) {
+          return `note-${pName}`
+        }
+        return 'note-default'
       }
-      if (this.predictionType.name === 'pitch') {
-        return 'note-pitch'
-      }
-      if (['melody', 'chords'].includes(this.predictionType.name) && (this.track !== this.predictionType.track)) {
+      if (['melody', 'chords'].includes(pName) && (this.track !== pTrack)) {
         // Do not erase chords when predicting melody and visa versa
         return 'note-default'
       }
-      if (this._.round(this.storeTiming, 3) >= this.seedLen) {
+      if (timing >= this.seedLen) {
         return 'note-predict'
       }
       return 'note-default'

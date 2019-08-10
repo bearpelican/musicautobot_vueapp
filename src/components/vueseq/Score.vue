@@ -43,6 +43,8 @@
       .grid-controls
         progress-line(key="progress-line")
         seed-line(key="seed-line")
+        mask-start-line(key="mask-start-line")
+        mask-end-line(key="mask-end-line")
 </template>
 
 <script>
@@ -53,6 +55,7 @@ import OrigNote from '@/components/vueseq/OrigNote'
 import ScoreLine from '@/components/vueseq/ScoreLine'
 import ProgressLine from '@/components/vueseq/line_controls/ProgressLine'
 import SeedLine from '@/components/vueseq/line_controls/SeedLine'
+import MaskStartLine from '@/components/vueseq/line_controls/MaskStartLine'
 import MaskEndLine from '@/components/vueseq/line_controls/MaskEndLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
 import { pixelPerBeat } from '@/lib/config'
@@ -68,6 +71,7 @@ export default {
     ScoreLine,
     ProgressLine,
     SeedLine,
+    MaskStartLine,
     MaskEndLine
   },
 
@@ -90,6 +94,7 @@ export default {
     ...mapState(['notes', 'prevNotes', 'origNotes']),
     ...mapGetters(['scoreLength']),
     beats () {
+      console.log('Beats', this.scoreLength)
       return Array(this.scoreLength)
     },
     width () {

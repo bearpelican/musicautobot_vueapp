@@ -8,7 +8,7 @@ export const state = {
   sid: null,
   nSteps: 200,
   seedLen: 10,
-  maskStart: null,
+  maskStart: 1,
   maskEnd: null,
   durationTemp: 0.5,
   noteTemp: 1.2,
@@ -151,16 +151,21 @@ export const actions = {
     commit('updateSID', sid)
     await dispatch('sequence/loadOrigBuffer', { midiBuffer }, { root: true })
   },
-  async loadSong ({ commit, dispatch }, sid) {
+  async loadSong ({ commit, dispatch, state }, sid) {
     commit('updateLoadingState', 'Loading song...')
+    const prevSID = state.sid
     commit('updateSID', sid)
 
     commit('sequence/updateOrigNotes', { notes: [] }, { root: true })
     const { midiBuffer, store } = await $backend.loadState(sid, 'song')
     commit('fromSave', store)
     const { display: seqName } = store
-    await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
+    const { notes } = await dispatch('sequence/loadMidiBuffer', { midiBuffer, seqName, savePrevious: false }, { root: true })
     commit('updateLoadingState', null)
+
+    if (prevSID !== sid) {
+      commit('updateMaskEnd', Math.floor(Math.max(...notes.map(n => n.timing + n.length))) - 1)
+    }
   },
   async loadPrediction ({ commit, dispatch }, pid) {
     commit('updateLoadingState', 'Loading prediction...')

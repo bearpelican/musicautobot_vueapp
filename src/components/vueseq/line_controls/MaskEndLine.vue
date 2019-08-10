@@ -12,16 +12,16 @@ export default {
     }
   },
   computed: {
-    ...mapState(['maskEnd', 'predictionType']),
+    ...mapState(['maskStart', 'maskEnd', 'predictionType']),
     offset () {
       return (this.beat <= 0) ? 2 : -4
     },
     hidden () {
       if (this.maskEnd === null) return true
-      return !['pitch', 'beat'].includes(this.predictionType.name)
+      return !['pitch', 'rhythm'].includes(this.predictionType.name)
     },
     beat: {
-      set (beat) { this.updateMaskEnd(beat) },
+      set (beat) { if (beat > this.maskStart) this.updateMaskEnd(beat) },
       get () { return this.maskEnd }
     }
   },

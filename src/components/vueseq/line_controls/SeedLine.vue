@@ -17,7 +17,7 @@ export default {
       return (this.beat <= 0) ? 2 : -4
     },
     hidden () {
-      return ['pitch', 'beat'].includes(this.predictionType.name)
+      return ['pitch', 'rhythm'].includes(this.predictionType.name)
     },
     beat: {
       set (beat) { this.updateSeedLen(beat) },
