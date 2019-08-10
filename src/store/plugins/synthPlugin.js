@@ -33,12 +33,18 @@ export class SynthPlugin {
           break
         }
         case 'play': {
-          const notes = state.playbackVersion === 'original' ? state.sequence.origNotes : state.sequence.notes
+          const notes = state.sequence.playbackVersion === 'original' ? state.sequence.origNotes : state.sequence.notes
           this.play(notes, state.sequence.bpm, state.sequence.playOffset)
           break
         }
         case 'stop': {
           this.stop()
+          break
+        }
+        case 'updatePlayOffset': {
+          console.log('dsjflksdjflsdkjfsdlk')
+          const notes = state.sequence.playbackVersion === 'original' ? state.sequence.origNotes : state.sequence.notes
+          this.playNotesOnBeat(notes, state.sequence.playOffset)
           break
         }
         default: {
@@ -124,6 +130,12 @@ export class SynthPlugin {
     this.stopTimeout = setTimeout(() => {
       this.stop()
     }, (this.endTime(this.notes) + 1 - offsetSeconds) * 1000)
+  }
+  playNotesOnBeat (notes, beat) {
+    const midiNotes = notes.filter(n => {
+      return (n.timing <= beat) && ((n.timing + n.length) > beat)
+    }).map(note => Tone.Midi(note.key))
+    this.synth.triggerAttackRelease(midiNotes, '1n', undefined, 0.1)
   }
 }
 

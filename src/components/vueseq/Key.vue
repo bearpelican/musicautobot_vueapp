@@ -68,6 +68,7 @@ button {
   font-size: 0.8em;
   padding-right: 3px;
   padding-top: 7px;
+  outline: none;
 }
 
 .black-key {
