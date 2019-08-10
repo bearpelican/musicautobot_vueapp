@@ -63,6 +63,7 @@ import { createNamespacedHelpers } from 'vuex'
 import { setTimeout } from 'timers'
 
 const { mapActions, mapState } = createNamespacedHelpers('predict')
+const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'search-table',
@@ -113,6 +114,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchSongs']),
+    ...seqMapActions(['loadMidiBuffer']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
       if (this.fuse !== null) return

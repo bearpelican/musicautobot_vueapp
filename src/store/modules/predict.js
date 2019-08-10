@@ -101,6 +101,7 @@ export const actions = {
     // }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence)
     const params = { midi, bpm, seqName, originalSID, nSteps, predictionType: predictionType.name, durationTemp, noteTemp, seedLen, maskStart, maskEnd }
+    const filteredParams = _.pickBy(params, _.identity)
 
     // Progress
     let counter = -10
@@ -122,7 +123,7 @@ export const actions = {
     let s3id = null
     // Predictions
     try {
-      ({ result: s3id, error } = await $backend.predictMidi(params))
+      ({ result: s3id, error } = await $backend.predictMidi(filteredParams))
     } catch (e) {
       error = e
     }
@@ -164,7 +165,8 @@ export const actions = {
     commit('updateLoadingState', null)
 
     if (prevSID !== sid) {
-      commit('updateMaskEnd', Math.floor(Math.max(...notes.map(n => n.timing + n.length))) - 1)
+      commit('updateMaskStart', Math.ceil(Math.min(...notes.map(n => n.timing))) + 2)
+      commit('updateMaskEnd', Math.floor(Math.max(...notes.map(n => n.timing + n.length))) - 2)
     }
   },
   async loadPrediction ({ commit, dispatch }, pid) {

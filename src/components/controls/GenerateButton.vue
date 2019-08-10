@@ -27,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['seedLen']),
+    ...mapState(['seedLen', 'maskStart', 'predictionType']),
     ...seqMapState(['scrollLeftPosition']),
     // left () {
     //   let leftOffset = this.seedLen * pixelPerBeat - this.scoreScrollLeft
@@ -51,8 +51,12 @@ export default {
     //   }
     //   return `${leftScoreOffset}px`
     // }
+    beat () {
+      const ptype = this._.get(this.predictionType, 'name')
+      return ['pitch', 'rhythm'].includes(ptype) ? this.maskStart : this.seedLen
+    },
     left () {
-      const offset = this.seedLen * pixelPerBeat
+      const offset = this.beat * pixelPerBeat
       const margin = 50
       let relativeOffset = offset - this.scrollLeftPosition + keyWidth
 
