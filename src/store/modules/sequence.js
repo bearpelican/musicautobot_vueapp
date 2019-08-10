@@ -1,4 +1,4 @@
-import { defaultLength } from '@/lib/config'
+import { defaultLength, defaultBeats } from '@/lib/config'
 import $backend from '@/backend'
 import { midiToNotes, storeToMidi, bufferToMidi } from '@/lib/convert'
 import _ from 'lodash'
@@ -21,7 +21,6 @@ export const state = {
   notes: [],
   prevNotes: [],
   origNotes: [],
-  sequenceLength: 80,
   // Metadata
   version: 0,
   bpm: 120,
@@ -92,9 +91,6 @@ export const mutations = {
   updatePlaybackVersion (state, { playbackVersion }) {
     state.playbackVersion = playbackVersion
   },
-  updateTrack (state, { track }) {
-    state.currentTrack = track
-  },
   updateBPM (state, bpm) {
     state.bpm = parseInt(bpm)
   },
@@ -124,15 +120,15 @@ export const mutations = {
 
 export function generateSimpleActions (mutations) {
   const actions = {
-    loadMidi ({ commit, state, dispatch }, { midi, seqName, savePrevious = true }) {
+    loadMidi ({ commit }, { midi, seqName, savePrevious = true }) {
       const { notes, name: midiName, bpm } = midiToNotes(midi)
       if (_.isEmpty(seqName)) seqName = midiName
       commit('updateNotes', { notes, bpm, seqName, savePrevious })
     },
-    loadMidiBuffer ({ commit, dispatch }, { midiBuffer, seqName, savePrevious = true }) {
+    loadMidiBuffer ({ dispatch }, { midiBuffer, seqName, savePrevious = true }) {
       dispatch('loadMidi', { midi: bufferToMidi(midiBuffer), seqName, savePrevious })
     },
-    loadOrigBuffer ({ commit, dispatch }, { midiBuffer }) {
+    loadOrigBuffer ({ commit }, { midiBuffer }) {
       const midi = bufferToMidi(midiBuffer)
       const { notes } = midiToNotes(midi)
       commit('updateOrigNotes', { notes })
@@ -140,7 +136,7 @@ export function generateSimpleActions (mutations) {
     clear ({ commit }) {
       commit('updateNotes', { notes: [], bpm: 120, seqName: 'Untitled', savePrevious: true })
     },
-    exportMidi ({ commit, state, dispatch }) {
+    exportMidi ({ state }) {
       const { midi, seqName } = storeToMidi(state, null)
       $backend.exportMidi({ midi, fileName: `${seqName}.mid` })
     }
@@ -178,21 +174,25 @@ export const actions = {
     'updateBPM',
     'updateInstrumentType',
     'updatePlaybackVersion',
-    'updateTrack',
     'updateSeqName'
   ])
 }
 
-// export default new Vuex.Store({
-//   state,
-//   mutations,
-//   actions,
-//   plugins: [createSynthPlugin]
-// })
+export const getters = {
+  scoreLength: (state, getters) => {
+    return Math.max(defaultBeats, getters.sequenceLength)
+  },
+  sequenceLength: state => {
+    return Math.max(...state.notes.map(n => n.timing + n.length))
+  }
+
+}
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
+  // plugins: [createSynthPlugin]
 }

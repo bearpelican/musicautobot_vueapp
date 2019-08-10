@@ -93,13 +93,14 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    let { nSteps, seedLen, durationTemp, noteTemp, predictionType, sid: originalSID } = rootState.predict
+    let { sid: originalSID, nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd } = rootState.predict
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
     // if (['pitch', 'rhythm'].includes(predictionType.name)) {
     //   seedLen = null
     // }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence)
+    const params = { midi, bpm, seqName, originalSID, nSteps, predictionType: predictionType.name, durationTemp, noteTemp, seedLen, maskStart, maskEnd }
 
     // Progress
     let counter = -10
@@ -121,7 +122,7 @@ export const actions = {
     let s3id = null
     // Predictions
     try {
-      ({ result: s3id, error } = await $backend.predictMidi({ midi, nSteps, bpm, seqName, seedLen, durationTemp, noteTemp, predictionType: predictionType.name, originalSID }))
+      ({ result: s3id, error } = await $backend.predictMidi(params))
     } catch (e) {
       error = e
     }

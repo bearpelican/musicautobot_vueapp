@@ -41,12 +41,8 @@
           :index="index"
         )
       .grid-controls
-        progress-line(
-          key="progress-line"
-        )
-        seed-line(
-          key="seed-line"
-        )
+        progress-line(key="progress-line")
+        seed-line(key="seed-line")
 </template>
 
 <script>
@@ -59,9 +55,9 @@ import ProgressLine from '@/components/vueseq/line_controls/ProgressLine'
 import SeedLine from '@/components/vueseq/line_controls/SeedLine'
 import MaskEndLine from '@/components/vueseq/line_controls/MaskEndLine'
 import { allKeys, getTypeOfKey, getKeyNumber } from '@/lib/getOctaves'
-import { defaultBeats, pixelPerBeat } from '@/lib/config'
+import { pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapState } = createNamespacedHelpers('sequence')
+const { mapActions, mapState, mapGetters } = createNamespacedHelpers('sequence')
 
 export default {
   components: {
@@ -92,19 +88,12 @@ export default {
   },
   computed: {
     ...mapState(['notes', 'prevNotes', 'origNotes']),
+    ...mapGetters(['scoreLength']),
     beats () {
-      /* eslint-disable no-console */
-      return new Array(Math.max(
-        defaultBeats,
-        Math.ceil(this.notes.reduce((a, b) => {
-          return {
-            timing: Math.max(a.timing, b.timing)
-          }
-        }, { timing: 0 }).timing) + 16
-      ))
+      return Array(this.scoreLength)
     },
     width () {
-      return `${this.beats.length * pixelPerBeat}px`
+      return `${this.scoreLength * pixelPerBeat}px`
     },
     scoreLeftOffset () {
       return this.scoreScrollLeft - this.scoreRect.left
