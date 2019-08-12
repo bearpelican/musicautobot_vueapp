@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="note-original" :style="{ bottom, left, width, display, opacity }")
+  div(class="note-original" :style="{ bottom, left, width, display, opacity, filter }")
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState(['seedLen']),
-    ...seqMapState(['playbackVersion']),
+    ...seqMapState(['playbackVersion', 'appState', 'progressTime']),
     bottom () {
       return `${keyNumberToOffset(this.storeKeyNumber) + 2}px`
     },
@@ -44,8 +44,18 @@ export default {
       // }
       // return 'none'
     },
+    filter () {
+      if (this.appState === 'playing') { // Follow along with progress line
+        const timing = this._.round(this.storeTiming, 3)
+        const isPlaying = timing < this.progressTime && (timing + this.storeLength) > this.progressTime
+        if (isPlaying && this.playbackVersion === 'original') {
+          return 'brightness(50%)'
+        }
+      }
+      return 'none'
+    },
     opacity () {
-      return this.playbackVersion === 'original' ? 0.6 : 0.3
+      return this.playbackVersion === 'original' ? 0.8 : 0.3
     }
   },
   methods: {

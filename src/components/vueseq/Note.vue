@@ -37,7 +37,7 @@ export default {
     ...mapState({
       minimumUnit: state => state.currentLength.value
     }),
-    ...mapState(['progressTime', 'version', 'playbackVersion']),
+    ...mapState(['progressTime', 'appState', 'version', 'playbackVersion']),
     ...predMapState(['seedLen', 'maskStart', 'maskEnd', 'predictionType']),
     bottom () {
       if (this.state === 'normal') return `${keyNumberToOffset(this.storeKeyNumber)}px`
@@ -51,34 +51,18 @@ export default {
       if (this.state === 'normal') return `${timingToPosition(this.storeLength)}px`
       return `${timingToPosition(this.editLength)}px`
     },
-    // selectionColor () {
-    //   if (this.editLength === 0) {
-    //     return '#d32c2c'
-    //   }
-    //   const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
-    //   if (this.editTiming >= this.seedLen && !keepTrackNote) {
-    //     return '#B71C1C'
-    //   }
-    //   return '#3287ce'
-    // },
-    // color () {
-    //   if (this.editTiming < this.progressTime && (this.editTiming + this.editLength) > this.progressTime) {
-    //     return '#666666'
-    //   }
-    //   const keepTrackNote = (this.predictionType.track !== -1) && (this.track !== this.predictionType.track)
-    //   if (this.editTiming >= this.seedLen && !keepTrackNote) {
-    //     return '#FF5252'
-    //   }
-    //   return '#64b5f6'
-    // },
     opacity () {
       return this.playbackVersion === 'original' ? 0.2 : 0.8
     },
     noteColor () {
       const timing = this._.round(this.storeTiming, 3)
       const { name: pName, track: pTrack } = this.predictionType
-      if (timing < this.progressTime && (timing + this.storeLength) > this.progressTime) {
-        return 'note-playing'
+
+      if (this.appState === 'playing') { // Follow along with progress line
+        const isPlaying = timing < this.progressTime && (timing + this.storeLength) > this.progressTime
+        if (isPlaying && this.playbackVersion !== 'original') {
+          return 'note-playing'
+        }
       }
       if (this.storeLength === 0) {
         return 'note-delete'
