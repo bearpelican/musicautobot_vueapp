@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <github-ribbon></github-ribbon>
     <div class="about-header">
       <h1>MusicAutobot - The Pop Music Generator</h1>
       <span class="about-subtext">Give it a few notes, and it'll autocomplete your song!</span>
@@ -165,8 +166,6 @@
     <h2>Acknowledgements</h2>
 
     <ul class="variation-list">
-      <li><a href="https://github.com/shundroid/vue-midi-sequencer/" target="_blank">shundroid</a></li>
-      <!-- <li><a href="https://github.com/wayne391/Lead-Sheet-Dataset" target="_blank">wayne391</a></li> -->
       <li><a href="https://www.fast.ai/" target="_blank">Fast.Ai</a></li>
       <li><a href="https://www.hooktheory.com/" target="_blank">HookTheory</a></li>
       <li><a href="https://www.southparkcommons.com/" target="_blank">South Park Commons</a></li>
@@ -180,6 +179,7 @@
 
 <script>
 import { PredictionType } from '@/lib/config'
+import GithubRibbon from '@/components/GithubRibbon'
 
 export default {
   name: 'About',
@@ -191,6 +191,9 @@ export default {
       predictionTypes: this._.values(PredictionType),
       window: 0
     }
+  },
+  components: {
+    GithubRibbon
   }
 }
 </script>
