@@ -95,7 +95,7 @@ export default {
     ...mapGetters(['scoreLength']),
     beats () {
       console.log('Beats', this.scoreLength)
-      return Array(this.scoreLength)
+      return Array(Math.ceil(this.scoreLength))
     },
     width () {
       return `${this.scoreLength * pixelPerBeat}px`
