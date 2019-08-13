@@ -6,12 +6,14 @@ import _ from 'lodash'
 export const state = {
   songs: [],
   sid: null,
-  nSteps: 200,
+  nSteps: 400,
   seedLen: 10,
   maskStart: 1,
   maskEnd: null,
   durationTemp: 0.5,
   noteTemp: 1.2,
+  topK: 14,
+  topP: 0.85,
   midiXML: null,
   tutorialStep: 10,
   loadingState: null,
@@ -93,14 +95,14 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    let { sid: originalSID, nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd } = rootState.predict
+    let { sid: originalSID, nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP } = rootState.predict
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
     // if (['pitch', 'rhythm'].includes(predictionType.name)) {
     //   seedLen = null
     // }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence)
-    const params = { midi, bpm, seqName, originalSID, nSteps, predictionType: predictionType.name, durationTemp, noteTemp, seedLen, maskStart, maskEnd }
+    const params = { midi, bpm, seqName, originalSID, nSteps, predictionType: predictionType.name, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP }
     const filteredParams = _.pickBy(params, _.identity)
 
     // Progress
@@ -110,7 +112,7 @@ export const actions = {
         commit('updateLoadingState', `Generating steps (${counter} / ${nSteps})...`)
       }
       counter += 1
-    }, 1000 * 0.25)
+    }, 1000 * 0.1)
 
     setTimeout(() => {
       if (progress != null) {
