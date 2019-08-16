@@ -3,7 +3,7 @@
     #section(ref="scrollSection")
       keyboard
       score(:gridOpacity="gridOpacity")
-    play-button(id="play-button")
+    play-button(buttonID="play-button")
     <slot name="overlay"></slot>
 </template>
 
@@ -61,10 +61,15 @@ export default {
   /* margin: 0px 100px; */
 }
 
+</style>
+
+<style>
+
 #play-button {
   position: absolute;
   bottom: 30px;
   left: 115px;
   z-index: 4;
 }
+
 </style>

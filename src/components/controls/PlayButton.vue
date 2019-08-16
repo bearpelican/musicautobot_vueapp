@@ -1,7 +1,12 @@
 <template>
-  <v-btn color="blue darken-2" dark fab @click="toggle">
-    <v-icon>{{ icon }}</v-icon>
-  </v-btn>
+  <v-tooltip right>
+    <template v-slot:activator="{ on }">
+      <v-btn :id="buttonID" color="blue darken-2" dark fab large v-on="on" @click="toggle">
+        <v-icon>{{ icon }}</v-icon>
+      </v-btn>
+    </template>
+    <div>Play it back!</div>
+  </v-tooltip>
 </template>
 
 <script>
@@ -10,6 +15,9 @@ const { mapActions, mapState } = createNamespacedHelpers('sequence')
 const { mapMutations: predMapMutations } = createNamespacedHelpers('predict')
 
 export default {
+  props: {
+    buttonID: String
+  },
   computed: {
     ...mapState(['appState']),
     icon () {

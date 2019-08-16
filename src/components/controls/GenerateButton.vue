@@ -1,7 +1,7 @@
 <template lang="pug">
-  <v-tooltip left>
+  <v-tooltip left v-model="showTooltip">
     <template v-slot:activator="{ on }">
-      v-btn(id="generate-button" color="red darken-2" :style="{ left }"  dark fab v-on="on" @click="predict")
+      v-btn(id="generate-button" color="red darken-2" :style="{ left }"  dark large fab v-on="on" @click="predict")
         v-icon(id="generate-icon") cached
     </template>
     <div>Click to remix!</div>
@@ -23,7 +23,8 @@ export default {
   },
   data () {
     return {
-      parentNode: null
+      parentNode: null,
+      showTooltip: false
     }
   },
   computed: {
@@ -77,6 +78,7 @@ export default {
   methods: {
     ...mapActions(['predictMidi']),
     async predict () {
+      this.showTooltip = false
       const pid = await this.predictMidi()
       if (pid) {
         this.$router.push({ path: `/predict/${pid}` })
@@ -85,6 +87,12 @@ export default {
   },
   mounted () {
     this.parentNode = this.$el.parentNode
+    setTimeout(() => {
+      this.showTooltip = true
+      setTimeout(() => {
+        this.showTooltip = false
+      }, 8 * 1000)
+    }, 1 * 1000)
   },
   components: {
     TutorialPredict

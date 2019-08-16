@@ -11,7 +11,7 @@ export const state = {
   maskStart: 1,
   maskEnd: null,
   durationTemp: 0.5,
-  noteTemp: 1.2,
+  noteTemp: 1.3,
   topK: 14,
   topP: 0.85,
   midiXML: null,
