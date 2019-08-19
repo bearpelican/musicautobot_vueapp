@@ -58,7 +58,7 @@ export default {
   methods: {
     ...mapActions(['loadSong', 'loadPrediction']),
     ...seqMapActions(['clear']),
-    ...mapMutations(['updateTutorialStep', 'updateSeedLen']),
+    ...mapMutations(['updateTutorialStep', 'updateSeedLen', 'updateSID']),
     fetchData () {
       const path = this.$route.path
       console.log('PATHS', path)
@@ -68,6 +68,7 @@ export default {
       const pid = this.$route.params.pid
       if (sid) {
         if (sid === 'blank') {
+          this.updateSID(null)
           this.clear()
         } else {
           this.loadSong(sid)

@@ -153,7 +153,7 @@ export default {
     updateSearch (term) {
       if (this.fuse === null || this._.isEmpty(term) || this._.isEmpty(this.songs)) return
       setTimeout(() => {
-        this.results = this.fuse.search(term, { limit: 10 })
+        this.results = this.fuse.search(term, { limit: 50 })
       }, 0)
     },
     loadLocalFile (event) {
