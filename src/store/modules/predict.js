@@ -12,8 +12,8 @@ export const state = {
   maskEnd: null,
   durationTemp: 0.5,
   noteTemp: 1.2,
-  topK: 14,
-  topP: 0.85,
+  topK: 24,
+  topP: 0.9,
   midiXML: null,
   tutorialStep: 10,
   loadingState: null,
@@ -48,6 +48,8 @@ export const mutations = {
     state.predictionType = predictionType
     state.noteTemp = predictionType.temp[0]
     state.durationTemp = predictionType.temp[1]
+    state.topK = predictionType.filter[0]
+    state.topP = predictionType.filter[1]
   },
   updateNoteTemp (state, noteTemp) {
     state.noteTemp = noteTemp

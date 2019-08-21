@@ -4,11 +4,11 @@
     <div class='control-group-content'>
       <div class='control-group-control'>
         <div class='control-group-label'>Pitch: {{ noteTempPCT }}%</div>
-        <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.7" :max="1.6" :step="0.02" hide-details></v-slider>
+        <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.1" :max="2.1" :step="0.05" hide-details></v-slider>
       </div>
       <div class='control-group-control'>
         <div class='control-group-label'>Rhythm: {{ durationTempPCT }}%</div>
-        <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.3" :max="1.0" :step="0.02" hide-details></v-slider>
+        <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.1" :max="2.1" :step="0.05" hide-details></v-slider>
       </div>
     </div>
   </div>
@@ -45,10 +45,10 @@ export default {
       get () { return this.durationTemp }
     },
     noteTempPCT () {
-      return parseInt((this.noteTemp - 0.7) / 0.9 * 100)
+      return parseInt((this.noteTemp - 0.1) / 2.0 * 100)
     },
     durationTempPCT () {
-      return parseInt((this.durationTemp - 0.3) / 0.7 * 100)
+      return parseInt((this.durationTemp - 0.1) / 2.0 * 100)
     }
   },
   methods: {

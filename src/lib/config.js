@@ -13,35 +13,40 @@ export const scoreHeight = keyHeight * 12 * (endOctave - startOctave)
 export const PredictionType = {
   next: {
     name: 'next',
-    temp: [1.2, 0.8],
+    temp: [1.2, 0.9],
+    filter: [24, 0.9],
     track: -1,
     displayName: 'Autocomplete',
     description: 'Builds a song using the blue notes. Red notes are overwritten'
   },
   melody: {
     name: 'melody',
-    temp: [1.0, 0.8],
+    temp: [1.4, 1.2],
+    filter: [24, 0.9],
     track: 0,
     displayName: 'Melody',
     description: 'Create a new melody using the same chords.'
   },
   chords: {
     name: 'chords',
-    temp: [0.7, 0.7],
+    temp: [0.8, 0.8],
+    filter: [12, 0.9],
     track: 1,
     displayName: 'Harmonize',
     description: 'Generate new chords from the same melody.'
   },
   pitch: {
     name: 'pitch',
-    temp: [1.0, 0.0],
+    temp: [1.2, 0.0],
+    filter: [24, 0.9],
     track: -1,
     displayName: 'Pitch',
     description: 'Create a new song in the exact same rhythm as the original.'
   },
   rhythm: {
     name: 'rhythm',
-    temp: [0.5, 0.0],
+    temp: [0.0, 1.2],
+    filter: [24, 0.9],
     track: -1,
     displayName: 'Rhythm',
     description: 'Keep the same tune, but remix the rhythm.'
