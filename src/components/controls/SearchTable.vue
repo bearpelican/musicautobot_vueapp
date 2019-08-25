@@ -62,7 +62,7 @@ import Fuse from 'fuse.js'
 import { createNamespacedHelpers } from 'vuex'
 import { setTimeout } from 'timers'
 
-const { mapActions, mapState } = createNamespacedHelpers('predict')
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict')
 const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
@@ -115,6 +115,7 @@ export default {
   methods: {
     ...mapActions(['fetchSongs']),
     ...seqMapActions(['loadMidiBuffer']),
+    ...mapMutations(['updateSID']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
       if (this.fuse !== null) return
@@ -158,16 +159,18 @@ export default {
     },
     loadLocalFile (event) {
       const file = this._.get(event, 'target.files[0]')
-      if (this._.get(file, 'name', '').split('.').pop() !== 'mid') {
+      const nameParts = this._.get(file, 'name', '').split('.')
+      const ext = nameParts.pop()
+      if (ext !== 'mid') {
         console.log('Error loading file', file)
-        // (AS) todo: show error UI
         return
       }
 
       const reader = new FileReader()
-      reader.fileName = file.name
+      reader.fileName = nameParts[0]
       reader.onload = e => this.loadMidiBuffer({ midiBuffer: e.target.result, seqName: e.target.fileName, savePrevious: false })
       reader.readAsArrayBuffer(file)
+      this.updateSID(null)
       this.showDialog = false
     }
   },

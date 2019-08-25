@@ -10,10 +10,10 @@ export const state = {
   seedLen: 10,
   maskStart: 1,
   maskEnd: null,
-  durationTemp: 0.5,
+  durationTemp: 0.7,
   noteTemp: 1.2,
   topK: 24,
-  topP: 0.9,
+  topP: 0.92,
   midiXML: null,
   tutorialStep: 10,
   loadingState: null,
@@ -105,7 +105,7 @@ export const actions = {
     // }
     const { midi, bpm, seqName } = storeToMidi(rootState.sequence)
     const params = { midi, bpm, seqName, originalSID, nSteps, predictionType: predictionType.name, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP }
-    const filteredParams = _.pickBy(params, _.identity)
+    const filteredParams = _.omitBy(params, _.isNil)
 
     // Progress
     let counter = -10
