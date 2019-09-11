@@ -83,21 +83,21 @@ export default {
   },
   exportMidi ({ midi, fileName }) {
     saveAs(this.midiToBlob(midi), fileName)
+  },
+  async saveStore ({ midi, ...args }) {
+    const formData = new FormData()
+    formData.append('midi', this.midiToBlob(midi))
+    _.forOwn(args, (value, key) => {
+      formData.append(key, value)
+    })
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    // const response = await $axios.post('predict/midi', formData, config)
+    const response = await $axios.post('store/save', formData, config)
+    console.log('Response:', response)
+    return response.data
   }
-  // async saveStore ({ midi, ...args }) {
-  //   const formData = new FormData()
-  //   formData.append('midi', this.midiToBlob(midi))
-  //   _.forOwn(args, (value, key) => {
-  //     formData.append(key, value)
-  //   })
-  //   const config = {
-  //     headers: {
-  //       'content-type': 'multipart/form-data'
-  //     }
-  //   }
-  //   // const response = await $axios.post('predict/midi', formData, config)
-  //   const response = await $axios.post('store/save', formData, config)
-  //   console.log('Response:', response)
-  //   return response.data
-  // }
 }

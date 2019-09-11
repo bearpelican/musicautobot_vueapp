@@ -113,8 +113,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchSongs']),
-    ...seqMapActions(['loadMidiBuffer']),
+    ...mapActions(['fetchSongs', 'saveMidi']),
+    ...seqMapActions(['loadMidiBuffer', 'clear']),
     ...mapMutations(['updateSID']),
     loadSearch () {
       if (this._.isEmpty(this.songs)) return
@@ -157,7 +157,7 @@ export default {
         this.results = this.fuse.search(term, { limit: 50 })
       }, 0)
     },
-    loadLocalFile (event) {
+    async loadLocalFile (event) {
       const file = this._.get(event, 'target.files[0]')
       const nameParts = this._.get(file, 'name', '').split('.')
       const ext = nameParts.pop()
@@ -166,12 +166,19 @@ export default {
         return
       }
 
+      this.clear()
       const reader = new FileReader()
       reader.fileName = nameParts[0]
       reader.onload = e => this.loadMidiBuffer({ midiBuffer: e.target.result, seqName: e.target.fileName, savePrevious: false })
       reader.readAsArrayBuffer(file)
-      this.updateSID(null)
-      this.showDialog = false
+
+      setTimeout(async () => {
+        const savedMidiID = await this.saveMidi()
+        this.updateSID(savedMidiID)
+        this.$router.push({ path: `/song/${savedMidiID}` })
+
+        this.showDialog = false
+      }, 1 * 1000)
     }
   },
   mounted () {

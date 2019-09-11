@@ -31,7 +31,7 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
       const toneNote = {
         midi: note.key,
         track: note.track,
-        time: timingToSeconds(note.timing, bpm),
+        time: _.round(timingToSeconds(note.timing, bpm), 3),
         duration: timingToSeconds(note.length, bpm),
         velocity: 0.8
       }
@@ -42,6 +42,7 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
     })
     .sort((a, b) => a.time - b.time)
     .filter(n => n.duration > 0)
+    .filter(n => n.time >= -0.1)
   return toneNotes
 }
 
@@ -112,6 +113,7 @@ export function storeToMidi (state, seedLen = null, track = -1) {
     storeNotes = storeNotes.filter(n => {
       const keepTrackNote = (track !== -1) && (n.track !== track)
       const isSeed = _.round(n.timing, 3) < seedLen
+      if (n.length < 0.0) return false
       return isSeed || keepTrackNote
     })
   }

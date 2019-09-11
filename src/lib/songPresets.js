@@ -87,7 +87,63 @@ export const Presets = [
     sid: '73b2b8e7db746b7e4b6fc3fa4658671b',
     display: 'The Four Seasons Concert No 4 Winter - Antonio Vivaldi',
     seedLen: 15
-
+  },
+  {
+    sid: 'b51d911631b67babe1612dae455600e3',
+    display: 'In The End - Linkin Park - Chorus',
+    seedLen: 15
+  },
+  {
+    sid: '81efc618ff11aa17d4e96219380c115e',
+    display: 'Hey Jude - The Beatles - Chorus',
+    seedLen: 15
+  },
+  {
+    sid: '583aee3ac9d91125102096d28926702b',
+    display: 'Oops I Did It Again - Britney Spears - Chorus',
+    seedLen: 13
+  },
+  {
+    sid: 'e250d1faf9b3265f23c049d113f8a773',
+    display: 'Legend Of Zelda Main Theme - Nintendo',
+    seedLen: 10
+  },
+  {
+    sid: 'e8820e3b81d2429d684c986ce2f57071',
+    display: 'I Dont Want To Miss A Thing - Aerosmith - Chorus',
+    seedLen: 15
+  },
+  {
+    sid: '83ee71fe7fef0bd1fd15a49740cfc967',
+    display: 'Everywhere - Michelle Branch - Chorus'
+  },
+  {
+    sid: '1b341ae44d35a6c8d21f6ba3af65dd97',
+    display: 'I Kissed A Girl - Katy Perry - Chorus'
+  },
+  {
+    sid: '4296f489066d02db3491bcde78667746',
+    display: 'Symphony No 40 In G Minor I - Wolfgang Amadeus Mozart - Verse', // ERROR
+    seedLen: 22
+  },
+  {
+    sid: '8c0b6ff7e893dca13edd90a4d9ebb892',
+    display: 'Stairway To Heaven - Led Zeppelin - Intro'
+  },
+  {
+    sid: 'c8bcf08c8d31c98c61a91b2d90a9cdde',
+    display: 'Complicated - Avril Lavigne - Chorus',
+    seedLen: 15
+  },
+  {
+    sid: '50b4cbff1b6c2886c31332e5fb1a5f56',
+    display: 'Stronger - Kanye West - Chorus',
+    seedLen: 15
+  },
+  {
+    sid: 'bb3324a9068db739eff1b2fc1cc0670b',
+    display: 'Bad Romance - Lady Gaga - Chorus',
+    seedLen: 12
   }
 ]
 
