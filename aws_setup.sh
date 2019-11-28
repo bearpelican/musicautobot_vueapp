@@ -24,6 +24,13 @@ sudo apt-get update && sudo apt-get install yarn -y
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 
+# install anaconda
+CONDA_SH=Anaconda3-2019.03-Linux-x86_64.sh
+curl -O https://repo.anaconda.com/archive/$CONDA_SH
+bash $CONDA_SH -b
+rm $CONDA_SH
+. ~/anaconda3/etc/profile.d/conda.sh
+
 # link bashrc things
 if [ ! -d ~/dotfiles ]; then
     git clone https://github.com/bearpelican/dotfiles.git
@@ -38,50 +45,54 @@ if [ ! -d ~/dotfiles ]; then
 fi
 
 
-# install anaconda
-CONDA_SH=Anaconda3-2019.03-Linux-x86_64.sh
-curl -O https://repo.anaconda.com/archive/$CONDA_SH
-bash $CONDA_SH -b
-rm $CONDA_SH
-. ~/anaconda3/etc/profile.d/conda.sh
-
-
-
 
 
 # Install midi_generator
-git clone https://github.com/bearpelican/midi_generator.git
-pushd midi_generator
-# pip install -r requirements.txt
+git clone https://github.com/bearpelican/musicautobot.git
+pushd musicautobot
 conda env create -f environment.yml
 popd
 
-# Install vue_midi_generator
-git clone https://github.com/bearpelican/vue_midi_generator.git
-pushd vue_midi_generator
-conda env update -f environment.yml
-yarn install
-
-
-# Create midi environment
-# ENV=midi
-# ENV_BIN=~/anaconda3/envs/$ENV/bin
-# conda create -n $ENV python=3.7 -y
-
-# Hack to activate env from bash shell - https://stackoverflow.com/questions/34534513/calling-conda-source-activate-from-bash-script
-eval "$(conda shell.bash hook)"
-ENV=midi
-conda activate $ENV
-
-pushd app/api
-rm -rf data_serve
-DATA_FILE=data_serve.tar.gz
-wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/v18/$DATA_FILE
+pushd musicautobot/data
+DATA_FILE=numpy.tar.gz
+wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/pretrained/vueapp/$DATA_FILE
 tar -xf $DATA_FILE
 rm $DATA_FILE
 popd
 
-popd
+# Hack to activate env from bash shell - https://stackoverflow.com/questions/34534513/calling-conda-source-activate-from-bash-script
+eval "$(conda shell.bash hook)"
+ENV=musicautobot
+conda activate $ENV
+
+
+
+# # Install vue_midi_generator
+# git clone https://github.com/bearpelican/musicautobot_vueapp.git
+# pushd musicautobot_vueapp
+# conda env update -f environment.yml
+# yarn install
+
+
+# # Create midi environment
+# # ENV=midi
+# # ENV_BIN=~/anaconda3/envs/$ENV/bin
+# # conda create -n $ENV python=3.7 -y
+
+# # Hack to activate env from bash shell - https://stackoverflow.com/questions/34534513/calling-conda-source-activate-from-bash-script
+# eval "$(conda shell.bash hook)"
+# ENV=midi
+# conda activate $ENV
+
+# pushd app/api
+# rm -rf data_serve
+# DATA_FILE=data_serve.tar.gz
+# wget https://ashaw-midi-web-server.s3-us-west-2.amazonaws.com/v18/$DATA_FILE
+# tar -xf $DATA_FILE
+# rm $DATA_FILE
+# popd
+
+# popd
 
 # Enable proxy pass to server: 
 # location / {
@@ -99,3 +110,12 @@ popd
 # to test:
 # yarn build
 # gunicorn --workers 8 run_guni:app -b 127.0.0.1:5000 --timeout 180
+
+# to run:
+# gunicorn -b 127.0.0.1:5000 run_guni:app  --timeout 180 --workers 48
+
+
+
+# change bucket name - emacs ~/musicautobot/serve/api/api.cfg
+#
+# gunicorn -b 127.0.0.1:5000 run_guni:app  --timeout 180 --workers 2
