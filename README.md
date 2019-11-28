@@ -3,6 +3,8 @@
 This is the front-end source code for musicautobot.com.  
 It's a full featured MIDI sequencer that serves predictions from our deep learning music model.
 
+![Screenshot](images/musicautobot_screenshot.png)
+
 #### Installation
 
 Install Yarn
