@@ -10,7 +10,7 @@ const noteLengths = [
 export default noteLengths
 
 export function getLengthFromValue (value) {
-  for (let noteLength of noteLengths) {
+  for (const noteLength of noteLengths) {
     if (noteLength.value === value) {
       return noteLength
     }

@@ -1,10 +1,18 @@
 
 <template>
-  <div class='loading-outer'>
-    <div class='loading-inner'>
-      <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
+  <div class="loading-outer">
+    <div class="loading-inner">
+      <v-progress-circular
+        indeterminate
+        color="green accent-3"
+        :size="40"
+      />
       <label>{{ value }}</label>
-      <v-progress-circular indeterminate color="green accent-3" :size="40"></v-progress-circular>
+      <v-progress-circular
+        indeterminate
+        color="green accent-3"
+        :size="40"
+      />
     </div>
   </div>
 </template>

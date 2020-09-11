@@ -1,14 +1,40 @@
 <template>
-  <div class='control-group'>
-    <div class='control-group-header'>Creativity</div>
-    <div class='control-group-content'>
-      <div class='control-group-control'>
-        <div class='control-group-label'>Pitch: {{ noteTempPCT }}%</div>
-        <v-slider id="noteTemp" class="control-group-slider" color="red" type="range" v-model='selectNoteTemp' :min="0.1" :max="2.1" :step="0.05" hide-details></v-slider>
+  <div class="control-group">
+    <div class="control-group-header">
+      Creativity
+    </div>
+    <div class="control-group-content">
+      <div class="control-group-control">
+        <div class="control-group-label">
+          Pitch: {{ noteTempPCT }}%
+        </div>
+        <v-slider
+          id="noteTemp"
+          v-model="selectNoteTemp"
+          class="control-group-slider"
+          color="red"
+          type="range"
+          :min="0.1"
+          :max="2.1"
+          :step="0.05"
+          hide-details
+        />
       </div>
-      <div class='control-group-control'>
-        <div class='control-group-label'>Rhythm: {{ durationTempPCT }}%</div>
-        <v-slider id="durTemp" class="control-group-slider" color="red" type="range" v-model='selectDurationTemp' :min="0.1" :max="2.1" :step="0.05" hide-details></v-slider>
+      <div class="control-group-control">
+        <div class="control-group-label">
+          Rhythm: {{ durationTempPCT }}%
+        </div>
+        <v-slider
+          id="durTemp"
+          v-model="selectDurationTemp"
+          class="control-group-slider"
+          color="red"
+          type="range"
+          :min="0.1"
+          :max="2.1"
+          :step="0.05"
+          hide-details
+        />
       </div>
     </div>
   </div>
@@ -20,7 +46,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapMutations, mapState } = createNamespacedHelpers('predict')
 
 export default {
-  name: 'predict-controls',
+  name: 'PredictControls',
   data () {
     return {
       error: ''

@@ -1,6 +1,6 @@
 <template>
   <div class="sheet">
-    <div id="sheet-container"> </div>
+    <div id="sheet-container" />
     <!-- <button v-on:click='updateSheet'>Reload</button> -->
   </div>
 </template>
@@ -15,7 +15,7 @@ const { mapActions } = createNamespacedHelpers('predict')
 const { mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
-  name: 'sheet',
+  name: 'Sheet',
   components: {
   },
   data () {

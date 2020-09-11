@@ -18,7 +18,7 @@ import SearchTable from '@/components/controls/SearchTable'
 const { mapActions, mapState } = createNamespacedHelpers('sequence')
 
 export default {
-  name: 'header-controls',
+  name: 'HeaderControls',
   data () {
     return { }
   },
@@ -39,7 +39,7 @@ export default {
     ...mapActions(['exportMidi', 'clear', 'updatePlaybackVersion', 'updateSeqName']),
     share () {
       const url = window.location.href
-      const text = `Check out this song I just generated with #musicautobot @bearpelican`
+      const text = 'Check out this song I just generated with #musicautobot @bearpelican'
       window.open('http://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0')
     }
   },

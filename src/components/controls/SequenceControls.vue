@@ -1,20 +1,44 @@
 <template>
-  <div class='control-group'>
-    <div class='control-group-header'>Playback Controls</div>
+  <div class="control-group">
+    <div class="control-group-header">
+      Playback Controls
+    </div>
 
-    <div class='control-group-content'>
-      <div class='control-group-control'>
-        <div class='control-group-label'>BPM: {{ this.bpm }}</div>
-        <v-slider id="bpm" class="control-group-slider" color="blue" v-model="selectBPM" :min="60" :max="150" :step="1" hide-details></v-slider>
+    <div class="control-group-content">
+      <div class="control-group-control">
+        <div class="control-group-label">
+          BPM: {{ this.bpm }}
+        </div>
+        <v-slider
+          id="bpm"
+          v-model="selectBPM"
+          class="control-group-slider"
+          color="blue"
+          :min="60"
+          :max="150"
+          :step="1"
+          hide-details
+        />
       </div>
 
-      <div class='control-group-control'>
-        <div class='control-group-label'>Instrument</div>
-        <v-btn-toggle class="control-group-toggle" v-model="selectInstrumentType">
-          <v-btn text value="piano">
+      <div class="control-group-control">
+        <div class="control-group-label">
+          Instrument
+        </div>
+        <v-btn-toggle
+          v-model="selectInstrumentType"
+          class="control-group-toggle"
+        >
+          <v-btn
+            text
+            value="piano"
+          >
             Piano
           </v-btn>
-          <v-btn text value="synth">
+          <v-btn
+            text
+            value="synth"
+          >
             Synth
           </v-btn>
         </v-btn-toggle>

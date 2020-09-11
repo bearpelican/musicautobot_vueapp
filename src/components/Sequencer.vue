@@ -17,7 +17,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('predict')
 
 export default {
-  name: 'sequencer',
+  name: 'Sequencer',
   components: {
     Keyboard,
     Score,
@@ -29,14 +29,14 @@ export default {
       return (this.tutorialStep !== 1) ? 1 : 0.4
     }
   },
+  mounted () {
+    this.scrollBottom()
+  },
   methods: {
     scrollBottom () {
       const scrollSection = this.$refs.scrollSection
       scrollSection.scrollTop = scrollSection.scrollHeight
     }
-  },
-  mounted () {
-    this.scrollBottom()
   }
 }
 </script>

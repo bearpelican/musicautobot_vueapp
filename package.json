@@ -9,15 +9,16 @@
     "postinstall": "yarn build"
   },
   "dependencies": {
-    "@tonejs/midi": "^1.2.3",
-    "axios": "^0.19.0",
-    "core-js": "^2.5.7",
+    "@tonejs/midi": "^2.0.25",
+    "axios": "^0.20.0",
+    "core-js": "^3.6.5",
     "file-saver": "^2.0.1",
-    "fuse.js": "^3.4.4",
-    "opensheetmusicdisplay": "^0.7.0",
-    "pug": "^2.0.3",
+    "fuse.js": "^6.4.1",
+    "lodash": "^4.17.20",
+    "opensheetmusicdisplay": "^0.8.5",
+    "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
-    "tone": "^13.8.4",
+    "tone": "13.8.4",
     "vue": "^2.6.10",
     "vue-analytics": "^5.17.0",
     "vue-lodash": "^2.0.2",
@@ -27,13 +28,19 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.1",
-    "@vue/cli-plugin-eslint": "^3.0.1",
-    "@vue/cli-service": "^3.0.1",
-    "@vue/eslint-config-standard": "^4.0.0",
-    "lint-staged": "^9.4.0",
+    "@vue/cli-plugin-babel": "^4.5.6",
+    "@vue/cli-plugin-eslint": "^4.5.6",
+    "@vue/cli-service": "^4.5.6",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "eslint": "^7.8.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^7.0.0-beta.3",
+    "lint-staged": "^10.3.0",
     "node-sass": "^4.7.2",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^10.0.2",
     "vue-template-compiler": "^2.5.13"
   },
   "babel": {
@@ -44,7 +51,7 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
       "@vue/standard"
     ]
   },

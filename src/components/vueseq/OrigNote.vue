@@ -15,8 +15,6 @@ export default {
     storeTiming: Number,
     storeLength: Number
   },
-  mounted () {
-  },
   data () {
     return {
       state: 'normal',
@@ -24,6 +22,8 @@ export default {
       timing: this.storeTiming,
       keyNumber: this.storeKeyNumber
     }
+  },
+  mounted () {
   },
   computed: {
     ...mapState(['seedLen']),

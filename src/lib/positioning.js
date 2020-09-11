@@ -24,7 +24,7 @@ export function secondsToTiming (seconds, bpm) {
 }
 
 export function tonePositionToTiming (position) {
-  let comps = position.split(':').map(parseFloat)
+  const comps = position.split(':').map(parseFloat)
   return comps[0] * 16 + comps[1] * 4 + comps[2]
 }
 

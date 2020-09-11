@@ -6,8 +6,8 @@ export function midiToNotes (midi) {
   // the file name decoded from the first track
   const midiName = midi.name
   // get the tracks
-  const bpm = _.get(midi, `header.tempos[0].bpm`, 120)
-  let notes = []
+  const bpm = _.get(midi, 'header.tempos[0].bpm', 120)
+  const notes = []
   midi.tracks.forEach((track, trackIndex) => {
     track.notes.forEach(note => {
       notes.push({
@@ -26,7 +26,7 @@ export function bufferToMidi (arraybuffer) {
 }
 
 export function notesToToneNotes (notes, bpm, includeIndex = true) {
-  let toneNotes = notes
+  const toneNotes = notes
     .map((note, index) => {
       const toneNote = {
         midi: note.key,
@@ -36,7 +36,7 @@ export function notesToToneNotes (notes, bpm, includeIndex = true) {
         velocity: 0.8
       }
       if (includeIndex) {
-        toneNote['index'] = index
+        toneNote.index = index
       }
       return toneNote
     })
@@ -120,7 +120,7 @@ export function storeToMidi (state, seedLen = null, track = -1) {
   var midi = new Midi()
   midi.header.fromJSON(defaultMidiHeader({ bpm, seqName }))
 
-  let notes = notesToToneNotes(storeNotes, bpm, false)
+  const notes = notesToToneNotes(storeNotes, bpm, false)
   const numTracks = _.max(notes.map(n => n.track)) + 1
 
   const tracks = _.range(numTracks).map((val) => {

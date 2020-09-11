@@ -1,10 +1,17 @@
 <template>
   <v-app id="app">
-    <router-view/>
+    <router-view />
     <div id="nav">
-      <router-link to="/" :class="{ 'router-link-active': isDefaultRoute }">Playground</router-link> |
+      <router-link
+        to="/"
+        :class="{ 'router-link-active': isDefaultRoute }"
+      >
+        Playground
+      </router-link> |
       <!-- <router-link to="/sheet">Sheet</router-link> | -->
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">
+        About
+      </router-link>
     </div>
   </v-app>
 </template>

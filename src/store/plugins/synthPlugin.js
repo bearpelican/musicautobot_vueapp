@@ -42,7 +42,6 @@ export class SynthPlugin {
           break
         }
         case 'updatePlayOffset': {
-          console.log('dsjflksdjflsdkjfsdlk')
           const notes = state.sequence.playbackVersion === 'original' ? state.sequence.origNotes : state.sequence.notes
           this.playNotesOnBeat(notes, state.sequence.playOffset)
           break
@@ -53,10 +52,12 @@ export class SynthPlugin {
       }
     })
   }
+
   stop () {
     this.reset()
     this.store.commit('sequence/finishMusic')
   }
+
   reset () {
     if (this.progress != null) {
       clearInterval(this.progress)
@@ -72,6 +73,7 @@ export class SynthPlugin {
     // this.synth.unsync().sync()
     this.notes = []
   }
+
   updateInstrumentType ({ instrumentType }) {
     this.synth.unsync()
     if (instrumentType === 'synth') {
@@ -80,6 +82,7 @@ export class SynthPlugin {
       this.synth = createPianoSynth()
     }
   }
+
   startPreview ({ keyNumber, timeout }) {
     this.finishPreview()
     this.synth.triggerAttack(Tone.Midi(keyNumber))
@@ -90,12 +93,14 @@ export class SynthPlugin {
       }, (timeout) * 1000)
     }
   }
+
   finishPreview () {
     if (this.currentPreview != null) {
       this.synth.triggerRelease(Tone.Midi(this.currentPreview))
       this.currentPreview = null
     }
   }
+
   endTime (notes) {
     let maxTime = 0
     notes.forEach(note => {
@@ -103,6 +108,7 @@ export class SynthPlugin {
     })
     return maxTime
   }
+
   play (notes, bpm, offset = 0) {
     // #### https://github.com/Tonejs/Midi/tree/219c7da527cb13c7f16b6769f93f2ba8fb5853d5 #####
     this.reset()
@@ -111,7 +117,7 @@ export class SynthPlugin {
     Tone.Transport.bpm.value = bpm
 
     // pass in the note events from one of the tracks as the second argument to Tone.Part
-    let midiPart = new Tone.Part((time, note) => {
+    const midiPart = new Tone.Part((time, note) => {
       // console.log('Time:', time)
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time) //, note.velocity)
     }, this.notes)
@@ -131,6 +137,7 @@ export class SynthPlugin {
       this.stop()
     }, (this.endTime(this.notes) + 1 - offsetSeconds) * 1000)
   }
+
   playNotesOnBeat (notes, beat) {
     const midiNotes = notes.filter(n => {
       return (n.timing <= beat) && ((n.timing + n.length) > beat)

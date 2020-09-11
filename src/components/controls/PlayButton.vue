@@ -1,7 +1,15 @@
 <template>
   <v-tooltip right>
-    <template v-slot:activator="{ on }">
-      <v-btn :id="buttonID" color="blue darken-2" dark fab large v-on="on" @click="toggle">
+    <template #activator="{ on }">
+      <v-btn
+        :id="buttonID"
+        color="blue darken-2"
+        dark
+        fab
+        large
+        v-on="on"
+        @click="toggle"
+      >
         <v-icon>{{ icon }}</v-icon>
       </v-btn>
     </template>

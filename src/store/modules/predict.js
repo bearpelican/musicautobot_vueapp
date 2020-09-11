@@ -97,7 +97,7 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    let { sid: originalSID, nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP } = rootState.predict
+    const { sid: originalSID, nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP } = rootState.predict
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
     // if (['pitch', 'rhythm'].includes(predictionType.name)) {
@@ -119,7 +119,7 @@ export const actions = {
     setTimeout(() => {
       if (progress != null) {
         clearInterval(progress)
-        commit('showError', `Error: Timeout trying to generate sequence...`)
+        commit('showError', 'Error: Timeout trying to generate sequence...')
       }
     }, 1000 * 0.25 * nSteps)
 
@@ -146,7 +146,7 @@ export const actions = {
     commit('updateLoadingState', 'Making music...')
     commit('updateTutorialStep', 2)
 
-    let { nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP } = rootState.predict
+    const { nSteps, predictionType, durationTemp, noteTemp, seedLen, maskStart, maskEnd, topK, topP } = rootState.predict
     // const track = predictionType.track
     // Filtering seedLen serverside for now.
     // if (['pitch', 'rhythm'].includes(predictionType.name)) {
@@ -168,7 +168,7 @@ export const actions = {
     setTimeout(() => {
       if (progress != null) {
         clearInterval(progress)
-        commit('showError', `Error: Timeout trying to generate sequence...`)
+        commit('showError', 'Error: Timeout trying to generate sequence...')
       }
     }, 1000 * 0.25 * nSteps)
 
@@ -194,7 +194,7 @@ export const actions = {
   async convertToXML ({ commit, rootState }) {
     const { midi } = storeToMidi(rootState.sequence, null)
 
-    let result = await $backend.convertToXML({ midi })
+    const result = await $backend.convertToXML({ midi })
     console.log('Result returned from convertToXML:', result)
     commit('updateMidiXML', result)
     return result

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { saveAs } from 'file-saver'
 import _ from 'lodash'
 
-let $axios = axios.create({
+const $axios = axios.create({
   baseURL: process.env.VUE_APP_API_PATH,
   timeout: 180000
   // headers: { 'Content-Type': 'application/json' }
@@ -10,9 +10,9 @@ let $axios = axios.create({
 
 const BUCKET = process.env.VUE_APP_S3_BUCKET
 const ROUTES = {
-  'song': 'examples/seed',
-  'songList': 'examples/json/htlist.json',
-  'predict': 'generated'
+  song: 'examples/seed',
+  songList: 'examples/json/htlist.json',
+  predict: 'generated'
 }
 
 // Response Interceptor to handle and log errors
@@ -45,7 +45,7 @@ export default {
     return response.data
   },
   async loadState (s3id, type = 'predict') {
-    let [midiBuffer, store] = await Promise.all([this.fetchMidi(s3id, type), this.fetchJson(s3id, type)])
+    const [midiBuffer, store] = await Promise.all([this.fetchMidi(s3id, type), this.fetchJson(s3id, type)])
     return { midiBuffer, store }
   },
 

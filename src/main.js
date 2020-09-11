@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueLodash from 'vue-lodash'
+import lodash from 'lodash'
 
 import App from './App.vue'
 import router from './router'
@@ -13,7 +14,6 @@ import VueAnalytics from 'vue-analytics'
 Vue.config.productionTip = false
 
 if (process.env.VUE_APP_GA_ID) {
-  console.log('Google Analytics enabled')
   Vue.use(VueAnalytics, {
     id: process.env.VUE_APP_GA_ID,
     router: router,
@@ -25,7 +25,7 @@ if (process.env.VUE_APP_GA_ID) {
 
 const vuetifyOptions = { }
 Vue.use(Vuetify)
-Vue.use(VueLodash, {})
+Vue.use(VueLodash, { name: 'custom', lodash: lodash })
 
 new Vue({
   router,

@@ -1,15 +1,25 @@
 <template>
   <div class="predict">
-    <header-controls id="header-controls"></header-controls>
-    <tutorial v-if="tutorialStep === 0" id='tutorial-one'></tutorial>
+    <header-controls id="header-controls" />
+    <tutorial
+      v-if="tutorialStep === 0"
+      id="tutorial-one"
+    />
     <sequencer :style="sequenceStyle">
-      <template v-slot:overlay>
-        <generate-button></generate-button>
-        <tutorial-two v-if="tutorialStep === 1" id='tutorial-two'></tutorial-two>
-        <loading id='loading-predict' :value=loadingState :style="loadingStyle"></loading>
+      <template #overlay>
+        <generate-button />
+        <tutorial-two
+          v-if="tutorialStep === 1"
+          id="tutorial-two"
+        />
+        <loading
+          id="loading-predict"
+          :value="loadingState"
+          :style="loadingStyle"
+        />
       </template>
     </sequencer>
-    <footer-controls></footer-controls>
+    <footer-controls />
   </div>
 </template>
 
@@ -27,7 +37,7 @@ const { mapActions, mapMutations, mapState } = createNamespacedHelpers('predict'
 const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
-  name: 'predict',
+  name: 'Predict',
   data () {
     return {
       error: '',
@@ -50,7 +60,7 @@ export default {
   },
   watch: {
     // call again the method if the route changes
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   created () {
     this.fetchData()

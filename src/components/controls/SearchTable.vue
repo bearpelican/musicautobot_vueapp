@@ -1,13 +1,27 @@
 <template>
   <div>
-  <v-btn outlined small color="green lighten-1" @click="showDialog = true">
-    New Song...
-  </v-btn>
-  <v-btn outlined small color="green lighten-1" @click="restart" v-if="!_.isEmpty(sid)">
-    Restart
-  </v-btn>
+    <v-btn
+      outlined
+      small
+      color="green lighten-1"
+      @click="showDialog = true"
+    >
+      New Song...
+    </v-btn>
+    <v-btn
+      v-if="!_.isEmpty(sid)"
+      outlined
+      small
+      color="green lighten-1"
+      @click="restart"
+    >
+      Restart
+    </v-btn>
 
-    <v-dialog v-model="showDialog" max-width="1000px">
+    <v-dialog
+      v-model="showDialog"
+      max-width="1000px"
+    >
       <v-card>
         <v-card-title>
           <v-text-field
@@ -16,18 +30,39 @@
             :label="searchLabel"
             single-line
             hide-details
-          ></v-text-field>
-          <v-spacer></v-spacer>
-          <v-btn outlined small color="green lighten-1" @click="shuffle">
+          />
+          <v-spacer />
+          <v-btn
+            outlined
+            small
+            color="green lighten-1"
+            @click="shuffle"
+          >
             Shuffle
             <v-icon>shuffle</v-icon>
           </v-btn>
-          <v-btn outlined small color="green lighten-1" @click="$refs.fileUpload.click()">
+          <v-btn
+            outlined
+            small
+            color="green lighten-1"
+            @click="$refs.fileUpload.click()"
+          >
             Import
             <v-icon>folder</v-icon>
-            <input id='fileUpload' type="file" ref='fileUpload' @change="loadLocalFile($event)" hidden>
+            <input
+              id="fileUpload"
+              ref="fileUpload"
+              type="file"
+              hidden
+              @change="loadLocalFile($event)"
+            >
           </v-btn>
-          <v-btn outlined small color="green lighten-1" @click="blankSheet">
+          <v-btn
+            outlined
+            small
+            color="green lighten-1"
+            @click="blankSheet"
+          >
             Blank
             <v-icon>create_new_folder</v-icon>
           </v-btn>
@@ -37,16 +72,26 @@
           :items="results"
           @click:row="selectSong"
         >
-          <template v-slot:items="props">
+          <template #items="props">
             <tr>
-              <td class="text-xs-left">{{ props.item.title }}</td>
-              <td class="text-xs-left">{{ props.item.artist }}</td>
-              <td class="text-xs-right">{{ props.item.section }}</td>
+              <td class="text-xs-left">
+                {{ props.item.title }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.artist }}
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.section }}
+              </td>
               <!-- <td class="text-xs-right">{{ props.item.genres }}</td> -->
             </tr>
           </template>
-          <template v-slot:no-results>
-            <v-alert :value="true" color="error" icon="warning">
+          <template #no-results>
+            <v-alert
+              :value="true"
+              color="error"
+              icon="warning"
+            >
               Your search for "{{ term }}" found no results.
             </v-alert>
           </template>
@@ -66,7 +111,7 @@ const { mapActions, mapState, mapMutations } = createNamespacedHelpers('predict'
 const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
-  name: 'search-table',
+  name: 'SearchTable',
   props: {
     searchLabel: {
       type: String,
@@ -144,7 +189,7 @@ export default {
       this.$router.push({ path: `/song/${this.sid}` })
     },
     shuffle () {
-      this.$router.push({ path: `/shuffle` })
+      this.$router.push({ path: '/shuffle' })
       this.showDialog = false
     },
     selectSong (songItem) {

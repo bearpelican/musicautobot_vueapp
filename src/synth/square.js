@@ -25,12 +25,14 @@ export default class SquareSynth extends SynthBase {
     this.gainNode.gain.value = 0.1
     this.gainNode.connect(this.audioCtx.destination)
   }
+
   createOsc () {
     const osc = this.audioCtx.createOscillator()
     osc.connect(this.gainNode)
     osc.type = 'square'
     return osc
   }
+
   play (frequency, time = null) {
     let note
     if (time) {
@@ -42,8 +44,9 @@ export default class SquareSynth extends SynthBase {
     }
     this.notes.push(note)
   }
+
   stop () {
-    for (let note of this.notes) {
+    for (const note of this.notes) {
       note.osc.stop()
     }
     this.notes = []

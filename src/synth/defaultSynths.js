@@ -11,27 +11,27 @@ export function createSimpleSynth () {
 
 export function createPianoettaSynth () {
   const monoParams = {
-    'oscillator': {
-      'type': 'square'
+    oscillator: {
+      type: 'square'
     },
-    'filter': {
-      'Q': 2,
-      'type': 'lowpass',
-      'rolloff': -12
+    filter: {
+      Q: 2,
+      type: 'lowpass',
+      rolloff: -12
     },
-    'envelope': {
-      'attack': 0.005,
-      'decay': 3,
-      'sustain': 0,
-      'release': 0.45
+    envelope: {
+      attack: 0.005,
+      decay: 3,
+      sustain: 0,
+      release: 0.45
     },
-    'filterEnvelope': {
-      'attack': 0.001,
-      'decay': 0.32,
-      'sustain': 0.9,
-      'release': 3,
-      'baseFrequency': 700,
-      'octaves': 2.3
+    filterEnvelope: {
+      attack: 0.001,
+      decay: 0.32,
+      sustain: 0.9,
+      release: 3,
+      baseFrequency: 700,
+      octaves: 2.3
     }
   }
   const monoWrap = (params) => new Tone.MonoSynth(params)

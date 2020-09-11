@@ -1,9 +1,19 @@
 <template>
   <div>
-    <div class='control-group'>
-      <v-btn-toggle class="control-group-toggle" v-model="selectPredictionType" mandatory>
-        <v-btn text v-for="ptype in predictionTypes" v-bind:key="ptype.name" :value="ptype" color="red">
-          {{ptype.displayName}}
+    <div class="control-group">
+      <v-btn-toggle
+        v-model="selectPredictionType"
+        class="control-group-toggle"
+        mandatory
+      >
+        <v-btn
+          v-for="ptype in predictionTypes"
+          :key="ptype.name"
+          text
+          :value="ptype"
+          color="red"
+        >
+          {{ ptype.displayName }}
         </v-btn>
       </v-btn-toggle>
       <label id="prediction-type-hint">
@@ -20,7 +30,7 @@ import { PredictionType } from '@/lib/config'
 const { mapMutations, mapState } = createNamespacedHelpers('predict')
 
 export default {
-  name: 'regen-controls',
+  name: 'RegenControls',
   data () {
     return {
       error: '',
