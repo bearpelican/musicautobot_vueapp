@@ -7,7 +7,7 @@ import { pixelPerBeat } from '@/lib/config'
 
 export default {
   props: {
-    index: Number
+    index: { type: Number, required: true }
   },
   computed: {
     left () {

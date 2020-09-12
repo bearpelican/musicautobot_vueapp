@@ -76,7 +76,7 @@ export default {
   },
 
   props: {
-    gridOpacity: Number
+    gridOpacity: { type: Number, default: 1 }
   },
   data () {
     return {

@@ -85,6 +85,11 @@ function defaultMidiHeader ({ bpm, name = '' }) {
       ticks: 0,
       timeSignature: [4, 4],
       measures: 0
+    }],
+    keySignatures: [{
+      key: 'C',
+      scale: 'major',
+      ticks: 0
     }]
   }
   return defaultHeader

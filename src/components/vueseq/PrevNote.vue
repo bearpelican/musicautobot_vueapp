@@ -9,10 +9,10 @@ const { mapState } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    index: Number,
-    storeKeyNumber: Number,
-    storeTiming: Number,
-    storeLength: Number
+    index: { type: Number, required: true },
+    storeKeyNumber: { type: Number, required: true },
+    storeTiming: { type: Number, required: true },
+    storeLength: { type: Number, required: true }
   },
   data () {
     return {
@@ -21,8 +21,6 @@ export default {
       timing: this.storeTiming,
       keyNumber: this.storeKeyNumber
     }
-  },
-  mounted () {
   },
   computed: {
     ...mapState(['seedLen']),
@@ -41,8 +39,6 @@ export default {
       }
       return 'none'
     }
-  },
-  methods: {
   }
 }
 </script>

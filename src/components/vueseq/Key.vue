@@ -15,9 +15,9 @@ const { mapActions } = createNamespacedHelpers('sequence')
 
 export default {
   props: {
-    pitch: String,
-    keyType: String,
-    index: Number
+    pitch: { type: String, required: true },
+    keyType: { type: String, required: true },
+    index: { type: Number, required: true }
   },
   computed: {
     classes () {

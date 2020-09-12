@@ -10,8 +10,8 @@ const { mapActions, mapMutations, mapState } = createNamespacedHelpers('sequence
 
 export default {
   props: {
-    keyNumber: Number,
-    keyType: String
+    keyNumber: { type: Number, required: true },
+    keyType: { type: String, required: true }
   },
   data () {
     return {

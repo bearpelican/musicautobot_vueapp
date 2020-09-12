@@ -16,11 +16,11 @@ const { mapState: predMapState } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    index: Number,
-    track: Number,
-    storeKeyNumber: Number,
-    storeTiming: Number,
-    storeLength: Number
+    index: { type: Number, required: true },
+    track: { type: Number, required: true },
+    storeKeyNumber: { type: Number, required: true },
+    storeTiming: { type: Number, required: true },
+    storeLength: { type: Number, required: true }
   },
   data () {
     return {

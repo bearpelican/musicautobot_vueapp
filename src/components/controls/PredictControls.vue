@@ -83,10 +83,6 @@ export default {
     //   event.handled = true
     //   event.stopPropagation()
     // }
-  },
-  mounted () {
-  },
-  components: {
   }
 }
 

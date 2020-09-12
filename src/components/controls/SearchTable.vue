@@ -157,6 +157,9 @@ export default {
       this.loadSearch()
     }
   },
+  mounted () {
+    this.fetchSongs()
+  },
   methods: {
     ...mapActions(['fetchSongs', 'saveMidi']),
     ...seqMapActions(['loadMidiBuffer', 'clear']),
@@ -179,13 +182,13 @@ export default {
       this.fuse = new Fuse(this.songs, options)
       this.debounce = this._.debounce(this.updateSearch, 100)
       this.results = this.songs
-      // this.searchResults = 'avicii'
     },
     blankSheet () {
       this.$router.push({ path: '/song/blank' })
       this.showDialog = false
     },
     restart () {
+      // TODO: Currently throws an error if already on the same song. Perhaps we should reset any edited notes?
       this.$router.push({ path: `/song/${this.sid}` })
     },
     shuffle () {
@@ -225,9 +228,6 @@ export default {
         this.showDialog = false
       }, 1 * 1000)
     }
-  },
-  mounted () {
-    this.fetchSongs()
   }
 }
 

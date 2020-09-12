@@ -7,7 +7,7 @@
     <div class="control-group-content">
       <div class="control-group-control">
         <div class="control-group-label">
-          BPM: {{ this.bpm }}
+          BPM: {{ bpm }}
         </div>
         <v-slider
           id="bpm"
@@ -82,8 +82,6 @@ export default {
     //   event.handled = true
     //   event.stopPropagation()
     // }
-  },
-  mounted () {
   }
 }
 </script>

@@ -52,10 +52,6 @@ export default {
   },
   methods: {
     ...mapMutations(['updatePredictionType'])
-  },
-  mounted () {
-  },
-  components: {
   }
 }
 

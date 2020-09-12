@@ -38,6 +38,15 @@ const { mapActions: seqMapActions } = createNamespacedHelpers('sequence')
 
 export default {
   name: 'Predict',
+  components: {
+    Sequencer,
+    HeaderControls,
+    FooterControls,
+    GenerateButton,
+    Loading,
+    Tutorial,
+    TutorialTwo
+  },
   data () {
     return {
       error: '',
@@ -87,15 +96,6 @@ export default {
         this.loadPrediction(pid)
       }
     }
-  },
-  components: {
-    Sequencer,
-    HeaderControls,
-    FooterControls,
-    GenerateButton,
-    Loading,
-    Tutorial,
-    TutorialTwo
   }
 }
 

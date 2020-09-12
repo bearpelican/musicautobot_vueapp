@@ -13,14 +13,14 @@
 
 import { keyWidth, pixelPerBeat } from '@/lib/config'
 import { createNamespacedHelpers } from 'vuex'
-import TutorialPredict from '@/components/TutorialPredict'
+// import TutorialPredict from '@/components/TutorialPredict'
 const { mapState, mapActions } = createNamespacedHelpers('predict')
 const { mapState: seqMapState } = createNamespacedHelpers('sequence')
 
 export default {
-  props: {
-    scoreRect: {}
-  },
+  // components: {
+  //   TutorialPredict
+  // },
   data () {
     return {
       parentNode: null,
@@ -30,28 +30,6 @@ export default {
   computed: {
     ...mapState(['seedLen', 'maskStart', 'predictionType']),
     ...seqMapState(['scrollLeftPosition']),
-    // left () {
-    //   let leftOffset = this.seedLen * pixelPerBeat - this.scoreScrollLeft
-    //   const margin = 50
-    //   if (leftOffset < this.scoreRect.left + margin) {
-    //     leftOffset = this.scoreRect.left + margin
-    //   } else if (leftOffset > this.scoreRect.right - margin) {
-    //     leftOffset = this.scoreRect.right - margin
-    //   }
-    //   return `${leftOffset}px`
-    // }
-    // left () {
-    //   let leftScoreOffset = this.seedLen * pixelPerBeat
-    //   const margin = 50
-    //   const relativeOffset = leftScoreOffset - this.scoreScrollLeft
-    //   const scoreWidth = this.scoreRect.right - this.scoreRect.left
-    //   if (relativeOffset < margin) {
-    //     leftScoreOffset = this.scoreScrollLeft + margin
-    //   } else if (relativeOffset > scoreWidth - margin) {
-    //     leftScoreOffset = this.scoreScrollLeft - margin + scoreWidth
-    //   }
-    //   return `${leftScoreOffset}px`
-    // }
     beat () {
       const ptype = this._.get(this.predictionType, 'name')
       return ['pitch', 'rhythm'].includes(ptype) ? this.maskStart : this.seedLen
@@ -75,16 +53,6 @@ export default {
       return `${relativeOffset}px`
     }
   },
-  methods: {
-    ...mapActions(['predictMidi']),
-    async predict () {
-      this.showTooltip = false
-      const pid = await this.predictMidi()
-      if (pid) {
-        this.$router.push({ path: `/predict/${pid}` })
-      }
-    }
-  },
   mounted () {
     this.parentNode = this.$el.parentNode
     setTimeout(() => {
@@ -94,8 +62,15 @@ export default {
       }, 8 * 1000)
     }, 1 * 1000)
   },
-  components: {
-    TutorialPredict
+  methods: {
+    ...mapActions(['predictMidi']),
+    async predict () {
+      this.showTooltip = false
+      const pid = await this.predictMidi()
+      if (pid) {
+        this.$router.push({ path: `/predict/${pid}` })
+      }
+    }
   }
 }
 </script>

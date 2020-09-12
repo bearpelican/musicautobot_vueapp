@@ -297,9 +297,6 @@ export default {
   components: {
     GithubRibbon
   },
-  props: {
-    msg: String
-  },
   data () {
     return {
       predictionTypes: this._.values(PredictionType),

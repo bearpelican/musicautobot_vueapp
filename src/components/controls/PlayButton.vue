@@ -24,7 +24,7 @@ const { mapMutations: predMapMutations } = createNamespacedHelpers('predict')
 
 export default {
   props: {
-    buttonID: String
+    buttonID: { type: String, required: true }
   },
   computed: {
     ...mapState(['appState']),

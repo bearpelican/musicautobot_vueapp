@@ -55,16 +55,16 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapMutations } = createNamespacedHelpers('predict')
 
 export default {
+  mounted () {
+    setTimeout(() => {
+      this.updateTutorialStep(2)
+    }, 16 * 1000)
+  },
   methods: {
     ...mapMutations(['updateTutorialStep']),
     dismiss () {
       this.updateTutorialStep(2)
     }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.updateTutorialStep(2)
-    }, 16 * 1000)
   }
 }
 </script>
