@@ -2,15 +2,13 @@ import { notesToToneNotes } from '@/lib/convert'
 import { secondsToTiming, timingToSeconds } from '@/lib/positioning'
 import { createPianoSynth } from '@/synth/pianoSynth'
 import { createDefaultPolySynth } from '@/synth/defaultSynths'
-import Tone from 'tone'
+import * as Tone from 'tone'
 import _ from 'lodash'
 
 export class SynthPlugin {
   constructor (store) {
     this.store = store
     this.notes = []
-    this.audioContext = new AudioContext()
-    Tone.setContext(this.audioContext)
     this.synth = createPianoSynth()
     this.part = null
     this.currentPreview = null
@@ -118,18 +116,20 @@ export class SynthPlugin {
 
     // pass in the note events from one of the tracks as the second argument to Tone.Part
     const midiPart = new Tone.Part((time, note) => {
-      // console.log('Time:', time)
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time) //, note.velocity)
     }, this.notes)
     const offsetSeconds = timingToSeconds(offset, bpm)
     midiPart.start(`${-offsetSeconds}`)
     // start the transport to hear the events
-    Tone.Transport.start()
+    if (Tone.Transport.state === 'stopped') {
+      Tone.start()
+      Tone.Transport.start()
+    }
+    // Tone.Transport.start()
 
     this.progress = setInterval(() => {
       // const position = tonePositionToTiming(Tone.Transport.position)
       const time = secondsToTiming(Tone.Transport.seconds + offsetSeconds, bpm)
-      // console.log('Seconds:', time)
       this.store.commit('sequence/updateProgressTime', time)
     }, 5)
 

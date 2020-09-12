@@ -1,9 +1,8 @@
 // import SynthBase from '@/synth/synthBase'
-import Tone from 'tone'
+import { Sampler } from 'tone'
 
 export function createPianoSynth () {
-  console.log(Tone)
-  return new Tone.Sampler({
+  return new Sampler({
     A0: 'A0.[mp3|ogg]',
     C1: 'C1.[mp3|ogg]',
     'D#1': 'Ds1.[mp3|ogg]',
@@ -34,6 +33,5 @@ export function createPianoSynth () {
     'F#7': 'Fs7.[mp3|ogg]',
     A7: 'A7.[mp3|ogg]',
     C8: 'C8.[mp3|ogg]'
-  // }, () => { }, './audio/salamander/').toMaster()
-  }, () => { }, 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/audio/salamander/').toMaster()
+  }, () => { }, 'https://s3-us-west-2.amazonaws.com/ashaw-midi-web-server/audio/salamander/').toDestination()
 }

@@ -18,12 +18,16 @@ export class Note {
 export default class SquareSynth extends SynthBase {
   constructor () {
     super()
-    this.audioCtx = new AudioContext()
-    // this.audioCtx = window.AudioContext
-    this.gainNode = this.audioCtx.createGain()
     this.notes = []
-    this.gainNode.gain.value = 0.1
-    this.gainNode.connect(this.audioCtx.destination)
+  }
+
+  initAudioContext () {
+    if (this.audioContext == null) {
+      this.audioContext = new AudioContext()
+      this.gainNode = this.audioCtx.createGain()
+      this.gainNode.gain.value = 0.1
+      this.gainNode.connect(this.audioCtx.destination)
+    }
   }
 
   createOsc () {

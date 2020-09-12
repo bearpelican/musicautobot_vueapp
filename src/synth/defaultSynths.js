@@ -1,10 +1,10 @@
 // import SynthBase from '@/synth/synthBase'
-import Tone from 'tone'
+import * as Tone from 'tone'
 
 // http://tonejs.github.io/Presets/
 
 export function createSimpleSynth () {
-  var synth = new Tone.Synth().toMaster()
+  var synth = new Tone.Synth().toDestination()
   // debugSynth(synth)
   return synth
 }
@@ -34,10 +34,9 @@ export function createPianoettaSynth () {
       octaves: 2.3
     }
   }
-  const monoWrap = (params) => new Tone.MonoSynth(params)
-  return new Tone.PolySynth(6, monoWrap(monoParams)).toMaster()
+  return new Tone.PolySynth(monoParams).toDestination()
 }
 
 export function createDefaultPolySynth () {
-  return new Tone.PolySynth(6, Tone.MonoSynth).toMaster()
+  return new Tone.PolySynth().toDestination()
 }

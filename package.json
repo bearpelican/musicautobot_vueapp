@@ -18,7 +18,7 @@
     "opensheetmusicdisplay": "^0.8.5",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
-    "tone": "13.8.4",
+    "tone": "^14.7.39",
     "vue": "^2.6.10",
     "vue-analytics": "^5.17.0",
     "vue-lodash": "^2.0.2",
