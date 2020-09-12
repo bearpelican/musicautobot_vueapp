@@ -119,13 +119,12 @@ export class SynthPlugin {
       this.synth.triggerAttackRelease(Tone.Midi(note.midi), note.duration, time) //, note.velocity)
     }, this.notes)
     const offsetSeconds = timingToSeconds(offset, bpm)
-    midiPart.start(`${-offsetSeconds}`)
+    midiPart.start(0, `${offsetSeconds}`)
     // start the transport to hear the events
     if (Tone.Transport.state === 'stopped') {
       Tone.start()
       Tone.Transport.start()
     }
-    // Tone.Transport.start()
 
     this.progress = setInterval(() => {
       // const position = tonePositionToTiming(Tone.Transport.position)

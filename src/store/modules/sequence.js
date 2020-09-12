@@ -121,7 +121,7 @@ export const mutations = {
 export function generateSimpleActions (mutations) {
   const actions = {
     loadMidi ({ commit }, { midi, seqName, savePrevious = true }) {
-      const { notes, name: midiName, bpm } = midiToNotes(midi)
+      const { notes, midiName, bpm } = midiToNotes(midi)
       if (_.isEmpty(seqName)) seqName = midiName
       commit('updateNotes', { notes, bpm, seqName, savePrevious })
       return { notes, bpm }

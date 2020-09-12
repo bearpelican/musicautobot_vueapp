@@ -123,14 +123,14 @@ export function storeToMidi (state, seedLen = null, track = -1) {
     })
   }
   var midi = new Midi()
-  midi.header.fromJSON(defaultMidiHeader({ bpm, seqName }))
+  midi.header.fromJSON(defaultMidiHeader({ bpm, name: seqName }))
 
   const notes = notesToToneNotes(storeNotes, bpm, false)
   const numTracks = _.max(notes.map(n => n.track)) + 1
 
   const tracks = _.range(numTracks).map((val) => {
     const track = midi.addTrack()
-    track.fromJSON(defaultTrackHeader({ seqName }))
+    track.fromJSON(defaultTrackHeader({ name: seqName }))
     return track
   })
 
