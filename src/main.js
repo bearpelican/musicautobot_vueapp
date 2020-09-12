@@ -30,6 +30,13 @@ Vue.use(VueLodash, { name: 'custom', lodash: lodash })
 new Vue({
   router,
   store,
+  created () {
+    if (sessionStorage.redirect) {
+      const redirect = sessionStorage.redirect
+      delete sessionStorage.redirect
+      this.$router.push(redirect)
+    }
+  },
   render: h => h(App),
   vuetify: new Vuetify(vuetifyOptions)
 }).$mount('#app')

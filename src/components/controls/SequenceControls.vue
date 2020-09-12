@@ -15,7 +15,7 @@
           class="control-group-slider"
           color="blue"
           :min="60"
-          :max="150"
+          :max="200"
           :step="1"
           hide-details
         />
